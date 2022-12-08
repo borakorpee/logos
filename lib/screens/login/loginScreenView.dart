@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:logos/screens/login/forgotpassScreenView.dart';
+import 'package:logos/components/customBackButton.dart';
+import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
+import 'package:logos/screens/register/registerScreenView.dart';
 
 class LoginScreenView extends StatefulWidget {
   static const routeName = "/login";
@@ -24,6 +26,9 @@ class _LoginScreenViewState extends State<LoginScreenView> {
     const String mailtext = "Mail adresi";
     const String passtext = "Şifre";
     const String forgotpasstext = "Şifremi unuttum";
+    const String registertext = "Kayıt ol";
+    const String registerasktext = "Hesabın yok mu?";
+
     const String logintext = "Giriş Yap";
 
     final height = MediaQuery.of(context).size.height;
@@ -32,7 +37,7 @@ class _LoginScreenViewState extends State<LoginScreenView> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          BackButton(height: height, width: width),
+          CustomBackButton(context),
           SizedBox(height: height * 0.044),
           Logo(width: width, height: height),
           const WelcomeText(text: maintext),
@@ -56,11 +61,41 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                     height: height),
                 SizedBox(height: height * 0.021),
                 const LinkText(
-                  forgotpasstext: forgotpasstext,
+                  text: forgotpasstext,
                   routeName: ForgotPassScreenView.routeName,
                 ),
                 SizedBox(height: height * 0.06),
                 LoginButton(height: height, logintext: logintext),
+                SizedBox(height: height * 0.269),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      registerasktext,
+                      style: GoogleFonts.spaceGrotesk(
+                        color: Colors.black.withOpacity(0.6),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(width: width * 0.023),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed(RegisterScreenView.routeName);
+                      },
+                      child: Text(
+                        registertext,
+                        style: GoogleFonts.spaceGrotesk(
+                          color: Colors.black.withOpacity(0.6),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           )
@@ -107,11 +142,11 @@ class LoginButton extends StatelessWidget {
 class LinkText extends StatelessWidget {
   const LinkText({
     Key? key,
-    required this.forgotpasstext,
+    required this.text,
     required this.routeName,
   }) : super(key: key);
 
-  final String forgotpasstext;
+  final String text;
   final String routeName;
   @override
   Widget build(BuildContext context) {
@@ -120,7 +155,7 @@ class LinkText extends StatelessWidget {
         Navigator.of(context).pushNamed(routeName);
       },
       child: Text(
-        forgotpasstext,
+        text,
         style: GoogleFonts.urbanist(
           fontSize: 14,
           fontWeight: FontWeight.w600,
@@ -157,15 +192,18 @@ class MailTextField extends StatelessWidget {
         ),
       ),
       height: height * 0.06,
-      child: TextFormField(
-        controller: username,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: mailtext,
-          contentPadding: EdgeInsets.only(
-            left: width * 0.046,
-            top: height * 0.006,
-            right: width * 0.046,
+      child: Center(
+        child: TextFormField(
+          controller: username,
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: mailtext,
+            contentPadding: EdgeInsets.only(
+              left: width * 0.046,
+              bottom: height * 0.012,
+              right: width * 0.046,
+            ),
           ),
         ),
       ),
@@ -207,25 +245,28 @@ class PasswordTextFieldState extends State<PasswordTextField> {
         ),
       ),
       height: widget.height * 0.06,
-      child: TextFormField(
-        obscureText: !widget.passwordVisible,
-        controller: widget.password,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          suffix: GestureDetector(
-              onTap: () {
-                setState(() {
-                  widget.passwordVisible = !widget.passwordVisible;
-                });
-              },
-              child: widget.passwordVisible
-                  ? Image.asset("assets/login/passicon.png")
-                  : const Icon(Icons.visibility_off)),
-          hintText: widget.passtext,
-          contentPadding: EdgeInsets.only(
-            left: widget.width * 0.046,
-            top: widget.height * 0.006,
-            right: widget.width * 0.046,
+      child: Center(
+        child: TextFormField(
+          obscureText: !widget.passwordVisible,
+          controller: widget.password,
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            suffix: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    widget.passwordVisible = !widget.passwordVisible;
+                  });
+                },
+                child: widget.passwordVisible
+                    ? Image.asset("assets/login/passicon.png")
+                    : const Icon(Icons.visibility_off)),
+            hintText: widget.passtext,
+            contentPadding: EdgeInsets.only(
+              left: widget.width * 0.046,
+              bottom: widget.height * 0.015,
+              right: widget.width * 0.046,
+            ),
           ),
         ),
       ),
@@ -270,34 +311,6 @@ class Logo extends StatelessWidget {
       width: width * 0.17,
       height: height * 0.103,
       child: Image.asset("assets/login/headlogo.png"),
-    );
-  }
-}
-
-class BackButton extends StatelessWidget {
-  const BackButton({
-    Key? key,
-    required this.height,
-    required this.width,
-  }) : super(key: key);
-
-  final double height;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: height * 0.08, left: width * 0.07),
-      child: Row(
-        children: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.chevron_left),
-          ),
-        ],
-      ),
     );
   }
 }
