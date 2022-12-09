@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/onboard/onboardModel.dart';
+import 'package:logos/screens/register/registerScreenView.dart';
 
 class OnboardScreenView extends StatefulWidget {
   const OnboardScreenView({super.key});
@@ -75,8 +76,10 @@ class _OnboardViewState extends State<OnboardScreenView> {
                         ))),
               ),
               Padding(
-                padding:
-                    EdgeInsets.only(left: width * 0.14, right: width * 0.14),
+                padding: EdgeInsets.only(
+                  left: width * 0.14,
+                  right: width * 0.14,
+                ),
                 child: Column(
                   children: <Widget>[
                     DotsIndicator(
@@ -137,7 +140,9 @@ class Buttons extends StatelessWidget {
           width: width * 0.325,
           height: height * 0.053,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(RegisterScreenView.routeName);
+            },
             style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 shape: RoundedRectangleBorder(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
+import 'package:logos/screens/forgot_pass/otpScreenView.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/onboard/onboardScreenView.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         LoginScreenView.routeName: (ctx) => const LoginScreenView(),
         ForgotPassScreenView.routeName: (ctx) => const ForgotPassScreenView(),
         RegisterScreenView.routeName: (ctx) => const RegisterScreenView(),
+        OtpScreenView.routeName: (ctx) => const OtpScreenView(),
       },
     );
   }
