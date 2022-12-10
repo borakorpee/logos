@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/components/customBackButton.dart';
-import 'package:logos/components/customBigButton.dart';
 import 'package:logos/screens/forgot_pass/otpScreenView.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 
@@ -60,7 +59,7 @@ class ForgotPassScreenView extends StatelessWidget {
                   width: width,
                 ),
                 SizedBox(height: height * 0.030),
-                CustomBigButton(context, buttontext),
+                Button(height: height, text: buttontext),
                 SizedBox(height: height * 0.445),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -100,8 +99,38 @@ class ForgotPassScreenView extends StatelessWidget {
   }
 }
 
-void nav(BuildContext context) {
-  Navigator.of(context).pushNamed(OtpScreenView.routeName);
+class Button extends StatelessWidget {
+  const Button({
+    Key? key,
+    required this.height,
+    required this.text,
+  }) : super(key: key);
+
+  final double height;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: height * 0.06,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color(0xff46005F).withOpacity(0.8),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        ),
+        onPressed: () {},
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class MailTextField extends StatelessWidget {
