@@ -61,40 +61,60 @@ class ForgotPassScreenView extends StatelessWidget {
                 SizedBox(height: height * 0.030),
                 Button(height: height, text: buttontext),
                 SizedBox(height: height * 0.445),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      bottomtext,
-                      style: GoogleFonts.spaceGrotesk(
-                        color: Colors.black.withOpacity(0.6),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(width: width * 0.023),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushNamed(LoginScreenView.routeName);
-                      },
-                      child: Text(
-                        bottomlinktext,
-                        style: GoogleFonts.spaceGrotesk(
-                          color: Colors.black.withOpacity(0.6),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                BottomText(
+                    bottomtext: bottomtext,
+                    width: width,
+                    bottomlinktext: bottomlinktext),
               ],
             ),
           ),
         ],
       )),
+    );
+  }
+}
+
+class BottomText extends StatelessWidget {
+  const BottomText({
+    Key? key,
+    required this.bottomtext,
+    required this.width,
+    required this.bottomlinktext,
+  }) : super(key: key);
+
+  final String bottomtext;
+  final double width;
+  final String bottomlinktext;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          bottomtext,
+          style: GoogleFonts.spaceGrotesk(
+            color: Colors.black.withOpacity(0.6),
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        SizedBox(width: width * 0.023),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).pop(LoginScreenView.routeName);
+          },
+          child: Text(
+            bottomlinktext,
+            style: GoogleFonts.spaceGrotesk(
+              color: Colors.black.withOpacity(0.6),
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -116,11 +136,13 @@ class Button extends StatelessWidget {
       height: height * 0.06,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xff46005F).withOpacity(0.8),
+          backgroundColor: const Color(0xff46005F).withOpacity(0.8),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed(OtpScreenView.routeName);
+        },
         child: Text(
           text,
           style: const TextStyle(
