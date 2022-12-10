@@ -66,7 +66,12 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                     routeName: ForgotPassScreenView.routeName,
                   ),
                   SizedBox(height: height * 0.06),
-                  LoginButton(height: height, logintext: logintext),
+                  LoginButton(
+                    height: height,
+                    logintext: logintext,
+                    pas: password,
+                    us: username,
+                  ),
                   SizedBox(height: height * 0.269),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -112,11 +117,14 @@ class LoginButton extends StatelessWidget {
     Key? key,
     required this.height,
     required this.logintext,
+    required this.us,
+    required this.pas,
   }) : super(key: key);
 
   final double height;
   final String logintext;
-
+  final TextEditingController us;
+  final TextEditingController pas;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -128,7 +136,10 @@ class LoginButton extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
-        onPressed: () {},
+        onPressed: () {
+          print(us.text);
+          print(pas.text);
+        },
         child: Text(
           logintext,
           style: const TextStyle(

@@ -1,5 +1,8 @@
+// ignore_for_file: file_names, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/components/customBackButton.dart';
 
 class OtpScreenView extends StatefulWidget {
@@ -11,21 +14,28 @@ class OtpScreenView extends StatefulWidget {
 }
 
 class _OtpScreenViewState extends State<OtpScreenView> {
+  TextEditingController pin1 = TextEditingController();
+  TextEditingController pin2 = TextEditingController();
+  TextEditingController pin3 = TextEditingController();
+  TextEditingController pin4 = TextEditingController();
+
   bool inputcolor1 = false;
   bool inputcolor2 = false;
   bool inputcolor3 = false;
   bool inputcolor4 = false;
-  bool inputcolor5 = false;
-  bool inputcolor6 = false;
+
+  final buttontext = "Kodu Onayla";
+  final String bottomtext = "Şifreni hatırladın mı?";
+  final String bottomlinktext = "Giriş yap";
+  final String titletext = "Onaylama kodu";
+  final String descriptiontext =
+      "Lütfen hesabın ile bağlantılı olan mail adresine gelen kodu giriniz.";
 
   @override
   Widget build(BuildContext context) {
-    const String titletext = "Onaylama kodu";
-    const String descriptiontext =
-        "Lütfen hesabın ile bağlantılı olan mail adresine gelen kodu giriniz.";
-
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
         body: Column(
       children: <Widget>[
@@ -45,9 +55,9 @@ class _OtpScreenViewState extends State<OtpScreenView> {
                 ),
               ),
               SizedBox(height: height * 0.026),
-              const Text(
+              Text(
                 descriptiontext,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 14,
                   color: Color(0xff8391A1),
@@ -58,14 +68,68 @@ class _OtpScreenViewState extends State<OtpScreenView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  NewWidget(inputcolor: inputcolor1),
-                  NewWidget(inputcolor: inputcolor2),
-                  NewWidget(inputcolor: inputcolor3),
-                  NewWidget(inputcolor: inputcolor4),
-                  NewWidget(inputcolor: inputcolor5),
-                  NewWidget(inputcolor: inputcolor6),
+                  PinField(
+                    height: height,
+                    width: width,
+                    inputcolor: inputcolor1,
+                    pin: pin1,
+                    isLast: false,
+                    isfirst: true,
+                  ),
+                  PinField(
+                    height: height,
+                    width: width,
+                    inputcolor: inputcolor2,
+                    pin: pin2,
+                    isLast: false,
+                    isfirst: false,
+                  ),
+                  PinField(
+                    height: height,
+                    width: width,
+                    inputcolor: inputcolor3,
+                    pin: pin3,
+                    isLast: false,
+                    isfirst: false,
+                  ),
+                  PinField(
+                    height: height,
+                    width: width,
+                    inputcolor: inputcolor4,
+                    pin: pin4,
+                    isLast: true,
+                    isfirst: false,
+                  ),
                 ],
               ),
+              SizedBox(height: height * 0.030),
+              SizedBox(
+                width: double.infinity,
+                height: height * 0.06,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff46005F).withOpacity(0.8),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                  ),
+                  onPressed: () {
+                    var pin = pin1.text + pin2.text + pin3.text + pin4.text;
+                    print(pin);
+                  },
+                  child: Text(
+                    buttontext,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: height * 0.445),
+              BottomText(
+                  bottomtext: bottomtext,
+                  width: width,
+                  bottomlinktext: bottomlinktext),
             ],
           ),
         ),
@@ -74,50 +138,148 @@ class _OtpScreenViewState extends State<OtpScreenView> {
   }
 }
 
-class NewWidget extends StatefulWidget {
-  NewWidget({
+class BottomText extends StatelessWidget {
+  const BottomText({
     Key? key,
-    required this.inputcolor,
+    required this.bottomtext,
+    required this.width,
+    required this.bottomlinktext,
   }) : super(key: key);
 
-  bool inputcolor;
+  final String bottomtext;
+  final double width;
+  final String bottomlinktext;
 
   @override
-  State<NewWidget> createState() => _NewWidgetState();
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          bottomtext,
+          style: GoogleFonts.spaceGrotesk(
+            color: Colors.black.withOpacity(0.6),
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        SizedBox(width: width * 0.023),
+        InkWell(
+          onTap: () {
+            Navigator.popUntil(context, ModalRoute.withName('/login'));
+          },
+          child: Text(
+            bottomlinktext,
+            style: GoogleFonts.spaceGrotesk(
+              color: Colors.black.withOpacity(0.6),
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-class _NewWidgetState extends State<NewWidget> {
+class PinField extends StatefulWidget {
+  PinField({
+    Key? key,
+    required this.height,
+    required this.width,
+    required this.inputcolor,
+    required this.pin,
+    required this.isfirst,
+    required this.isLast,
+  }) : super(key: key);
+
+  final double height;
+  final double width;
+  bool inputcolor;
+  final TextEditingController pin;
+  final bool isfirst;
+  final bool isLast;
+
+  @override
+  State<PinField> createState() => _PinFieldState();
+}
+
+class _PinFieldState extends State<PinField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 45,
-      width: 50,
+      height: widget.height * 0.06,
+      width: widget.width * 0.12,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
           border: Border.all(
-            color: widget.inputcolor ? Color(0xffA800A4) : Color(0xffE8ECF4),
+            color: widget.inputcolor
+                ? const Color(0xffA800A4)
+                : const Color(0xffE8ECF4),
           ),
           color: Colors.black.withOpacity(0.05)),
-      child: TextField(
-        onChanged: ((value) {
-          FocusScope.of(context).nextFocus();
-          if (value == "") {
-            setState(() {
-              widget.inputcolor = false;
-            });
-          } else if (value != "") {
-            setState(() {
-              widget.inputcolor = true;
-            });
-          }
-        }),
-        decoration: InputDecoration(border: InputBorder.none),
-        textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(1),
-          FilteringTextInputFormatter.digitsOnly,
-        ],
+      child: Center(
+        child: TextFormField(
+          controller: widget.pin,
+          onChanged: ((value) {
+            if (value == "") {
+              widget.isfirst ? null : FocusScope.of(context).previousFocus();
+              setState(() {
+                widget.inputcolor = false;
+              });
+            } else if (value != "") {
+              widget.isLast ? null : FocusScope.of(context).nextFocus();
+
+              setState(() {
+                widget.inputcolor = true;
+              });
+            }
+          }),
+          decoration: const InputDecoration(border: InputBorder.none),
+          textAlign: TextAlign.center,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(1),
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Button extends StatelessWidget {
+  const Button({
+    Key? key,
+    required this.height,
+    required this.text,
+  }) : super(key: key);
+
+  final double height;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: height * 0.06,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xff46005F).withOpacity(0.8),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        ),
+        onPressed: () {
+          ;
+        },
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
     );
   }
