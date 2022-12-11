@@ -1,14 +1,10 @@
 // ignore_for_file: file_names, must_be_immutable
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/components/customBackButton.dart';
 import 'package:logos/screens/forgot_pass/newpassScreenView.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
 
 class OtpScreenView extends StatefulWidget {
   static const routeName = "/otp";
