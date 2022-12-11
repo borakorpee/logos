@@ -36,7 +36,7 @@ dependencies:
   flutter_svg: ^1.1.6
   google_fonts: ^3.0.1
   dots_indicator: ^2.1.0
-
+  mailer: ^5.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
