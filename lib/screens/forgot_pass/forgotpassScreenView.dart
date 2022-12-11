@@ -1,29 +1,54 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables
+
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/components/customBackButton.dart';
+import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/forgot_pass/otpScreenView.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 
-class ForgotPassScreenView extends StatelessWidget {
+class ForgotPassScreenView extends StatefulWidget {
   static const routeName = "/forgotpass";
 
   const ForgotPassScreenView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    const String titletext = "Şifreni mi unuttun?";
-    const String mailtext = "Mail adresi";
-    const String buttontext = "Kodu Gönder";
-    const String descriptiontext =
-        "Endişelenme!  Lütfen hesabın ile bağlantılı olan mailn adresini gir.";
-    const String bottomtext = "Şifreni hatırladın mı?";
-    const String bottomlinktext = "Giriş yap";
+  State<ForgotPassScreenView> createState() => _ForgotPassScreenViewState();
+}
 
+class _ForgotPassScreenViewState extends State<ForgotPassScreenView> {
+  late int kod;
+  final String titletext = "Şifreni mi unuttun?";
+  final String mailtext = "Mail adresi";
+  final String buttontext = "Kodu Gönder";
+  final String descriptiontext =
+      "Endişelenme!  Lütfen hesabın ile bağlantılı olan mailn adresini gir.";
+  final String bottomtext = "Şifreni hatırladın mı?";
+  final String bottomlinktext = "Giriş yap";
+
+  TextEditingController mail = TextEditingController();
+  void generatecode() {
+    var rng = Random();
+    var code = rng.nextInt(9000) + 1000;
+    kod = code;
+    print(kod.toString());
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    generatecode();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    TextEditingController mail = TextEditingController();
     return Scaffold(
       body: Center(
           child: Column(
@@ -44,7 +69,7 @@ class ForgotPassScreenView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: height * 0.026),
-                const Text(
+                Text(
                   descriptiontext,
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
@@ -61,7 +86,12 @@ class ForgotPassScreenView extends StatelessWidget {
                   width: width,
                 ),
                 SizedBox(height: height * 0.030),
-                Button(height: height, text: buttontext),
+                Button(
+                  height: height,
+                  text: buttontext,
+                  kod: kod,
+                  mailcontroller: mail,
+                ),
                 SizedBox(height: height * 0.445),
                 BottomText(
                     bottomtext: bottomtext,
@@ -126,10 +156,50 @@ class Button extends StatelessWidget {
     Key? key,
     required this.height,
     required this.text,
+    required this.kod,
+    required this.mailcontroller,
   }) : super(key: key);
-
   final double height;
   final String text;
+  final int kod;
+  final TextEditingController mailcontroller;
+
+  Future<bool> sendMail(String email, int code, BuildContext context) async {
+    bool sendStates = false;
+    try {
+      String _username = mailusername;
+      String _password = mailpassword;
+
+      final smtpServer = hotmail(_username, _password);
+
+      String date = DateTime.now().toString();
+      String sendmail = email;
+      String konu = "Şifre Sıfırlama Kodunuz";
+      String mesajIcerigi = "Date/Tarih: $date \nMesage/Mesaj: $code";
+
+      // Create our message.
+      final message = Message()
+        ..from = Address("$_username")
+        ..recipients.add('$sendmail')
+        ..subject = konu
+        ..text = mesajIcerigi;
+
+      try {
+        final sendReport = await send(message, smtpServer);
+        sendStates = true;
+        print('Message sent: ' + sendReport.toString());
+      } on MailerException catch (e) {
+        sendStates = false;
+        print('Message not sent.');
+        for (var p in e.problems) {
+          print('Problem: ${p.code}: ${p.msg}');
+        }
+      }
+    } catch (Exception) {
+      print(Exception.toString());
+    }
+    return sendStates;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +213,9 @@ class Button extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
         onPressed: () {
-          Navigator.of(context).pushNamed(OtpScreenView.routeName);
+          sendMail(mailcontroller.text, kod, context);
+          Navigator.of(context).popAndPushNamed(OtpScreenView.routeName,
+              arguments: {'otp_code': kod});
         },
         child: Text(
           text,
