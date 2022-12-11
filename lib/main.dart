@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
 import 'package:logos/screens/forgot_pass/newpassScreenView.dart';
 import 'package:logos/screens/forgot_pass/otpScreenView.dart';
+import 'package:logos/screens/forgot_pass/successScreenView.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/onboard/onboardScreenView.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         ForgotPassScreenView.routeName: (ctx) => const ForgotPassScreenView(),
         OtpScreenView.routeName: (ctx) => const OtpScreenView(),
         NewPassScreen.routeName: (ctx) => const NewPassScreen(),
+        SuccessScreenView.routeName: (ctx) => const SuccessScreenView(),
         RegisterScreenView.routeName: (ctx) => const RegisterScreenView(),
       },
     );

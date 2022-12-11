@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -132,7 +132,7 @@ class LoginButton extends StatelessWidget {
       height: height * 0.06,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xff46005F).withOpacity(0.8),
+          backgroundColor: const Color(0xff46005F).withOpacity(0.8),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),

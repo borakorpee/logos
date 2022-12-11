@@ -1,4 +1,7 @@
+// ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals
+
 import 'package:flutter/material.dart';
+import 'package:logos/screens/forgot_pass/successScreenView.dart';
 
 import '../../components/customBackButton.dart';
 
@@ -14,6 +17,8 @@ class _NewPassScreenState extends State<NewPassScreen> {
   final String titletext = "Yeni parola oluştur";
   final String descriptiontext =
       "Yeni oluşturacağın parola eski paroladan farklı olmalı.";
+  final String buttontext = "Şifreyi Yenile";
+
   final String passtext1 = "Yeni şifre";
   bool passwordVisible1 = false;
   TextEditingController password1 = TextEditingController();
@@ -53,21 +58,43 @@ class _NewPassScreenState extends State<NewPassScreen> {
                 ),
                 textAlign: TextAlign.left,
               ),
-              SizedBox(height: 25),
+              SizedBox(height: height * 0.026),
               PasswordTextField(
                   passwordVisible: passwordVisible1,
                   password: password1,
                   passtext: passtext1,
                   width: width,
                   height: height),
-              SizedBox(height: 15),
+              SizedBox(height: height * 0.016),
               PasswordTextField(
                   passwordVisible: passwordVisible2,
                   password: password2,
                   passtext: passtext2,
                   width: width,
                   height: height),
-              SizedBox(height: 29),
+              SizedBox(height: height * 0.032),
+              SizedBox(
+                width: double.infinity,
+                height: height * 0.06,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff46005F).withOpacity(0.8),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .popAndPushNamed(SuccessScreenView.routeName);
+                  },
+                  child: Text(
+                    buttontext,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

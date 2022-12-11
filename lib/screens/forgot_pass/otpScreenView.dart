@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, must_be_immutable
+// ignore_for_file: file_names, must_be_immutable, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +26,7 @@ class _OtpScreenViewState extends State<OtpScreenView> {
   bool inputcolor4 = false;
   late int kod;
 
-  final buttontext = "Kodu Onayla";
+  final String buttontext = "Kodu Onayla";
   final String bottomtext = "Şifreni hatırladın mı?";
   final String bottomlinktext = "Giriş yap";
   final String titletext = "Onaylama kodu";
@@ -280,9 +280,7 @@ class Button extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
-        onPressed: () {
-          ;
-        },
+        onPressed: () {},
         child: Text(
           text,
           style: const TextStyle(

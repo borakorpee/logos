@@ -85,7 +85,7 @@ class _OnboardViewState extends State<OnboardScreenView> {
                     DotsIndicator(
                       dotsCount: OnboardData.length,
                       position: page,
-                      decorator: DotsDecorator(activeColor: Colors.white),
+                      decorator: const DotsDecorator(activeColor: Colors.white),
                     ),
                     SizedBox(height: height * 0.06),
                     Buttons(width: width, height: height),
@@ -178,7 +178,7 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: width * 0.315,
       height: height * 0.064,
       child: Image.asset(
@@ -212,7 +212,7 @@ class Content extends StatelessWidget {
     return Column(
       children: <Widget>[
         SizedBox(height: height * 0.05),
-        Container(
+        SizedBox(
           width: width * 0.616,
           height: height * 0.327,
           child: Image.asset(image),
@@ -229,7 +229,7 @@ class Content extends StatelessWidget {
           ),
         ),
         SizedBox(height: height * 0.018),
-        Container(
+        SizedBox(
           width: width * 0.77,
           height: height * 0.09,
           child: Align(
