@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/components/customBackButton.dart';
+import 'package:logos/d.dart';
 import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
 
@@ -137,6 +138,10 @@ class LoginButton extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
         onPressed: () {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (BuildContext context) => dddd()),
+              ModalRoute.withName(dddd.routeName));
           print(us.text);
           print(pas.text);
         },
@@ -273,7 +278,7 @@ class PasswordTextFieldState extends State<PasswordTextField> {
                 },
                 child: widget.passwordVisible
                     ? Image.asset("assets/login/passicon.png")
-                    : const Icon(Icons.visibility_off)),
+                    : Image.asset("assets/login/Vector.png")),
             hintText: widget.passtext,
             contentPadding: EdgeInsets.only(
               left: widget.width * 0.046,

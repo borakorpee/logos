@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logos/d.dart';
 import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
 import 'package:logos/screens/forgot_pass/newpassScreenView.dart';
 import 'package:logos/screens/forgot_pass/otpScreenView.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         NewPassScreen.routeName: (ctx) => const NewPassScreen(),
         SuccessScreenView.routeName: (ctx) => const SuccessScreenView(),
         RegisterScreenView.routeName: (ctx) => const RegisterScreenView(),
+        dddd.routeName: (ctx) => const dddd(),
       },
     );
   }

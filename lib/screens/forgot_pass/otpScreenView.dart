@@ -135,7 +135,37 @@ class _OtpScreenViewState extends State<OtpScreenView> {
                   ),
                 ),
               ),
-              SizedBox(height: height * 0.445),
+              SizedBox(height: height * 0.021),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const <Widget>[
+                  Text(
+                    "Mail ulaşmadıysa",
+                    style: TextStyle(
+                      color: Color(0xff8391A1),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 13,
+                    ),
+                  ),
+                  Text(
+                    " spam",
+                    style: TextStyle(
+                      color: Color(0xff8391A1),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                    ),
+                  ),
+                  Text(
+                    " kutunuz kontrol ediniz.",
+                    style: TextStyle(
+                      color: Color(0xff8391A1),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: height * 0.40),
               BottomText(
                   bottomtext: bottomtext,
                   width: width,
