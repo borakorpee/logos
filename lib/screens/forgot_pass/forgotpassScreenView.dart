@@ -121,7 +121,7 @@ class _ForgotPassScreenViewState extends State<ForgotPassScreenView> {
                       } else if (!RegExp(
                               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(value)) {
-                        return "Geçersiz mail";
+                        return "Lüften geçerli bir mail adresi giriniz. ";
                       }
                       setState(() {
                         isMail_error = false;
