@@ -41,139 +41,147 @@ class _OtpScreenViewState extends State<OtpScreenView> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     return Scaffold(
-        body: Column(
-      children: <Widget>[
-        CustomBackButton(context),
-        Text(args["otp_code"].toString()),
-        Padding(
-          padding: EdgeInsets.only(left: width * 0.110, right: width * 0.110),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: height * 0.062),
-              Text(
-                titletext,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black.withOpacity(0.7),
-                ),
-              ),
-              SizedBox(height: height * 0.026),
-              Text(
-                descriptiontext,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  color: Color(0xff8391A1),
-                ),
-                textAlign: TextAlign.left,
-              ),
-              SizedBox(height: height * 0.026),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  PinField(
-                    height: height,
-                    width: width,
-                    inputcolor: inputcolor1,
-                    pin: pin1,
-                    isLast: false,
-                    isfirst: true,
-                  ),
-                  PinField(
-                    height: height,
-                    width: width,
-                    inputcolor: inputcolor2,
-                    pin: pin2,
-                    isLast: false,
-                    isfirst: false,
-                  ),
-                  PinField(
-                    height: height,
-                    width: width,
-                    inputcolor: inputcolor3,
-                    pin: pin3,
-                    isLast: false,
-                    isfirst: false,
-                  ),
-                  PinField(
-                    height: height,
-                    width: width,
-                    inputcolor: inputcolor4,
-                    pin: pin4,
-                    isLast: true,
-                    isfirst: false,
-                  ),
-                ],
-              ),
-              SizedBox(height: height * 0.030),
-              SizedBox(
-                width: double.infinity,
-                height: height * 0.06,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff46005F).withOpacity(0.8),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                  ),
-                  onPressed: () {
-                    var pin = pin1.text + pin2.text + pin3.text + pin4.text;
-                    if (pin == args["otp_code"].toString()) {
-                      Navigator.of(context)
-                          .popAndPushNamed(NewPassScreen.routeName);
-                    } else {
-                      print("yanlış");
-                    }
-                  },
-                  child: Text(
-                    buttontext,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
+        body: SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          CustomBackButton(context),
+          Text(args["otp_code"].toString()),
+          Text(args["token"].toString()),
+          Text(args["email"].toString()),
+          Padding(
+            padding: EdgeInsets.only(left: width * 0.110, right: width * 0.110),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: height * 0.062),
+                Text(
+                  titletext,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black.withOpacity(0.7),
                   ),
                 ),
-              ),
-              SizedBox(height: height * 0.021),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const <Widget>[
-                  Text(
-                    "Mail ulaşmadıysa",
-                    style: TextStyle(
-                      color: Color(0xff8391A1),
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
+                SizedBox(height: height * 0.026),
+                Text(
+                  descriptiontext,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: Color(0xff8391A1),
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                SizedBox(height: height * 0.026),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    PinField(
+                      height: height,
+                      width: width,
+                      inputcolor: inputcolor1,
+                      pin: pin1,
+                      isLast: false,
+                      isfirst: true,
+                    ),
+                    PinField(
+                      height: height,
+                      width: width,
+                      inputcolor: inputcolor2,
+                      pin: pin2,
+                      isLast: false,
+                      isfirst: false,
+                    ),
+                    PinField(
+                      height: height,
+                      width: width,
+                      inputcolor: inputcolor3,
+                      pin: pin3,
+                      isLast: false,
+                      isfirst: false,
+                    ),
+                    PinField(
+                      height: height,
+                      width: width,
+                      inputcolor: inputcolor4,
+                      pin: pin4,
+                      isLast: true,
+                      isfirst: false,
+                    ),
+                  ],
+                ),
+                SizedBox(height: height * 0.030),
+                SizedBox(
+                  width: double.infinity,
+                  height: height * 0.06,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xff46005F).withOpacity(0.8),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                    ),
+                    onPressed: () {
+                      var pin = pin1.text + pin2.text + pin3.text + pin4.text;
+                      if (pin == args["otp_code"].toString()) {
+                        Navigator.of(context).popAndPushNamed(
+                            NewPassScreen.routeName,
+                            arguments: {
+                              'token': args["token"],
+                              'email': args["email"],
+                            });
+                      } else {
+                        print("yanlış");
+                      }
+                    },
+                    child: Text(
+                      buttontext,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                  Text(
-                    " spam",
-                    style: TextStyle(
-                      color: Color(0xff8391A1),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13,
+                ),
+                SizedBox(height: height * 0.021),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const <Widget>[
+                    Text(
+                      "Mail ulaşmadıysa",
+                      style: TextStyle(
+                        color: Color(0xff8391A1),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                  Text(
-                    " kutunuz kontrol ediniz.",
-                    style: TextStyle(
-                      color: Color(0xff8391A1),
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
+                    Text(
+                      " spam",
+                      style: TextStyle(
+                        color: Color(0xff8391A1),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: height * 0.40),
-              BottomText(
-                  bottomtext: bottomtext,
-                  width: width,
-                  bottomlinktext: bottomlinktext),
-            ],
+                    Text(
+                      " kutunuz kontrol ediniz.",
+                      style: TextStyle(
+                        color: Color(0xff8391A1),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: height * 0.40),
+                BottomText(
+                    bottomtext: bottomtext,
+                    width: width,
+                    bottomlinktext: bottomlinktext),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     ));
   }
 }

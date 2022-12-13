@@ -31,9 +31,13 @@ class _NewPassScreenState extends State<NewPassScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return Scaffold(
       body: Column(children: <Widget>[
         CustomBackButton(context),
+        Text(args["token"].toString()),
+        Text(args["email"].toString()),
         Padding(
           padding: EdgeInsets.only(left: width * 0.110, right: width * 0.110),
           child: Column(
