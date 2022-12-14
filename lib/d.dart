@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:logos/screens/login/loginScreenView.dart';
 
 class dddd extends StatefulWidget {
   static const routeName = "/tes";
@@ -19,71 +21,63 @@ class _ddddState extends State<dddd> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Form(
-        key: _key,
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.only(left: width * 0.110, right: width * 0.110),
-            child: Column(
-              children: [
-                SizedBox(height: 200),
-                TextFormField(
-                  cursorColor: Color(0xff46005F),
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      icon: Image.asset("assets/login/Vector.png"),
-                      onPressed: () {
-                        print(iserr.toString());
-                      },
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                        color: Color(0xffDADADA),
-                      ),
-                    ),
-                    fillColor: iserr
-                        ? Color(0xffFF0000).withOpacity(0.05)
-                        : Colors.black.withOpacity(0.05),
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                        color: Color(0xffDADADA),
-                      ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      setState(() {
-                        iserr = true;
-                      });
+        body: Container(
+      height: height,
+      width: width,
+      color: Colors.red,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: BottomText(
+          bottomlinktext: "asd",
+          bottomtext: "asd",
+          width: width,
+        ),
+      ),
+    ));
+  }
+}
 
-                      return 'Field is required.';
-                    }
-                    setState(() {
-                      iserr = false;
-                    });
-                    return null;
-                  },
-                ),
-                SizedBox(height: 100),
-              ],
+class BottomText extends StatelessWidget {
+  const BottomText({
+    Key? key,
+    required this.bottomtext,
+    required this.width,
+    required this.bottomlinktext,
+  }) : super(key: key);
+
+  final String bottomtext;
+  final double width;
+  final String bottomlinktext;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          bottomtext,
+          style: GoogleFonts.spaceGrotesk(
+            color: Colors.black.withOpacity(0.6),
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        SizedBox(width: width * 0.023),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).pop(LoginScreenView.routeName);
+          },
+          child: Text(
+            bottomlinktext,
+            style: GoogleFonts.spaceGrotesk(
+              color: Colors.black.withOpacity(0.6),
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              decoration: TextDecoration.underline,
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (_key.currentState!.validate()) {
-            _key.currentState!.save();
-            print("form submitted.");
-          }
-        },
-      ),
+      ],
     );
   }
 }

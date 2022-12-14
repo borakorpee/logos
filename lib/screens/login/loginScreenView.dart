@@ -36,8 +36,41 @@ class _LoginScreenViewState extends State<LoginScreenView> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
+        body: Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Positioned(
+          bottom: height * 0.033,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                registerasktext,
+                style: GoogleFonts.spaceGrotesk(
+                  color: Colors.black.withOpacity(0.6),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              SizedBox(width: width * 0.023),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(RegisterScreenView.routeName);
+                },
+                child: Text(
+                  registertext,
+                  style: GoogleFonts.spaceGrotesk(
+                    color: Colors.black.withOpacity(0.6),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Column(
           children: <Widget>[
             CustomBackButton(context),
             SizedBox(height: height * 0.044),
@@ -73,43 +106,13 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                     pas: password,
                     us: username,
                   ),
-                  SizedBox(height: height * 0.269),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        registerasktext,
-                        style: GoogleFonts.spaceGrotesk(
-                          color: Colors.black.withOpacity(0.6),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(width: width * 0.023),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(RegisterScreenView.routeName);
-                        },
-                        child: Text(
-                          registertext,
-                          style: GoogleFonts.spaceGrotesk(
-                            color: Colors.black.withOpacity(0.6),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             )
           ],
         ),
-      ),
-    );
+      ],
+    ));
   }
 }
 

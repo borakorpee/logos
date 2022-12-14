@@ -1,6 +1,9 @@
 // ignore_for_file: file_names, prefer_const_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:logos/screens/login/loginScreenView.dart';
+import 'package:logos/screens/register/registerScreen2View.dart';
 import '../../components/customBackButton.dart';
 
 class RegisterScreenView extends StatefulWidget {
@@ -54,6 +57,15 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                 children: [
                   SizedBox(height: height * 0.044),
                   Logo(width: width, height: height),
+                  SizedBox(height: height * 0.007),
+                  Text(
+                    "Kayıt Ol",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black.withOpacity(0.7),
+                    ),
+                  ),
                   SizedBox(height: height * 0.06),
                   Row(
                     children: [
@@ -334,18 +346,24 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                       )
                     ],
                   ),
-                  SizedBox(height: 54),
+                  SizedBox(height: height * 0.058),
                   Align(
                     alignment: Alignment.centerRight,
                     child: FloatingActionButton(
+                      elevation: 0,
                       backgroundColor: Color(0xff6B337F),
                       onPressed: () {
-                        print(identity_controller.text);
-                        print(username_controller.text);
-                        print(selectedSex);
-                        print(job_controller.text);
-                        print(city_controller.text);
-                        print(county_controller.text);
+                        if (_key.currentState!.validate()) {
+                          Navigator.of(context)
+                              .pushNamed(RegisterScreen2.routeName, arguments: {
+                            "identity": identity_controller.text,
+                            "username": username_controller.text,
+                            "sex": selectedSex,
+                            "job": job_controller.text,
+                            "city": city_controller.text,
+                            "county": county_controller.text,
+                          });
+                        }
                       },
                       child: Icon(
                         Icons.chevron_right,
@@ -353,6 +371,34 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                         color: Colors.white,
                       ),
                     ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Hesabın var mı?",
+                        style: GoogleFonts.spaceGrotesk(
+                          color: Colors.black.withOpacity(0.6),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      SizedBox(width: width * 0.023),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "Giriş yap",
+                          style: GoogleFonts.spaceGrotesk(
+                            color: Colors.black.withOpacity(0.6),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

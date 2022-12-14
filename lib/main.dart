@@ -8,6 +8,7 @@ import 'package:logos/screens/forgot_pass/otpScreenView.dart';
 import 'package:logos/screens/forgot_pass/successScreenView.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/onboard/onboardScreenView.dart';
+import 'package:logos/screens/register/registerScreen2View.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
 
 void main() {
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         NewPassScreen.routeName: (ctx) => const NewPassScreen(),
         SuccessScreenView.routeName: (ctx) => const SuccessScreenView(),
         RegisterScreenView.routeName: (ctx) => const RegisterScreenView(),
+        RegisterScreen2.routeName: (ctx) => const RegisterScreen2(),
         dddd.routeName: (ctx) => const dddd(),
       },
     );

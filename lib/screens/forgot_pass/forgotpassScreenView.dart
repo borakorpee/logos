@@ -55,139 +55,148 @@ class _ForgotPassScreenViewState extends State<ForgotPassScreenView> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Form(
-        key: _key,
-        child: Center(
-            child: Column(
-          children: <Widget>[
-            CustomBackButton(context),
-            Padding(
-              padding:
-                  EdgeInsets.only(left: width * 0.110, right: width * 0.110),
+        body: Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Positioned(
+          bottom: height * 0.033,
+          child: BottomText(
+              bottomtext: bottomtext,
+              width: width,
+              bottomlinktext: bottomlinktext),
+        ),
+        Form(
+          key: _key,
+          child: Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: height * 0.062),
-                  Text(
-                    titletext,
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black.withOpacity(0.7),
+            children: <Widget>[
+              CustomBackButton(context),
+              Padding(
+                padding:
+                    EdgeInsets.only(left: width * 0.110, right: width * 0.110),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: height * 0.062),
+                    Text(
+                      titletext,
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black.withOpacity(0.7),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: height * 0.026),
-                  Text(
-                    descriptiontext,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      color: Color(0xff8391A1),
+                    SizedBox(height: height * 0.026),
+                    Text(
+                      descriptiontext,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        color: Color(0xff8391A1),
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                    textAlign: TextAlign.left,
-                  ),
-                  SizedBox(height: height * 0.026),
-                  TextFormField(
-                    controller: mail,
-                    cursorColor: Color(0xff46005F),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(20),
-                      hintText: mailtext,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(
-                          color: isMail_error ? Colors.red : Color(0xffDADADA),
+                    SizedBox(height: height * 0.026),
+                    TextFormField(
+                      controller: mail,
+                      cursorColor: Color(0xff46005F),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(20),
+                        hintText: mailtext,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(
+                            color:
+                                isMail_error ? Colors.red : Color(0xffDADADA),
+                          ),
+                        ),
+                        fillColor: isMail_error
+                            ? Color(0xffFF0000).withOpacity(0.05)
+                            : Colors.black.withOpacity(0.05),
+                        filled: true,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(
+                            color: Color(0xffDADADA),
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      fillColor: isMail_error
-                          ? Color(0xffFF0000).withOpacity(0.05)
-                          : Colors.black.withOpacity(0.05),
-                      filled: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(
-                          color: Color(0xffDADADA),
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        setState(() {
-                          isMail_error = true;
-                        });
-                        return 'Bu alan boş bırakılamaz.';
-                      } else if (!RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(value)) {
-                        return "Lüften geçerli bir mail adresi giriniz. ";
-                      }
-                      setState(() {
-                        isMail_error = false;
-                      });
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: height * 0.030),
-                  SizedBox(
-                    width: double.infinity,
-                    height: height * 0.06,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color(0xff46005F).withOpacity(0.8),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                      ),
-                      onPressed: () async {
-                        var response = await http.get(Uri.parse(
-                            root + "client/reset?email=${mail.text}"));
-                        var data = jsonDecode(response.body);
-                        var token = data["token"];
-
-                        if (_key.currentState!.validate()) {
-                          if (data["status"]) {
-                            sendMail(mail.text, kod, context);
-                            Navigator.of(context).popAndPushNamed(
-                                OtpScreenView.routeName,
-                                arguments: {
-                                  'otp_code': kod,
-                                  'token': token,
-                                  'email': mail.text,
-                                });
-                          }
-                          if (!data["status"]) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text("Girdiğiniz mail bulunamadı.")));
-                            setState(() {
-                              isMail_error = true;
-                            });
-                          }
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          setState(() {
+                            isMail_error = true;
+                          });
+                          return 'Bu alan boş bırakılamaz.';
+                        } else if (!RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(value)) {
+                          return "Lüften geçerli bir mail adresi giriniz. ";
                         }
+                        setState(() {
+                          isMail_error = false;
+                        });
+                        return null;
                       },
-                      child: Text(
-                        buttontext,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
+                    ),
+                    SizedBox(height: height * 0.030),
+                    SizedBox(
+                      width: double.infinity,
+                      height: height * 0.06,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color(0xff46005F).withOpacity(0.8),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                        ),
+                        onPressed: () async {
+                          var response = await http.get(Uri.parse(
+                              root + "client/reset?email=${mail.text}"));
+                          var data = jsonDecode(response.body);
+                          var token = data["token"];
+
+                          if (_key.currentState!.validate()) {
+                            if (data["status"]) {
+                              sendMail(mail.text, kod, context);
+                              Navigator.of(context).popAndPushNamed(
+                                  OtpScreenView.routeName,
+                                  arguments: {
+                                    'otp_code': kod,
+                                    'token': token,
+                                    'email': mail.text,
+                                  });
+                            }
+                            if (!data["status"]) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content:
+                                          Text("Girdiğiniz mail bulunamadı.")));
+                              setState(() {
+                                isMail_error = true;
+                              });
+                            }
+                          }
+                        },
+                        child: Text(
+                          buttontext,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: height * 0.40),
-                  BottomText(
-                      bottomtext: bottomtext,
-                      width: width,
-                      bottomlinktext: bottomlinktext),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        )),
-      ),
-    );
+            ],
+          )),
+        ),
+      ],
+    ));
   }
 
   Future<bool> sendMail(String email, int code, BuildContext context) async {
