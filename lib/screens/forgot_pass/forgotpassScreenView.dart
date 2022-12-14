@@ -38,7 +38,8 @@ class _ForgotPassScreenViewState extends State<ForgotPassScreenView> {
   TextEditingController mail = TextEditingController();
   void generatecode() {
     var rng = Random();
-    var code = rng.nextInt(9000) + 1000;
+    var code = rng.nextInt(8999) + 1000;
+
     kod = code;
     print(kod.toString());
   }
