@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:logos/screens/login/loginScreenView.dart';
 
 class SuccessScreenView extends StatelessWidget {
   static const routeName = "/pass-change-success";
@@ -83,7 +84,9 @@ class Button extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
         onPressed: () {
-          Navigator.of(context).pop();
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              LoginScreenView.routeName,
+              (Route<dynamic> route) => route.isFirst);
         },
         child: Text(
           text,

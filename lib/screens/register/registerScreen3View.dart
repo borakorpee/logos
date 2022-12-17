@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, non_constant_identifier_names
+// ignore_for_file: file_names, non_constant_identifier_names, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -300,26 +300,21 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                               setState(() {
                                 isDate_error = false;
                               });
+                              return null;
                             },
                             onTap: () async {
                               DateTime? pickedDate = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime(
-                                      1900), //DateTime.now() - not to allow to choose before today.
+                                  firstDate: DateTime(1940),
                                   lastDate: DateTime.now());
                               if (pickedDate != null) {
-                                //pickedDate output format => 2021-03-10 00:00:00.000
                                 apiDate =
                                     DateFormat('yyyy-MM-dd').format(pickedDate);
                                 String formattedDate =
                                     DateFormat('dd-MM-yyyy').format(pickedDate);
 
-                                //formatted date output using intl package =>  2021-03-16
-                                //you can implement different kind of Date Format here according to your requirement
                                 setState(() => dateinput.text = formattedDate);
-                              } else {
-                                print("Date is not selected");
                               }
                             },
                           ),

@@ -215,7 +215,7 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                               if (_key.currentState!.validate()) {
                                 var response = await http.post(
                                     Uri.parse(
-                                      root + "client/login",
+                                      "$root/client/login",
                                     ),
                                     body: {
                                       'email': mail.text,
@@ -228,10 +228,16 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              dddd()),
+                                              const dddd()),
                                       ModalRoute.withName(dddd.routeName));
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text(
+                                        "Mail adresiniz veya şifreniz hatalı!"),
+                                  ));
                                 }
-                              } else {}
+                              }
                             },
                             child: Text(
                               logintext,

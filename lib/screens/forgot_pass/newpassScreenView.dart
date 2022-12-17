@@ -1,7 +1,5 @@
 // ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, non_constant_identifier_names, use_build_context_synchronously, unused_local_variable
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/forgot_pass/successScreenView.dart';
@@ -195,7 +193,7 @@ class _NewPassScreenState extends State<NewPassScreen> {
                     onPressed: () async {
                       if (_key.currentState!.validate()) {
                         var response = await http
-                            .put(Uri.parse(root + "client/reset/pass"), body: {
+                            .put(Uri.parse("$root/client/reset/pass"), body: {
                           "token": args["token"],
                           "pass": password2.text,
                         });

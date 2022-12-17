@@ -52,32 +52,6 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
-            /*Positioned(
-              left: width * 0.75,
-              bottom: height * 0.076,
-              child: FloatingActionButton(
-                elevation: 0,
-                backgroundColor: Color(0xff6B337F),
-                onPressed: () {
-                  if (_key.currentState!.validate()) {
-                    Navigator.of(context)
-                        .pushNamed(RegisterScreen2.routeName, arguments: {
-                      "identity": identity_controller.text,
-                      "username": username_controller.text,
-                      "sex": selectedSex,
-                      "job": job_controller.text,
-                      "city": city_controller.text,
-                      "county": county_controller.text,
-                    });
-                  }
-                },
-                child: Icon(
-                  Icons.chevron_right,
-                  size: 35,
-                  color: Colors.white,
-                ),
-              ),
-            ),*/
             Positioned(
               bottom: height * 0.033,
               child: Row(
@@ -94,7 +68,9 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                   SizedBox(width: width * 0.023),
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          LoginScreenView.routeName,
+                          (Route<dynamic> route) => route.isFirst);
                     },
                     child: Text(
                       "Giriş yap",
@@ -262,7 +238,7 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                               setState(() {
                                 isIdentity_error = true;
                               });
-                              return "Geçersiz";
+                              return "Tc kimlik numarası 11 haneden oluşmalı";
                             }
                             setState(() {
                               isIdentity_error = false;
@@ -272,7 +248,7 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                         ),
                         SizedBox(height: height * 0.017),
                         DropdownButtonFormField<String>(
-                            validator: ((value) {
+                            validator: (value) {
                               if (value == null) {
                                 setState(() {
                                   isSex_error = true;
@@ -282,7 +258,8 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                               setState(() {
                                 isSex_error = false;
                               });
-                            }),
+                              return null;
+                            },
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.only(left: 20, top: 20),

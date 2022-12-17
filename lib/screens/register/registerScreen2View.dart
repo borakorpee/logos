@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, file_names
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, file_names, use_build_context_synchronously, use_full_hex_values_for_flutter_colors
 
 import 'dart:convert';
 
@@ -87,6 +87,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
             Column(
               children: <Widget>[
                 CustomBackButton(context),
+                Text(isMail_error.toString()),
                 Padding(
                   padding: EdgeInsets.only(
                       left: width * 0.110, right: width * 0.110),
@@ -125,7 +126,9 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(
-                                color: Color(0xffDADADA),
+                                color: isMail_error
+                                    ? Colors.red
+                                    : Color(0xffDADADA),
                               ),
                             ),
                             border: OutlineInputBorder(
@@ -347,26 +350,39 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                                   setState(() {
                                     isKVKK_error = false;
                                   });
-                                  print("başarılı");
-
-                                  var response = await http.post(
-                                      Uri.parse(root + '/client/add'),
-                                      body: {
-                                        'name': args["name"],
-                                        'surname': args["surname"],
-                                        'pass': password1.text,
-                                        'email': mail.text,
-                                        'birth': args["birth"],
-                                        'city': args["city"],
-                                        'county': args["county"],
-                                        'job': args["job"],
-                                        'sex': args["sex"],
-                                      });
-                                  var data = jsonDecode(response.body);
-                                  print(data);
-                                  if (data["status"] == true) {
-                                    Navigator.of(context)
-                                        .pushNamed(SuccessScreenView.routeName);
+                                  var mailresponse = await http.get(Uri.parse(
+                                      "$root/client/reset?email=${mail.text}"));
+                                  var mailResponse_data =
+                                      jsonDecode(mailresponse.body);
+                                  if (mailResponse_data["status"]) {
+                                    setState(() {
+                                      isMail_error = true;
+                                    });
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text(
+                                          "Girdiğiniz mail adresi zaten kullanılmakta."),
+                                    ));
+                                  } else if (mailResponse_data["status"] ==
+                                      false) {
+                                    var response = await http.post(
+                                        Uri.parse('$root/client/add'),
+                                        body: {
+                                          'name': args["name"],
+                                          'surname': args["surname"],
+                                          'pass': password1.text,
+                                          'email': mail.text,
+                                          'birth': args["birth"],
+                                          'city': args["city"],
+                                          'county': args["county"],
+                                          'job': args["job"],
+                                          'sex': args["sex"],
+                                        });
+                                    var data = jsonDecode(response.body);
+                                    if (data["status"] == true) {
+                                      Navigator.of(context).pushNamed(
+                                          SuccessScreenView.routeName);
+                                    }
                                   }
                                 }
                               }
