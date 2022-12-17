@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, file_names
+
 import 'dart:convert';
 
 import 'package:flutter/gestures.dart';
@@ -139,6 +141,9 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                             } else if (!RegExp(
                                     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                 .hasMatch(value)) {
+                              setState(() {
+                                isMail_error = true;
+                              });
                               return "Lüften geçerli bir mail adresi giriniz. ";
                             }
                             setState(() {

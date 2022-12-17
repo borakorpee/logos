@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -120,25 +122,26 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                         SizedBox(height: height * 0.03),
                         TextFormField(
                           controller: job_controller,
-                          cursorColor: Color(0xff46005F),
+                          cursorColor: const Color(0xff46005F),
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(left: 20, top: 20),
+                            contentPadding:
+                                const EdgeInsets.only(left: 20, top: 20),
                             hintText: job_text,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(
                                 color: isJob_error
                                     ? Colors.red
-                                    : Color(0xffDADADA),
+                                    : const Color(0xffDADADA),
                               ),
                             ),
                             fillColor: isJob_error
-                                ? Color(0xffFF0000).withOpacity(0.05)
+                                ? const Color(0xffFF0000).withOpacity(0.05)
                                 : Colors.black.withOpacity(0.05),
                             filled: true,
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                 color: Color(0xffDADADA),
                               ),
                             ),
@@ -165,26 +168,27 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                             Expanded(
                               child: TextFormField(
                                 controller: city_controller,
-                                cursorColor: Color(0xff46005F),
+                                cursorColor: const Color(0xff46005F),
                                 decoration: InputDecoration(
                                   contentPadding:
-                                      EdgeInsets.only(left: 20, top: 20),
+                                      const EdgeInsets.only(left: 20, top: 20),
                                   hintText: City_text,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20),
                                     borderSide: BorderSide(
                                       color: isCity_error
                                           ? Colors.red
-                                          : Color(0xffDADADA),
+                                          : const Color(0xffDADADA),
                                     ),
                                   ),
                                   fillColor: isCity_error
-                                      ? Color(0xffFF0000).withOpacity(0.05)
+                                      ? const Color(0xffFF0000)
+                                          .withOpacity(0.05)
                                       : Colors.black.withOpacity(0.05),
                                   filled: true,
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                       color: Color(0xffDADADA),
                                     ),
                                   ),
@@ -210,26 +214,27 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                             Expanded(
                               child: TextFormField(
                                 controller: county_controller,
-                                cursorColor: Color(0xff46005F),
+                                cursorColor: const Color(0xff46005F),
                                 decoration: InputDecoration(
                                   contentPadding:
-                                      EdgeInsets.only(left: 20, top: 20),
+                                      const EdgeInsets.only(left: 20, top: 20),
                                   hintText: County_text,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20),
                                     borderSide: BorderSide(
                                       color: isCounty_error
                                           ? Colors.red
-                                          : Color(0xffDADADA),
+                                          : const Color(0xffDADADA),
                                     ),
                                   ),
                                   fillColor: isCounty_error
-                                      ? Color(0xffFF0000).withOpacity(0.05)
+                                      ? const Color(0xffFF0000)
+                                          .withOpacity(0.05)
                                       : Colors.black.withOpacity(0.05),
                                   filled: true,
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                       color: Color(0xffDADADA),
                                     ),
                                   ),
@@ -260,23 +265,23 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                                 dateinput, //editing controller of this TextField
                             decoration: InputDecoration(
                               contentPadding:
-                                  EdgeInsets.only(left: 20, top: 20),
+                                  const EdgeInsets.only(left: 20, top: 20),
                               hintText: date_text,
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
                                 borderSide: BorderSide(
                                   color: isDate_error
                                       ? Colors.red
-                                      : Color(0xffDADADA),
+                                      : const Color(0xffDADADA),
                                 ),
                               ),
                               fillColor: isDate_error
-                                  ? Color(0xffFF0000).withOpacity(0.05)
+                                  ? const Color(0xffFF0000).withOpacity(0.05)
                                   : Colors.black.withOpacity(0.05),
                               filled: true,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   color: Color(0xffDADADA),
                                 ),
                               ),
@@ -331,7 +336,7 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                       children: [
                         FloatingActionButton(
                           elevation: 0,
-                          backgroundColor: Color(0xff6B337F),
+                          backgroundColor: const Color(0xff6B337F),
                           onPressed: () {
                             if (_key.currentState!.validate()) {
                               Navigator.of(context).pushNamed(

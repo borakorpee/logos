@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, no_leading_underscores_for_local_identifiers, unnecessary_string_interpolations, avoid_print, prefer_interpolation_to_compose_strings, avoid_types_as_parameter_names, non_constant_identifier_names
+// ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, no_leading_underscores_for_local_identifiers, unnecessary_string_interpolations, avoid_print, prefer_interpolation_to_compose_strings, avoid_types_as_parameter_names, non_constant_identifier_names, use_build_context_synchronously
 
 import 'dart:convert';
 import 'dart:math';

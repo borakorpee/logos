@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, avoid_print
+// ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, avoid_print, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -93,25 +93,26 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                       children: <Widget>[
                         TextFormField(
                           controller: mail,
-                          cursorColor: Color(0xff46005F),
+                          cursorColor: const Color(0xff46005F),
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(left: 20, top: 20),
+                            contentPadding:
+                                const EdgeInsets.only(left: 20, top: 20),
                             hintText: mailtext,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(
                                 color: isMail_error
                                     ? Colors.red
-                                    : Color(0xffDADADA),
+                                    : const Color(0xffDADADA),
                               ),
                             ),
                             fillColor: isMail_error
-                                ? Color(0xffFF0000).withOpacity(0.05)
+                                ? const Color(0xffFF0000).withOpacity(0.05)
                                 : Colors.black.withOpacity(0.05),
                             filled: true,
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                 color: Color(0xffDADADA),
                               ),
                             ),
@@ -139,7 +140,7 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                         SizedBox(height: height * 0.016),
                         TextFormField(
                           controller: password,
-                          cursorColor: Color(0xff46005F),
+                          cursorColor: const Color(0xff46005F),
                           obscureText: !passwordVisible,
                           decoration: InputDecoration(
                             suffixIcon: IconButton(
@@ -152,18 +153,19 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                                 });
                               },
                             ),
-                            contentPadding: EdgeInsets.only(left: 20, top: 20),
+                            contentPadding:
+                                const EdgeInsets.only(left: 20, top: 20),
                             hintText: passtext,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(
                                 color: isPass_error
                                     ? Colors.red
-                                    : Color(0xffDADADA),
+                                    : const Color(0xffDADADA),
                               ),
                             ),
                             fillColor: isPass_error
-                                ? Color(0xffFF0000).withOpacity(0.05)
+                                ? const Color(0xffFF0000).withOpacity(0.05)
                                 : Colors.black.withOpacity(0.05),
                             filled: true,
                             enabledBorder: OutlineInputBorder(
@@ -265,7 +267,8 @@ class LoginButton extends StatelessWidget {
         onPressed: () {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (BuildContext context) => dddd()),
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const dddd()),
               ModalRoute.withName(dddd.routeName));
           print(us.text);
           print(pas.text);

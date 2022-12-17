@@ -1,4 +1,6 @@
-// ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals
+// ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, non_constant_identifier_names, use_build_context_synchronously
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:logos/screens/forgot_pass/email_OTP.dart';
@@ -69,7 +71,7 @@ class _NewPassScreenState extends State<NewPassScreen> {
                 SizedBox(height: height * 0.026),
                 TextFormField(
                   controller: password1,
-                  cursorColor: Color(0xff46005F),
+                  cursorColor: const Color(0xff46005F),
                   obscureText: !passwordVisible1,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
@@ -82,16 +84,17 @@ class _NewPassScreenState extends State<NewPassScreen> {
                         });
                       },
                     ),
-                    contentPadding: EdgeInsets.all(20),
+                    contentPadding: const EdgeInsets.all(20),
                     hintText: passtext1,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide(
-                        color: isPass_error ? Colors.red : Color(0xffDADADA),
+                        color:
+                            isPass_error ? Colors.red : const Color(0xffDADADA),
                       ),
                     ),
                     fillColor: isPass_error
-                        ? Color(0xffFF0000).withOpacity(0.05)
+                        ? const Color(0xffFF0000).withOpacity(0.05)
                         : Colors.black.withOpacity(0.05),
                     filled: true,
                     enabledBorder: OutlineInputBorder(
@@ -125,7 +128,7 @@ class _NewPassScreenState extends State<NewPassScreen> {
                 SizedBox(height: height * 0.016),
                 TextFormField(
                   controller: password2,
-                  cursorColor: Color(0xff46005F),
+                  cursorColor: const Color(0xff46005F),
                   obscureText: !passwordVisible2,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
@@ -138,16 +141,17 @@ class _NewPassScreenState extends State<NewPassScreen> {
                         });
                       },
                     ),
-                    contentPadding: EdgeInsets.all(20),
+                    contentPadding: const EdgeInsets.all(20),
                     hintText: passtext2,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide(
-                        color: isPass_error ? Colors.red : Color(0xffDADADA),
+                        color:
+                            isPass_error ? Colors.red : const Color(0xffDADADA),
                       ),
                     ),
                     fillColor: isPass_error
-                        ? Color(0xffFF0000).withOpacity(0.05)
+                        ? const Color(0xffFF0000).withOpacity(0.05)
                         : Colors.black.withOpacity(0.05),
                     filled: true,
                     enabledBorder: OutlineInputBorder(
@@ -195,6 +199,7 @@ class _NewPassScreenState extends State<NewPassScreen> {
                           "token": args["token"],
                           "pass": password2.text,
                         });
+                        print(jsonDecode(response.body));
                         Navigator.of(context)
                             .popAndPushNamed(SuccessScreenView.routeName);
                       }

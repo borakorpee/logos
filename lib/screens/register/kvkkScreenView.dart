@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, file_names, camel_case_types, prefer_const_constructors_in_immutables, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:logos/screens/forgot_pass/email_OTP.dart';
 
 class KvkkScreen extends StatefulWidget {
