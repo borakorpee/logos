@@ -1,26 +1,25 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logos/screens/forgot_pass/email_OTP.dart';
+import 'package:logos/screens/forgot_pass/successScreenView.dart';
+import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/register/kvkkScreenView.dart';
-
+import "package:http/http.dart" as http;
 import '../../components/customBackButton.dart';
 
 class RegisterScreen2 extends StatefulWidget {
   static const routeName = "/register2";
   const RegisterScreen2({super.key});
-
   @override
   State<RegisterScreen2> createState() => _RegisterScreen2State();
 }
 
-/*  Text(args["identity"]),
-                  Text(args["username"]),
-                  Text(args["sex"]),
-                  Text(args["job"]),
-                  Text(args["city"]),
-                  Text(args["county"]),*/
-
 class _RegisterScreen2State extends State<RegisterScreen2> {
+  final String registertext = "Kayıt ol";
+
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   bool? kvkk = false;
   bool isMail_error = false;
@@ -35,7 +34,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
   bool passwordVisible2 = false;
   TextEditingController password2 = TextEditingController();
   bool isPass_error = false;
-
+  bool isKVKK_error = false;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -43,10 +42,11 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: (() {
-          _key.currentState!.validate();
-        })),
-        body: Stack(
+        body: SingleChildScrollView(
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
             Positioned(
@@ -65,7 +65,9 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   SizedBox(width: width * 0.023),
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          LoginScreenView.routeName,
+                          (Route<dynamic> route) => route.isFirst);
                     },
                     child: Text(
                       "Giriş yap",
@@ -265,6 +267,13 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                         Row(
                           children: [
                             Checkbox(
+                              side: MaterialStateBorderSide.resolveWith(
+                                (states) => BorderSide(
+                                    width: 1.0,
+                                    color: isKVKK_error
+                                        ? Colors.red
+                                        : Colors.black),
+                              ),
                               activeColor:
                                   const Color(0xff46005F).withOpacity(0.8),
                               value: kvkk,
@@ -286,22 +295,85 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                                     },
                                   text: 'KVKK ',
                                   style: const TextStyle(
-                                      color: Color(0xff6A707C),
-                                      fontWeight: FontWeight.w600),
+                                    decoration: TextDecoration.underline,
+                                    color: Color(0xff6A707C),
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                   children: <TextSpan>[
                                     TextSpan(
                                       text:
                                           'kanunu hakkındaki bildiriyi okudum ve kabul ediyorum.',
                                       style: TextStyle(
-                                          color: Color(0xff6A707C99)
-                                              .withOpacity(0.6),
-                                          fontWeight: FontWeight.w400),
+                                        color: const Color(0xff6A707C99)
+                                            .withOpacity(0.6),
+                                        fontWeight: FontWeight.w400,
+                                        decoration: TextDecoration.none,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             )
                           ],
+                        ),
+                        SizedBox(height: height * 0.027),
+                        SizedBox(
+                          width: double.infinity,
+                          height: height * 0.06,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color(0xff46005F).withOpacity(0.8),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                            ),
+                            onPressed: () async {
+                              if (_key.currentState!.validate()) {
+                                if (kvkk == false) {
+                                  setState(() {
+                                    isKVKK_error = true;
+                                  });
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text(
+                                        "Lütfen KVKK metnini okuyup kabul ediniz."),
+                                  ));
+                                } else {
+                                  setState(() {
+                                    isKVKK_error = false;
+                                  });
+                                  print("başarılı");
+                                  /* 
+                                    var response = await http.post(
+                                    Uri.parse(root + '/client/add'),
+                                    body: {
+                                      'name': args["name"],
+                                      'surname': args["surname"],
+                                      'pass': password1.text,
+                                      'email': mail.text,
+                                      'birth': args["birth"],
+                                      'city': args["city"],
+                                      'county': args["county"],
+                                      'job': args["job"],
+                                      'sex': args["sex"],
+                                    });
+                                var data = jsonDecode(response.body);
+                                if (data["status"] == true) {
+                                  Navigator.of(context)
+                                      .pushNamed(SuccessScreenView.routeName);
+                                }
+                                  */
+                                }
+                              }
+                            },
+                            child: Text(
+                              registertext,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -310,7 +382,9 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
               ],
             ),
           ],
-        ));
+        ),
+      ),
+    ));
   }
 }
 

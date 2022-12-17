@@ -36,82 +36,89 @@ class _LoginScreenViewState extends State<LoginScreenView> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-        body: Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        Positioned(
-          bottom: height * 0.033,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                registerasktext,
-                style: GoogleFonts.spaceGrotesk(
-                  color: Colors.black.withOpacity(0.6),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              SizedBox(width: width * 0.023),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).pushNamed(RegisterScreenView.routeName);
-                },
-                child: Text(
-                  registertext,
-                  style: GoogleFonts.spaceGrotesk(
-                    color: Colors.black.withOpacity(0.6),
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Column(
+        body: SingleChildScrollView(
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Stack(
+          alignment: Alignment.center,
           children: <Widget>[
-            CustomBackButton(context),
-            SizedBox(height: height * 0.044),
-            Logo(width: width, height: height),
-            const WelcomeText(text: maintext),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: height * 0.032, horizontal: width * 0.11),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+            Positioned(
+              bottom: height * 0.033,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  MailTextField(
-                      height: height,
-                      username: username,
-                      mailtext: mailtext,
-                      width: width),
-                  SizedBox(height: height * 0.016),
-                  PasswordTextField(
-                      passwordVisible: passwordVisible,
-                      password: password,
-                      passtext: passtext,
-                      width: width,
-                      height: height),
-                  SizedBox(height: height * 0.021),
-                  const LinkText(
-                    text: forgotpasstext,
-                    routeName: ForgotPassScreenView.routeName,
+                  Text(
+                    registerasktext,
+                    style: GoogleFonts.spaceGrotesk(
+                      color: Colors.black.withOpacity(0.6),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                  SizedBox(height: height * 0.06),
-                  LoginButton(
-                    height: height,
-                    logintext: logintext,
-                    pas: password,
-                    us: username,
+                  SizedBox(width: width * 0.023),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(RegisterScreenView.routeName);
+                    },
+                    child: Text(
+                      registertext,
+                      style: GoogleFonts.spaceGrotesk(
+                        color: Colors.black.withOpacity(0.6),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
                   ),
                 ],
               ),
-            )
+            ),
+            Column(
+              children: <Widget>[
+                CustomBackButton(context),
+                SizedBox(height: height * 0.044),
+                Logo(width: width, height: height),
+                const WelcomeText(text: maintext),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: height * 0.032, horizontal: width * 0.11),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      MailTextField(
+                          height: height,
+                          username: username,
+                          mailtext: mailtext,
+                          width: width),
+                      SizedBox(height: height * 0.016),
+                      PasswordTextField(
+                          passwordVisible: passwordVisible,
+                          password: password,
+                          passtext: passtext,
+                          width: width,
+                          height: height),
+                      SizedBox(height: height * 0.021),
+                      const LinkText(
+                        text: forgotpasstext,
+                        routeName: ForgotPassScreenView.routeName,
+                      ),
+                      SizedBox(height: height * 0.06),
+                      LoginButton(
+                        height: height,
+                        logintext: logintext,
+                        pas: password,
+                        us: username,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ],
         ),
-      ],
+      ),
     ));
   }
 }

@@ -1,83 +1,70 @@
-// ignore_for_file: file_names, prefer_const_constructors, sort_child_properties_last
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:logos/screens/login/loginScreenView.dart';
-import 'package:logos/screens/register/registerScreen3View.dart';
+import 'package:intl/intl.dart';
+import 'package:logos/screens/register/registerScreen2View.dart';
 import '../../components/customBackButton.dart';
+import '../login/loginScreenView.dart';
 
-class RegisterScreenView extends StatefulWidget {
-  static const routeName = "/register";
+class RegisterScreen3 extends StatefulWidget {
+  static const routeName = "/register3";
 
-  const RegisterScreenView({super.key});
+  const RegisterScreen3({super.key});
 
   @override
-  State<RegisterScreenView> createState() => _RegisterScreenViewState();
+  State<RegisterScreen3> createState() => _RegisterScreen3State();
 }
 
-class _RegisterScreenViewState extends State<RegisterScreenView> {
+class _RegisterScreen3State extends State<RegisterScreen3> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  bool isName_error = false;
-  bool isSurname_error = false;
-  bool isIdentity_error = false;
-  bool isUsername_error = false;
-  bool isSex_error = false;
-  bool isJob_error = false;
 
-  final String titletext = "Kayıt ol.";
-  final String identity_text = "T.C. Kimlik No";
-  final String username_text = "Kullanıcı Adı";
-  final String name_text = "İsim";
-  final String surname_text = "Soyisim";
+  bool isJob_error = false;
+  bool isDate_error = false;
 
   final String job_text = "Meslek";
+  final String date_text = "Doğum tarihi";
 
-  String? selectedSex;
-  TextEditingController name_controller = TextEditingController();
-  TextEditingController surname_controller = TextEditingController();
-
-  TextEditingController identity_controller = TextEditingController();
-  TextEditingController username_controller = TextEditingController();
   TextEditingController job_controller = TextEditingController();
+
+  bool isCity_error = false;
+  bool isCounty_error = false;
+  final String City_text = "İl";
+  final String County_text = "İlçe";
+  TextEditingController city_controller = TextEditingController();
+  TextEditingController county_controller = TextEditingController();
+  TextEditingController dateinput = TextEditingController();
+  String apiDate = "";
+
+  @override
+  void initState() {
+    dateinput.text = "";
+    super.initState();
+  }
+
+  int calculateAge(DateTime birthDate) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    if (birthDate.month > currentDate.month) {
+      age--;
+    } else if (currentDate.month == birthDate.month) {
+      if (birthDate.day > currentDate.day) {
+        age--;
+      }
+    }
+    return age;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-        body: SingleChildScrollView(
-      child: SizedBox(
-        height: height,
-        width: width,
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            /*Positioned(
-              left: width * 0.75,
-              bottom: height * 0.076,
-              child: FloatingActionButton(
-                elevation: 0,
-                backgroundColor: Color(0xff6B337F),
-                onPressed: () {
-                  if (_key.currentState!.validate()) {
-                    Navigator.of(context)
-                        .pushNamed(RegisterScreen2.routeName, arguments: {
-                      "identity": identity_controller.text,
-                      "username": username_controller.text,
-                      "sex": selectedSex,
-                      "job": job_controller.text,
-                      "city": city_controller.text,
-                      "county": county_controller.text,
-                    });
-                  }
-                },
-                child: Icon(
-                  Icons.chevron_right,
-                  size: 35,
-                  color: Colors.white,
-                ),
-              ),
-            ),*/
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: height,
+          width: width,
+          child: Stack(alignment: Alignment.center, children: <Widget>[
             Positioned(
               bottom: height * 0.033,
               child: Row(
@@ -94,7 +81,9 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                   SizedBox(width: width * 0.023),
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          LoginScreenView.routeName,
+                          (Route<dynamic> route) => route.isFirst);
                     },
                     child: Text(
                       "Giriş yap",
@@ -111,9 +100,8 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
             ),
             Form(
               key: _key,
-              child: Center(
-                  child: Column(
-                children: <Widget>[
+              child: Column(
+                children: [
                   CustomBackButton(context),
                   Padding(
                     padding: EdgeInsets.only(
@@ -130,115 +118,21 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                           ),
                         ),
                         SizedBox(height: height * 0.03),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                controller: name_controller,
-                                cursorColor: Color(0xff46005F),
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.only(left: 20, top: 20),
-                                  hintText: name_text,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                      color: isName_error
-                                          ? Colors.red
-                                          : Color(0xffDADADA),
-                                    ),
-                                  ),
-                                  fillColor: isName_error
-                                      ? Color(0xffFF0000).withOpacity(0.05)
-                                      : Colors.black.withOpacity(0.05),
-                                  filled: true,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                      color: Color(0xffDADADA),
-                                    ),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    setState(() {
-                                      isName_error = true;
-                                    });
-                                    return 'Boş bırakılamaz.';
-                                  }
-                                  setState(() {
-                                    isName_error = false;
-                                  });
-                                  return null;
-                                },
-                              ),
-                            ),
-                            SizedBox(width: width * 0.023),
-                            Expanded(
-                              child: TextFormField(
-                                controller: surname_controller,
-                                cursorColor: Color(0xff46005F),
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.only(left: 20, top: 20),
-                                  hintText: surname_text,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                      color: isSurname_error
-                                          ? Colors.red
-                                          : Color(0xffDADADA),
-                                    ),
-                                  ),
-                                  fillColor: isSurname_error
-                                      ? Color(0xffFF0000).withOpacity(0.05)
-                                      : Colors.black.withOpacity(0.05),
-                                  filled: true,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                      color: Color(0xffDADADA),
-                                    ),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    setState(() {
-                                      isSurname_error = true;
-                                    });
-                                    return 'Boş bırakılamaz.';
-                                  }
-                                  setState(() {
-                                    isSurname_error = false;
-                                  });
-                                  return null;
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(height: height * 0.017),
                         TextFormField(
-                          controller: identity_controller,
+                          controller: job_controller,
                           cursorColor: Color(0xff46005F),
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(left: 20, top: 20),
-                            hintText: identity_text,
+                            hintText: job_text,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(
-                                color: isIdentity_error
+                                color: isJob_error
                                     ? Colors.red
                                     : Color(0xffDADADA),
                               ),
                             ),
-                            fillColor: isIdentity_error
+                            fillColor: isJob_error
                                 ? Color(0xffFF0000).withOpacity(0.05)
                                 : Colors.black.withOpacity(0.05),
                             filled: true,
@@ -255,47 +149,128 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               setState(() {
-                                isIdentity_error = true;
+                                isJob_error = true;
                               });
                               return 'Boş bırakılamaz.';
-                            } else if (value.length != 11) {
-                              setState(() {
-                                isIdentity_error = true;
-                              });
-                              return "Geçersiz";
                             }
                             setState(() {
-                              isIdentity_error = false;
+                              isJob_error = false;
                             });
                             return null;
                           },
                         ),
                         SizedBox(height: height * 0.017),
-                        DropdownButtonFormField<String>(
-                            validator: ((value) {
-                              if (value == null) {
-                                setState(() {
-                                  isSex_error = true;
-                                });
-                                return "Boş bırakılamaz";
-                              }
-                              setState(() {
-                                isSex_error = false;
-                              });
-                            }),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                controller: city_controller,
+                                cursorColor: Color(0xff46005F),
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.only(left: 20, top: 20),
+                                  hintText: City_text,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: BorderSide(
+                                      color: isCity_error
+                                          ? Colors.red
+                                          : Color(0xffDADADA),
+                                    ),
+                                  ),
+                                  fillColor: isCity_error
+                                      ? Color(0xffFF0000).withOpacity(0.05)
+                                      : Colors.black.withOpacity(0.05),
+                                  filled: true,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: BorderSide(
+                                      color: Color(0xffDADADA),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    setState(() {
+                                      isCity_error = true;
+                                    });
+                                    return 'Boş bırakılamaz.';
+                                  }
+                                  setState(() {
+                                    isCity_error = false;
+                                  });
+                                  return null;
+                                },
+                              ),
+                            ),
+                            SizedBox(width: width * 0.023),
+                            Expanded(
+                              child: TextFormField(
+                                controller: county_controller,
+                                cursorColor: Color(0xff46005F),
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.only(left: 20, top: 20),
+                                  hintText: County_text,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: BorderSide(
+                                      color: isCounty_error
+                                          ? Colors.red
+                                          : Color(0xffDADADA),
+                                    ),
+                                  ),
+                                  fillColor: isCounty_error
+                                      ? Color(0xffFF0000).withOpacity(0.05)
+                                      : Colors.black.withOpacity(0.05),
+                                  filled: true,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: BorderSide(
+                                      color: Color(0xffDADADA),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    setState(() {
+                                      isCounty_error = true;
+                                    });
+                                    return 'Boş bırakılamaz.';
+                                  }
+                                  setState(() {
+                                    isCounty_error = false;
+                                  });
+                                  return null;
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: height * 0.016),
+                        GestureDetector(
+                          child: TextFormField(
+                            controller:
+                                dateinput, //editing controller of this TextField
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.only(left: 20, top: 20),
-                              hintText: "Cinsiyet",
+                              hintText: date_text,
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
                                 borderSide: BorderSide(
-                                  color: isSex_error
+                                  color: isDate_error
                                       ? Colors.red
                                       : Color(0xffDADADA),
                                 ),
                               ),
-                              fillColor: isSex_error
+                              fillColor: isDate_error
                                   ? Color(0xffFF0000).withOpacity(0.05)
                                   : Colors.black.withOpacity(0.05),
                               filled: true,
@@ -309,23 +284,41 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                             ),
-                            value: selectedSex,
-                            // ignore: prefer_const_literals_to_create_immutables
-                            items: _dropdownitems.map((String user) {
-                              return DropdownMenuItem<String>(
-                                value: user,
-                                child: Text(
-                                  user,
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (v) {
+                            readOnly: true,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                setState(() {
+                                  isDate_error = true;
+                                });
+                                return 'Lütfen Doğum tarihinizi giriniz';
+                              }
                               setState(() {
-                                selectedSex = v;
+                                isDate_error = false;
                               });
-                            }),
-                        SizedBox(height: height * 0.017),
-                        SizedBox(height: height * 0.017),
+                            },
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(
+                                      1900), //DateTime.now() - not to allow to choose before today.
+                                  lastDate: DateTime.now());
+                              if (pickedDate != null) {
+                                //pickedDate output format => 2021-03-10 00:00:00.000
+                                apiDate =
+                                    DateFormat('yyyy-MM-dd').format(pickedDate);
+                                String formattedDate =
+                                    DateFormat('dd-MM-yyyy').format(pickedDate);
+
+                                //formatted date output using intl package =>  2021-03-16
+                                //you can implement different kind of Date Format here according to your requirement
+                                setState(() => dateinput.text = formattedDate);
+                              } else {
+                                print("Date is not selected");
+                              }
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -342,15 +335,19 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                           onPressed: () {
                             if (_key.currentState!.validate()) {
                               Navigator.of(context).pushNamed(
-                                  RegisterScreen3.routeName,
+                                  RegisterScreen2.routeName,
                                   arguments: {
-                                    "name": name_controller.text,
-                                    "surname": surname_controller.text,
-                                    "sex": selectedSex,
+                                    'name': args["name"],
+                                    'surname': args["surname"],
+                                    'sex': args["sex"],
+                                    'birth': apiDate,
+                                    'job': job_controller.text,
+                                    'city': city_controller.text,
+                                    'county': county_controller.text,
                                   });
                             }
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.chevron_right,
                             size: 35,
                             color: Colors.white,
@@ -360,20 +357,14 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                     ),
                   ),
                 ],
-              )),
+              ),
             ),
-          ],
+          ]),
         ),
       ),
-    ));
+    );
   }
 }
-
-var _dropdownitems = [
-  "Erkek",
-  "Kadın",
-  "Belirtmek İstemiyorum",
-];
 
 class Logo extends StatelessWidget {
   const Logo({

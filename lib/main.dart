@@ -11,6 +11,8 @@ import 'package:logos/screens/onboard/onboardScreenView.dart';
 import 'package:logos/screens/register/kvkkScreenView.dart';
 import 'package:logos/screens/register/registerScreen2View.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
+import 'package:logos/screens/register/registerSuccessScreenView.dart';
+import 'screens/register/registerScreen3View.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -35,6 +37,8 @@ class MyApp extends StatelessWidget {
         SuccessScreenView.routeName: (ctx) => const SuccessScreenView(),
         RegisterScreenView.routeName: (ctx) => const RegisterScreenView(),
         RegisterScreen2.routeName: (ctx) => const RegisterScreen2(),
+        RegisterScreen3.routeName: (ctx) => const RegisterScreen3(),
+        RegisterSuccess.routeName: (ctx) => const RegisterSuccess(),
         KvkkScreen.routeName: (ctx) => const KvkkScreen(),
         dddd.routeName: (ctx) => const dddd(),
       },
