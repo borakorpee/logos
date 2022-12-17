@@ -21,19 +21,10 @@ class _ddddState extends State<dddd> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-        body: Container(
-      height: height,
-      width: width,
-      color: Colors.red,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: BottomText(
-          bottomlinktext: "asd",
-          bottomtext: "asd",
-          width: width,
-        ),
+      appBar: AppBar(
+        title: Text("giriş yaptın"),
       ),
-    ));
+    );
   }
 }
 

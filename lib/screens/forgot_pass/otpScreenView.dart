@@ -54,9 +54,6 @@ class _OtpScreenViewState extends State<OtpScreenView> {
         Column(
           children: <Widget>[
             CustomBackButton(context),
-            // Text(args["otp_code"].toString()),
-            // Text(args["token"].toString()),
-            // Text(args["email"].toString()),
             Padding(
               padding:
                   EdgeInsets.only(left: width * 0.110, right: width * 0.110),

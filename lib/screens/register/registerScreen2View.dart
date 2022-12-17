@@ -348,26 +348,26 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                                     isKVKK_error = false;
                                   });
                                   print("başarılı");
-                                  /* 
-                                    var response = await http.post(
-                                    Uri.parse(root + '/client/add'),
-                                    body: {
-                                      'name': args["name"],
-                                      'surname': args["surname"],
-                                      'pass': password1.text,
-                                      'email': mail.text,
-                                      'birth': args["birth"],
-                                      'city': args["city"],
-                                      'county': args["county"],
-                                      'job': args["job"],
-                                      'sex': args["sex"],
-                                    });
-                                var data = jsonDecode(response.body);
-                                if (data["status"] == true) {
-                                  Navigator.of(context)
-                                      .pushNamed(SuccessScreenView.routeName);
-                                }
-                                  */
+
+                                  var response = await http.post(
+                                      Uri.parse(root + '/client/add'),
+                                      body: {
+                                        'name': args["name"],
+                                        'surname': args["surname"],
+                                        'pass': password1.text,
+                                        'email': mail.text,
+                                        'birth': args["birth"],
+                                        'city': args["city"],
+                                        'county': args["county"],
+                                        'job': args["job"],
+                                        'sex': args["sex"],
+                                      });
+                                  var data = jsonDecode(response.body);
+                                  print(data);
+                                  if (data["status"] == true) {
+                                    Navigator.of(context)
+                                        .pushNamed(SuccessScreenView.routeName);
+                                  }
                                 }
                               }
                             },

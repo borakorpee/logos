@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, non_constant_identifier_names, use_build_context_synchronously
+// ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, non_constant_identifier_names, use_build_context_synchronously, unused_local_variable
 
 import 'dart:convert';
 
@@ -199,7 +199,7 @@ class _NewPassScreenState extends State<NewPassScreen> {
                           "token": args["token"],
                           "pass": password2.text,
                         });
-                        print(jsonDecode(response.body));
+
                         Navigator.of(context)
                             .popAndPushNamed(SuccessScreenView.routeName);
                       }

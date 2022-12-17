@@ -1,11 +1,15 @@
-// ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, avoid_print, non_constant_identifier_names
+// ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, avoid_print, non_constant_identifier_names, use_build_context_synchronously
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/components/customBackButton.dart';
 import 'package:logos/d.dart';
+import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreenView extends StatefulWidget {
   static const routeName = "/login";
@@ -207,16 +211,27 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20)),
                             ),
-                            onPressed: () {
-                              if (_key.currentState!.validate()) {}
-                              /* Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          dddd()),
-                                  ModalRoute.withName(dddd.routeName));*/
-                              print(mail.text);
-                              print(password.text);
+                            onPressed: () async {
+                              if (_key.currentState!.validate()) {
+                                var response = await http.post(
+                                    Uri.parse(
+                                      root + "client/login",
+                                    ),
+                                    body: {
+                                      'email': mail.text,
+                                      'pass': password.text,
+                                    });
+                                var data = jsonDecode(response.body);
+                                print(data);
+                                if (data["status"] == true) {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              dddd()),
+                                      ModalRoute.withName(dddd.routeName));
+                                }
+                              } else {}
                             },
                             child: Text(
                               logintext,
@@ -270,8 +285,6 @@ class LoginButton extends StatelessWidget {
               MaterialPageRoute(
                   builder: (BuildContext context) => const dddd()),
               ModalRoute.withName(dddd.routeName));
-          print(us.text);
-          print(pas.text);
         },
         child: Text(
           logintext,
