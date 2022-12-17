@@ -17,21 +17,23 @@ class LoginScreenView extends StatefulWidget {
 }
 
 class _LoginScreenViewState extends State<LoginScreenView> {
-  TextEditingController username = TextEditingController();
-  TextEditingController password = TextEditingController();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
+  final String maintext = "Hoş Geldin!";
+  final String mailtext = "Mail adresi";
+  final String passtext = "Şifre";
+  final String forgotpasstext = "Şifremi unuttum";
+  final String registertext = "Kayıt ol";
+  final String registerasktext = "Hesabın yok mu?";
+  final String logintext = "Giriş Yap";
+
+  TextEditingController mail = TextEditingController();
+  TextEditingController password = TextEditingController();
+  bool isMail_error = false;
+  bool isPass_error = false;
   bool passwordVisible = false;
   @override
   Widget build(BuildContext context) {
-    const String maintext = "Hoş Geldin!";
-    const String mailtext = "Mail adresi";
-    const String passtext = "Şifre";
-    const String forgotpasstext = "Şifremi unuttum";
-    const String registertext = "Kayıt ol";
-    const String registerasktext = "Hesabın yok mu?";
-
-    const String logintext = "Giriş Yap";
-
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
@@ -75,46 +77,159 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                 ],
               ),
             ),
-            Column(
-              children: <Widget>[
-                CustomBackButton(context),
-                SizedBox(height: height * 0.044),
-                Logo(width: width, height: height),
-                const WelcomeText(text: maintext),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: height * 0.032, horizontal: width * 0.11),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      MailTextField(
-                          height: height,
-                          username: username,
-                          mailtext: mailtext,
-                          width: width),
-                      SizedBox(height: height * 0.016),
-                      PasswordTextField(
-                          passwordVisible: passwordVisible,
-                          password: password,
-                          passtext: passtext,
-                          width: width,
-                          height: height),
-                      SizedBox(height: height * 0.021),
-                      const LinkText(
-                        text: forgotpasstext,
-                        routeName: ForgotPassScreenView.routeName,
-                      ),
-                      SizedBox(height: height * 0.06),
-                      LoginButton(
-                        height: height,
-                        logintext: logintext,
-                        pas: password,
-                        us: username,
-                      ),
-                    ],
-                  ),
-                )
-              ],
+            Form(
+              key: _key,
+              child: Column(
+                children: <Widget>[
+                  CustomBackButton(context),
+                  SizedBox(height: height * 0.044),
+                  Logo(width: width, height: height),
+                  WelcomeText(text: maintext),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: height * 0.032, horizontal: width * 0.11),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        TextFormField(
+                          controller: mail,
+                          cursorColor: Color(0xff46005F),
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(left: 20, top: 20),
+                            hintText: mailtext,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: isMail_error
+                                    ? Colors.red
+                                    : Color(0xffDADADA),
+                              ),
+                            ),
+                            fillColor: isMail_error
+                                ? Color(0xffFF0000).withOpacity(0.05)
+                                : Colors.black.withOpacity(0.05),
+                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: Color(0xffDADADA),
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              setState(() {
+                                isMail_error = true;
+                              });
+                              return 'Bu alan boş bırakılamaz.';
+                            } else if (!RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(value)) {
+                              return "Lüften geçerli bir mail adresi giriniz. ";
+                            }
+                            setState(() {
+                              isMail_error = false;
+                            });
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: height * 0.016),
+                        TextFormField(
+                          controller: password,
+                          cursorColor: Color(0xff46005F),
+                          obscureText: !passwordVisible,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: passwordVisible
+                                  ? Image.asset("assets/login/passicon.png")
+                                  : Image.asset("assets/login/Vector.png"),
+                              onPressed: () {
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
+                                });
+                              },
+                            ),
+                            contentPadding: EdgeInsets.only(left: 20, top: 20),
+                            hintText: passtext,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: isPass_error
+                                    ? Colors.red
+                                    : Color(0xffDADADA),
+                              ),
+                            ),
+                            fillColor: isPass_error
+                                ? Color(0xffFF0000).withOpacity(0.05)
+                                : Colors.black.withOpacity(0.05),
+                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: const BorderSide(
+                                color: Color(0xffDADADA),
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              setState(() {
+                                isPass_error = true;
+                              });
+                              return 'Bu alan boş bırakılamaz.';
+                            }
+                            setState(() {
+                              isPass_error = false;
+                            });
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: height * 0.021),
+                        LinkText(
+                          text: forgotpasstext,
+                          routeName: ForgotPassScreenView.routeName,
+                        ),
+                        SizedBox(height: height * 0.06),
+                        SizedBox(
+                          width: double.infinity,
+                          height: height * 0.06,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color(0xff46005F).withOpacity(0.8),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                            ),
+                            onPressed: () {
+                              if (_key.currentState!.validate()) {}
+                              /* Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          dddd()),
+                                  ModalRoute.withName(dddd.routeName));*/
+                              print(mail.text);
+                              print(password.text);
+                            },
+                            child: Text(
+                              logintext,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),
