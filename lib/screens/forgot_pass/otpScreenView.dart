@@ -1,7 +1,5 @@
 // ignore_for_file: file_names, must_be_immutable, avoid_print
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,17 +16,8 @@ class OtpScreenView extends StatefulWidget {
 }
 
 class _OtpScreenViewState extends State<OtpScreenView> {
-  TextEditingController pin1 = TextEditingController();
-  TextEditingController pin2 = TextEditingController();
-  TextEditingController pin3 = TextEditingController();
-  TextEditingController pin4 = TextEditingController();
-
-  bool inputcolor1 = false;
-  bool inputcolor2 = false;
-  bool inputcolor3 = false;
-  bool inputcolor4 = false;
   late int kod;
-  late String pin;
+  String pin = "";
   final String buttontext = "Kodu Onayla";
   final String bottomtext = "Şifreni hatırladın mı?";
   final String bottomlinktext = "Giriş yap";
@@ -68,29 +57,15 @@ class _OtpScreenViewState extends State<OtpScreenView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SizedBox(height: height * 0.062),
-                      Text(
-                        titletext,
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black.withOpacity(0.7),
-                        ),
-                      ),
+                      Title(titletext: titletext),
                       SizedBox(height: height * 0.026),
-                      Text(
-                        descriptiontext,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                          color: Color(0xff8391A1),
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
+                      Description(descriptiontext: descriptiontext),
                       SizedBox(height: height * 0.04),
                       PinCodeTextField(
                         appContext: context,
                         length: 4,
                         enableActiveFill: true,
+                        cursorColor: const Color(0xffA800A4),
                         keyboardType: TextInputType.number,
                         pinTheme: PinTheme(
                           fieldWidth: width / 8,
@@ -104,7 +79,9 @@ class _OtpScreenViewState extends State<OtpScreenView> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         onChanged: ((value) {
-                          pin = value;
+                          setState(() {
+                            pin = value;
+                          });
                         }),
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(4),
@@ -112,71 +89,14 @@ class _OtpScreenViewState extends State<OtpScreenView> {
                         ],
                       ),
                       SizedBox(height: height * 0.020),
-                      SizedBox(
-                        width: double.infinity,
-                        height: height * 0.06,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xff46005F).withOpacity(0.8),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                          ),
-                          onPressed: () {
-                            if (args["otp_code"].toString() == pin) {
-                              Navigator.of(context).popAndPushNamed(
-                                  NewPassScreen.routeName,
-                                  arguments: {
-                                    'token': args["token"],
-                                    'email': args["email"],
-                                  });
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text("Yanlış yada eksik kod!"),
-                              ));
-                            }
-                          },
-                          child: Text(
-                            buttontext,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
+                      Button(
+                        height: height,
+                        buttontext: buttontext,
+                        args: args,
+                        pin: pin,
                       ),
                       SizedBox(height: height * 0.021),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const <Widget>[
-                          Text(
-                            "Mail ulaşmadıysa",
-                            style: TextStyle(
-                              color: Color(0xff8391A1),
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            " spam",
-                            style: TextStyle(
-                              color: Color(0xff8391A1),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
-                            ),
-                          ),
-                          Text(
-                            " kutunuz kontrol ediniz.",
-                            style: TextStyle(
-                              color: Color(0xff8391A1),
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
+                      const InfoText(),
                     ],
                   ),
                 ),
@@ -186,6 +106,142 @@ class _OtpScreenViewState extends State<OtpScreenView> {
         ),
       ),
     ));
+  }
+}
+
+class Description extends StatelessWidget {
+  const Description({
+    Key? key,
+    required this.descriptiontext,
+  }) : super(key: key);
+
+  final String descriptiontext;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      descriptiontext,
+      style: const TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 14,
+        color: Color(0xff8391A1),
+      ),
+      textAlign: TextAlign.left,
+    );
+  }
+}
+
+class Title extends StatelessWidget {
+  const Title({
+    Key? key,
+    required this.titletext,
+  }) : super(key: key);
+
+  final String titletext;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      titletext,
+      style: TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.w600,
+        color: Colors.black.withOpacity(0.7),
+      ),
+    );
+  }
+}
+
+class Button extends StatelessWidget {
+  const Button({
+    Key? key,
+    required this.height,
+    required this.buttontext,
+    required this.args,
+    required this.pin,
+  }) : super(key: key);
+
+  final double height;
+  final String buttontext;
+  final Map<String, dynamic> args;
+  final String pin;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: height * 0.06,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xff46005F).withOpacity(0.8),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        ),
+        onPressed: () {
+          print(args["otp_code"]);
+          print(pin);
+
+          if (args["otp_code"].toString() == pin) {
+            Navigator.of(context)
+                .popAndPushNamed(NewPassScreen.routeName, arguments: {
+              'token': args["token"],
+              'email': args["email"],
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Yanlış yada eksik kod!"),
+            ));
+          }
+        },
+        child: Text(
+          buttontext,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class InfoText extends StatelessWidget {
+  const InfoText({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const <Widget>[
+        Text(
+          "Mail ulaşmadıysa",
+          style: TextStyle(
+            color: Color(0xff8391A1),
+            fontWeight: FontWeight.w400,
+            fontSize: 12,
+          ),
+        ),
+        Text(
+          " spam",
+          style: TextStyle(
+            color: Color(0xff8391A1),
+            fontWeight: FontWeight.w600,
+            fontSize: 13,
+          ),
+        ),
+        Text(
+          " kutunuz kontrol ediniz.",
+          style: TextStyle(
+            color: Color(0xff8391A1),
+            fontWeight: FontWeight.w400,
+            fontSize: 12,
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -230,40 +286,6 @@ class BottomText extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class Button extends StatelessWidget {
-  const Button({
-    Key? key,
-    required this.height,
-    required this.text,
-  }) : super(key: key);
-
-  final double height;
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: height * 0.06,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xff46005F).withOpacity(0.8),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        ),
-        onPressed: () {},
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
     );
   }
 }

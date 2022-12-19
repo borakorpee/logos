@@ -1,9 +1,7 @@
 // ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, non_constant_identifier_names, use_build_context_synchronously, unused_local_variable
 
 import 'package:flutter/material.dart';
-import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/forgot_pass/successScreenView.dart';
-import 'package:http/http.dart' as http;
 import 'package:logos/service/auth_service.dart';
 import '../../components/customBackButton.dart';
 
@@ -49,137 +47,24 @@ class _NewPassScreenState extends State<NewPassScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SizedBox(height: height * 0.062),
-                Text(
-                  titletext,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black.withOpacity(0.7),
-                  ),
-                ),
+                Title(titletext: titletext),
                 SizedBox(height: height * 0.026),
-                Text(
-                  descriptiontext,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    color: Color(0xff8391A1),
-                  ),
-                  textAlign: TextAlign.left,
-                ),
+                Description(descriptiontext: descriptiontext),
                 SizedBox(height: height * 0.026),
-                TextFormField(
-                  controller: password1,
-                  cursorColor: const Color(0xff46005F),
-                  obscureText: !passwordVisible1,
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      icon: passwordVisible1
-                          ? Image.asset("assets/login/passicon.png")
-                          : Image.asset("assets/login/Vector.png"),
-                      onPressed: () {
-                        setState(() {
-                          passwordVisible1 = !passwordVisible1;
-                        });
-                      },
-                    ),
-                    contentPadding: const EdgeInsets.all(20),
-                    hintText: passtext1,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                        color:
-                            isPass_error ? Colors.red : const Color(0xffDADADA),
-                      ),
-                    ),
-                    fillColor: isPass_error
-                        ? const Color(0xffFF0000).withOpacity(0.05)
-                        : Colors.black.withOpacity(0.05),
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: const BorderSide(
-                        color: Color(0xffDADADA),
-                      ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      setState(() {
-                        isPass_error = true;
-                      });
-                      return 'Bu alan boş bırakılamaz.';
-                    } else if (value != password2.text) {
-                      setState(() {
-                        isPass_error = true;
-                      });
-                      return "Girdiğiniz şifreler aynı olmalıdır";
-                    }
-                    setState(() {
-                      isPass_error = false;
-                    });
-                    return null;
-                  },
+                PasswordTextField(
+                  password_controler: password1,
+                  passwordVisible: passwordVisible1,
+                  passtext: passtext1,
+                  isPass_error: isPass_error,
+                  other_controller: password2,
                 ),
                 SizedBox(height: height * 0.016),
-                TextFormField(
-                  controller: password2,
-                  cursorColor: const Color(0xff46005F),
-                  obscureText: !passwordVisible2,
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      icon: passwordVisible2
-                          ? Image.asset("assets/login/passicon.png")
-                          : Image.asset("assets/login/Vector.png"),
-                      onPressed: () {
-                        setState(() {
-                          passwordVisible2 = !passwordVisible2;
-                        });
-                      },
-                    ),
-                    contentPadding: const EdgeInsets.all(20),
-                    hintText: passtext2,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                        color:
-                            isPass_error ? Colors.red : const Color(0xffDADADA),
-                      ),
-                    ),
-                    fillColor: isPass_error
-                        ? const Color(0xffFF0000).withOpacity(0.05)
-                        : Colors.black.withOpacity(0.05),
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: const BorderSide(
-                        color: Color(0xffDADADA),
-                      ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      setState(() {
-                        isPass_error = true;
-                      });
-                      return 'Bu alan boş bırakılamaz.';
-                    } else if (value != password1.text) {
-                      setState(() {
-                        isPass_error = true;
-                      });
-                      return "Girdiğiniz şifreler aynı olmalıdır";
-                    }
-                    setState(() {
-                      isPass_error = false;
-                    });
-                    return null;
-                  },
+                PasswordTextField(
+                  password_controler: password2,
+                  passwordVisible: passwordVisible2,
+                  passtext: passtext2,
+                  isPass_error: isPass_error,
+                  other_controller: password1,
                 ),
                 SizedBox(height: height * 0.032),
                 SizedBox(
@@ -194,12 +79,6 @@ class _NewPassScreenState extends State<NewPassScreen> {
                     onPressed: () async {
                       if (_key.currentState!.validate()) {
                         AuthService.resetPass(args["token"], password2.text);
-
-                        /* var response = await http
-                            .put(Uri.parse("$root/client/reset/pass"), body: {
-                          "token": args["token"],
-                          "pass": password2.text,
-                        });*/
 
                         Navigator.of(context)
                             .popAndPushNamed(SuccessScreenView.routeName);
@@ -223,65 +102,127 @@ class _NewPassScreenState extends State<NewPassScreen> {
   }
 }
 
+class Description extends StatelessWidget {
+  const Description({
+    Key? key,
+    required this.descriptiontext,
+  }) : super(key: key);
+
+  final String descriptiontext;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      descriptiontext,
+      style: const TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 14,
+        color: Color(0xff8391A1),
+      ),
+      textAlign: TextAlign.left,
+    );
+  }
+}
+
+class Title extends StatelessWidget {
+  const Title({
+    Key? key,
+    required this.titletext,
+  }) : super(key: key);
+
+  final String titletext;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      titletext,
+      style: TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.w600,
+        color: Colors.black.withOpacity(0.7),
+      ),
+    );
+  }
+}
+
 class PasswordTextField extends StatefulWidget {
   PasswordTextField({
     Key? key,
-    required bool passwordVisible,
-    required this.password,
+    required this.password_controler,
+    required this.passwordVisible,
     required this.passtext,
-    required this.width,
-    required this.height,
-  })  : passwordVisible = passwordVisible,
-        super(key: key);
+    required this.isPass_error,
+    required this.other_controller,
+  }) : super(key: key);
+
+  final TextEditingController password_controler;
+  final TextEditingController other_controller;
 
   bool passwordVisible;
-  final TextEditingController password;
   final String passtext;
-  final double width;
-  final double height;
+  bool isPass_error;
 
   @override
-  State<PasswordTextField> createState() => PasswordTextFieldState();
+  State<PasswordTextField> createState() => _PasswordTextFieldState();
 }
 
-class PasswordTextFieldState extends State<PasswordTextField> {
+class _PasswordTextFieldState extends State<PasswordTextField> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.black.withOpacity(0.05),
-        border: Border.all(
-          color: const Color(0xffDADADA),
-          width: 1,
+    return TextFormField(
+      controller: widget.password_controler,
+      cursorColor: const Color(0xff46005F),
+      obscureText: !widget.passwordVisible,
+      decoration: InputDecoration(
+        suffixIcon: IconButton(
+          icon: widget.passwordVisible
+              ? Image.asset("assets/login/passicon.png")
+              : Image.asset("assets/login/Vector.png"),
+          onPressed: () {
+            setState(() {
+              widget.passwordVisible = !widget.passwordVisible;
+            });
+          },
         ),
-      ),
-      height: widget.height * 0.06,
-      child: Center(
-        child: TextFormField(
-          obscureText: !widget.passwordVisible,
-          controller: widget.password,
-          textAlignVertical: TextAlignVertical.center,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            suffix: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    widget.passwordVisible = !widget.passwordVisible;
-                  });
-                },
-                child: widget.passwordVisible
-                    ? Image.asset("assets/login/passicon.png")
-                    : const Icon(Icons.visibility_off)),
-            hintText: widget.passtext,
-            contentPadding: EdgeInsets.only(
-              left: widget.width * 0.046,
-              bottom: widget.height * 0.015,
-              right: widget.width * 0.046,
-            ),
+        contentPadding: const EdgeInsets.only(left: 20, top: 20),
+        hintText: widget.passtext,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(
+            color: widget.isPass_error ? Colors.red : const Color(0xffDADADA),
           ),
         ),
+        fillColor: widget.isPass_error
+            ? const Color(0xffFF0000).withOpacity(0.05)
+            : Colors.black.withOpacity(0.05),
+        filled: true,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(
+            color: widget.isPass_error ? Colors.red : const Color(0xffDADADA),
+          ),
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
       ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          setState(() {
+            widget.isPass_error = true;
+          });
+          return 'Bu alan boş bırakılamaz.';
+        } else if (value != widget.other_controller.text) {
+          setState(() {
+            widget.isPass_error = true;
+          });
+          return "Girdiğiniz şifreler aynı olmalıdır";
+        }
+        setState(() {
+          widget.isPass_error = false;
+        });
+        return null;
+      },
     );
   }
 }

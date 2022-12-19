@@ -1,6 +1,5 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, no_leading_underscores_for_local_identifiers, unnecessary_string_interpolations, avoid_print, prefer_interpolation_to_compose_strings, avoid_types_as_parameter_names, non_constant_identifier_names, use_build_context_synchronously
 
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/service/auth_service.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
-import 'package:http/http.dart' as http;
 
 class ForgotPassScreenView extends StatefulWidget {
   static const routeName = "/forgotpass";
@@ -102,7 +100,7 @@ class _ForgotPassScreenViewState extends State<ForgotPassScreenView> {
                       controller: mail,
                       cursorColor: Color(0xff46005F),
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(20),
+                        contentPadding: EdgeInsets.only(left: 20, top: 20),
                         hintText: mailtext,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -178,33 +176,6 @@ class _ForgotPassScreenViewState extends State<ForgotPassScreenView> {
                               }
                             }
                           });
-
-                          /* var response = await http.get(Uri.parse(
-                              "$root/client/reset?email=${mail.text}"));
-                          var data = jsonDecode(response.body);
-                          var token = data["token"];
-
-                          if (_key.currentState!.validate()) {
-                            if (data["status"]) {
-                              sendMail(mail.text, kod, context);
-                              Navigator.of(context).popAndPushNamed(
-                                  OtpScreenView.routeName,
-                                  arguments: {
-                                    'otp_code': kod,
-                                    'token': token,
-                                    'email': mail.text,
-                                  });
-                            }
-                            if (!data["status"]) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text("Girdiğiniz mail bulunamadı.")));
-                              setState(() {
-                                isMail_error = true;
-                              });
-                            }
-                          }*/
                         },
                         child: Text(
                           buttontext,

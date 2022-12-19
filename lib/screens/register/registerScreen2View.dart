@@ -379,6 +379,8 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                                           'sex': args["sex"],
                                         });
                                     var data = jsonDecode(response.body);
+                                    print(data);
+
                                     if (data["status"] == true) {
                                       Navigator.of(context).pushNamed(
                                           SuccessScreenView.routeName);
