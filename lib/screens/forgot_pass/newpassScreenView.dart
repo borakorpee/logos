@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/forgot_pass/successScreenView.dart';
 import 'package:http/http.dart' as http;
+import 'package:logos/service/auth_service.dart';
 import '../../components/customBackButton.dart';
 
 class NewPassScreen extends StatefulWidget {
@@ -192,11 +193,13 @@ class _NewPassScreenState extends State<NewPassScreen> {
                     ),
                     onPressed: () async {
                       if (_key.currentState!.validate()) {
-                        var response = await http
+                        AuthService.resetPass(args["token"], password2.text);
+
+                        /* var response = await http
                             .put(Uri.parse("$root/client/reset/pass"), body: {
                           "token": args["token"],
                           "pass": password2.text,
-                        });
+                        });*/
 
                         Navigator.of(context)
                             .popAndPushNamed(SuccessScreenView.routeName);

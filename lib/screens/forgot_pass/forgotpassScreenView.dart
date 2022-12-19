@@ -9,6 +9,7 @@ import 'package:logos/components/customBackButton.dart';
 import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/forgot_pass/otpScreenView.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
+import 'package:logos/service/auth_service.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:http/http.dart' as http;
@@ -117,7 +118,8 @@ class _ForgotPassScreenViewState extends State<ForgotPassScreenView> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(
-                            color: Color(0xffDADADA),
+                            color:
+                                isMail_error ? Colors.red : Color(0xffDADADA),
                           ),
                         ),
                         border: OutlineInputBorder(
@@ -152,9 +154,33 @@ class _ForgotPassScreenViewState extends State<ForgotPassScreenView> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
                         ),
-                        onPressed: () async {
-                          var response = await http.get(Uri.parse(
-                              root + "client/reset?email=${mail.text}"));
+                        onPressed: () {
+                          AuthService.isEmailExists(mail.text).then((response) {
+                            if (_key.currentState!.validate()) {
+                              if (response["status"]) {
+                                sendMail(mail.text, kod, context);
+                                Navigator.of(context).popAndPushNamed(
+                                    OtpScreenView.routeName,
+                                    arguments: {
+                                      'otp_code': kod,
+                                      'token': response["token"],
+                                      'email': mail.text,
+                                    });
+                              }
+                              if (!response["status"]) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            "Girdiğiniz mail bulunamadı.")));
+                                setState(() {
+                                  isMail_error = true;
+                                });
+                              }
+                            }
+                          });
+
+                          /* var response = await http.get(Uri.parse(
+                              "$root/client/reset?email=${mail.text}"));
                           var data = jsonDecode(response.body);
                           var token = data["token"];
 
@@ -178,7 +204,7 @@ class _ForgotPassScreenViewState extends State<ForgotPassScreenView> {
                                 isMail_error = true;
                               });
                             }
-                          }
+                          }*/
                         },
                         child: Text(
                           buttontext,
@@ -212,7 +238,6 @@ class _ForgotPassScreenViewState extends State<ForgotPassScreenView> {
       String konu = "Şifre Sıfırlama Kodunuz";
       String mesajIcerigi = "Date/Tarih: $date \nMesage/Mesaj: $code";
 
-      // Create our message.
       final message = Message()
         ..from = Address("$_username")
         ..recipients.add('$sendmail')
@@ -278,129 +303,6 @@ class BottomText extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class Button extends StatelessWidget {
-  const Button({
-    Key? key,
-    required this.height,
-    required this.text,
-    required this.kod,
-    required this.mailcontroller,
-  }) : super(key: key);
-  final double height;
-  final String text;
-  final int kod;
-  final TextEditingController mailcontroller;
-
-  Future<bool> sendMail(String email, int code, BuildContext context) async {
-    bool sendStates = false;
-    try {
-      String _username = mailusername;
-      String _password = mailpassword;
-
-      final smtpServer = hotmail(_username, _password);
-
-      String date = DateTime.now().toString();
-      String sendmail = email;
-      String konu = "Şifre Sıfırlama Kodunuz";
-      String mesajIcerigi = "Date/Tarih: $date \nMesage/Mesaj: $code";
-
-      // Create our message.
-      final message = Message()
-        ..from = Address("$_username")
-        ..recipients.add('$sendmail')
-        ..subject = konu
-        ..text = mesajIcerigi;
-
-      try {
-        final sendReport = await send(message, smtpServer);
-        sendStates = true;
-        print('Message sent: ' + sendReport.toString());
-      } on MailerException catch (e) {
-        sendStates = false;
-        print('Message not sent.');
-        for (var p in e.problems) {
-          print('Problem: ${p.code}: ${p.msg}');
-        }
-      }
-    } catch (Exception) {
-      print(Exception.toString());
-    }
-    return sendStates;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: height * 0.06,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xff46005F).withOpacity(0.8),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        ),
-        onPressed: () {
-          sendMail(mailcontroller.text, kod, context);
-          Navigator.of(context).popAndPushNamed(OtpScreenView.routeName,
-              arguments: {'otp_code': kod});
-        },
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class MailTextField extends StatelessWidget {
-  const MailTextField({
-    Key? key,
-    required this.height,
-    required this.username,
-    required this.mailtext,
-    required this.width,
-  }) : super(key: key);
-
-  final double height;
-  final TextEditingController username;
-  final String mailtext;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.black.withOpacity(0.05),
-        border: Border.all(
-          color: const Color(0xffDADADA),
-          width: 1,
-        ),
-      ),
-      height: height * 0.06,
-      child: Center(
-        child: TextFormField(
-          controller: username,
-          textAlignVertical: TextAlignVertical.center,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: mailtext,
-            contentPadding: EdgeInsets.only(
-              left: width * 0.046,
-              bottom: height * 0.012,
-              right: width * 0.046,
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
