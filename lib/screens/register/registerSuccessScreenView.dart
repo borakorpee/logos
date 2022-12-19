@@ -12,49 +12,53 @@ class RegisterSuccess extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Padding(
-          padding: EdgeInsets.only(left: width * 0.110, right: width * 0.110),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: height * 0.34),
-              SizedBox(
-                width: width * 0.2325,
-                height: height * 0.11,
-                child: Stack(
-                  children: <Widget>[
-                    Center(child: Image.asset("assets/forgot_pass/Vector.png")),
-                    Center(
-                      child: SizedBox(
-                          width: width * 0.11,
-                          height: height * 0.04,
-                          child: Image.asset("assets/forgot_pass/tik.png")),
-                    ),
-                  ],
+      body: WillPopScope(
+        onWillPop: () async => false,
+        child: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Padding(
+            padding: EdgeInsets.only(left: width * 0.110, right: width * 0.110),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: height * 0.34),
+                SizedBox(
+                  width: width * 0.2325,
+                  height: height * 0.11,
+                  child: Stack(
+                    children: <Widget>[
+                      Center(
+                          child: Image.asset("assets/forgot_pass/Vector.png")),
+                      Center(
+                        child: SizedBox(
+                            width: width * 0.11,
+                            height: height * 0.04,
+                            child: Image.asset("assets/forgot_pass/tik.png")),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: height * 0.032),
-              const Text(
-                "Kayıt Olundu",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 26,
+                SizedBox(height: height * 0.032),
+                const Text(
+                  "Kayıt Olundu",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 26,
+                  ),
                 ),
-              ),
-              const Text(
-                "Başarılı bir şekilde \n kayıt olundu.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
+                const Text(
+                  "Başarılı bir şekilde \n kayıt olundu.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                  ),
                 ),
-              ),
-              SizedBox(height: height * 0.037),
-              Button(height: height, text: buttontext),
-            ],
+                SizedBox(height: height * 0.037),
+                Button(height: height, text: buttontext),
+              ],
+            ),
           ),
         ),
       ),
