@@ -54,36 +54,7 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
           children: <Widget>[
             Positioned(
               bottom: height * 0.033,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "Hesabın var mı?",
-                    style: GoogleFonts.spaceGrotesk(
-                      color: Colors.black.withOpacity(0.6),
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(width: width * 0.023),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          LoginScreenView.routeName,
-                          (Route<dynamic> route) => route.isFirst);
-                    },
-                    child: Text(
-                      "Giriş yap",
-                      style: GoogleFonts.spaceGrotesk(
-                        color: Colors.black.withOpacity(0.6),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              child: BottomText(width: width),
             ),
             Form(
               key: _key,
@@ -97,14 +68,7 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
                     child: Column(
                       children: [
                         Logo(width: width, height: height),
-                        Text(
-                          "Kayıt Ol",
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black.withOpacity(0.7),
-                          ),
-                        ),
+                        Title(),
                         SizedBox(height: height * 0.03),
                         Row(
                           children: [
@@ -343,6 +307,67 @@ class _RegisterScreenViewState extends State<RegisterScreenView> {
         ),
       ),
     ));
+  }
+}
+
+class Title extends StatelessWidget {
+  const Title({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "Kayıt Ol",
+      style: TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.w600,
+        color: Colors.black.withOpacity(0.7),
+      ),
+    );
+  }
+}
+
+class BottomText extends StatelessWidget {
+  const BottomText({
+    Key? key,
+    required this.width,
+  }) : super(key: key);
+
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          "Hesabın var mı?",
+          style: GoogleFonts.spaceGrotesk(
+            color: Colors.black.withOpacity(0.6),
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        SizedBox(width: width * 0.023),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                LoginScreenView.routeName,
+                (Route<dynamic> route) => route.isFirst);
+          },
+          child: Text(
+            "Giriş yap",
+            style: GoogleFonts.spaceGrotesk(
+              color: Colors.black.withOpacity(0.6),
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 

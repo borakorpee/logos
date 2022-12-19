@@ -10,6 +10,7 @@ import 'package:logos/screens/forgot_pass/successScreenView.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/register/kvkkScreenView.dart';
 import "package:http/http.dart" as http;
+import 'package:logos/service/auth_service.dart';
 import '../../components/customBackButton.dart';
 
 class RegisterScreen2 extends StatefulWidget {
@@ -35,7 +36,6 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
   final String passtext2 = "Şifre tekrarı";
   bool passwordVisible2 = false;
   TextEditingController password2 = TextEditingController();
-  bool isPass_error = false;
   bool isKVKK_error = false;
   @override
   Widget build(BuildContext context) {
@@ -87,7 +87,6 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
             Column(
               children: <Widget>[
                 CustomBackButton(context),
-                Text(isMail_error.toString()),
                 Padding(
                   padding: EdgeInsets.only(
                       left: width * 0.110, right: width * 0.110),
@@ -156,120 +155,18 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                           },
                         ),
                         SizedBox(height: height * 0.021),
-                        TextFormField(
-                          controller: password1,
-                          cursorColor: Color(0xff46005F),
-                          obscureText: !passwordVisible1,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              icon: passwordVisible1
-                                  ? Image.asset("assets/login/passicon.png")
-                                  : Image.asset("assets/login/Vector.png"),
-                              onPressed: () {
-                                setState(() {
-                                  passwordVisible1 = !passwordVisible1;
-                                });
-                              },
-                            ),
-                            contentPadding: EdgeInsets.only(left: 20, top: 20),
-                            hintText: passtext1,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                color: isPass_error
-                                    ? Colors.red
-                                    : Color(0xffDADADA),
-                              ),
-                            ),
-                            fillColor: isPass_error
-                                ? Color(0xffFF0000).withOpacity(0.05)
-                                : Colors.black.withOpacity(0.05),
-                            filled: true,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: const BorderSide(
-                                color: Color(0xffDADADA),
-                              ),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              setState(() {
-                                isPass_error = true;
-                              });
-                              return 'Bu alan boş bırakılamaz.';
-                            } else if (value != password2.text) {
-                              setState(() {
-                                isPass_error = true;
-                              });
-                              return "Girdiğiniz şifreler aynı olmalıdır";
-                            }
-                            setState(() {
-                              isPass_error = false;
-                            });
-                            return null;
-                          },
+                        PasswordTextField(
+                          password_controler: password1,
+                          passwordVisible: passwordVisible1,
+                          passtext: passtext1,
+                          other_controller: password2,
                         ),
                         SizedBox(height: height * 0.016),
-                        TextFormField(
-                          controller: password2,
-                          cursorColor: Color(0xff46005F),
-                          obscureText: !passwordVisible2,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              icon: passwordVisible2
-                                  ? Image.asset("assets/login/passicon.png")
-                                  : Image.asset("assets/login/Vector.png"),
-                              onPressed: () {
-                                setState(() {
-                                  passwordVisible2 = !passwordVisible2;
-                                });
-                              },
-                            ),
-                            contentPadding: EdgeInsets.only(left: 20, top: 20),
-                            hintText: passtext2,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                color: isPass_error
-                                    ? Colors.red
-                                    : Color(0xffDADADA),
-                              ),
-                            ),
-                            fillColor: isPass_error
-                                ? Color(0xffFF0000).withOpacity(0.05)
-                                : Colors.black.withOpacity(0.05),
-                            filled: true,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: const BorderSide(
-                                color: Color(0xffDADADA),
-                              ),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              setState(() {
-                                isPass_error = true;
-                              });
-                              return 'Bu alan boş bırakılamaz.';
-                            } else if (value != password1.text) {
-                              setState(() {
-                                isPass_error = true;
-                              });
-                              return "Girdiğiniz şifreler aynı olmalıdır";
-                            }
-                            setState(() {
-                              isPass_error = false;
-                            });
-                            return null;
-                          },
+                        PasswordTextField(
+                          password_controler: password2,
+                          passwordVisible: passwordVisible2,
+                          passtext: passtext2,
+                          other_controller: password1,
                         ),
                         SizedBox(height: height * 0.030),
                         Row(
@@ -350,42 +247,30 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                                   setState(() {
                                     isKVKK_error = false;
                                   });
-                                  var mailresponse = await http.get(Uri.parse(
-                                      "$root/client/reset?email=${mail.text}"));
-                                  var mailResponse_data =
-                                      jsonDecode(mailresponse.body);
-                                  if (mailResponse_data["status"]) {
-                                    setState(() {
-                                      isMail_error = true;
-                                    });
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(const SnackBar(
-                                      content: Text(
-                                          "Girdiğiniz mail adresi zaten kullanılmakta."),
-                                    ));
-                                  } else if (mailResponse_data["status"] ==
-                                      false) {
-                                    var response = await http.post(
-                                        Uri.parse('$root/client/add'),
-                                        body: {
-                                          'name': args["name"],
-                                          'surname': args["surname"],
-                                          'pass': password1.text,
-                                          'email': mail.text,
-                                          'birth': args["birth"],
-                                          'city': args["city"],
-                                          'county': args["county"],
-                                          'job': args["job"],
-                                          'sex': args["sex"],
-                                        });
-                                    var data = jsonDecode(response.body);
-                                    print(data);
 
-                                    if (data["status"] == true) {
-                                      Navigator.of(context).pushNamed(
-                                          SuccessScreenView.routeName);
+                                  AuthService.isEmailExists(mail.text)
+                                      .then((mail_exist) {
+                                    if (mail_exist["status"]) {
+                                      setState(() {
+                                        isMail_error = true;
+                                      });
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                        content: Text(
+                                            "Girdiğiniz mail adresi zaten kullanılmakta."),
+                                      ));
+                                    } else if (mail_exist["status"] == false) {
+                                      AuthService.registerClient(
+                                              args, password1.text, mail.text)
+                                          .then((data) {
+                                        print(data);
+                                        if (data["status"] == true) {
+                                          Navigator.of(context).pushNamed(
+                                              SuccessScreenView.routeName);
+                                        }
+                                      });
                                     }
-                                  }
+                                  });
                                 }
                               }
                             },
@@ -408,6 +293,88 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
         ),
       ),
     ));
+  }
+}
+
+class PasswordTextField extends StatefulWidget {
+  PasswordTextField({
+    Key? key,
+    required this.password_controler,
+    required this.passwordVisible,
+    required this.passtext,
+    required this.other_controller,
+  }) : super(key: key);
+
+  final TextEditingController password_controler;
+  final TextEditingController other_controller;
+
+  bool passwordVisible;
+  final String passtext;
+
+  @override
+  State<PasswordTextField> createState() => _PasswordTextFieldState();
+}
+
+class _PasswordTextFieldState extends State<PasswordTextField> {
+  bool isPass_error = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: widget.password_controler,
+      cursorColor: const Color(0xff46005F),
+      obscureText: !widget.passwordVisible,
+      decoration: InputDecoration(
+        suffixIcon: IconButton(
+          icon: widget.passwordVisible
+              ? Image.asset("assets/login/passicon.png")
+              : Image.asset("assets/login/Vector.png"),
+          onPressed: () {
+            setState(() {
+              widget.passwordVisible = !widget.passwordVisible;
+            });
+          },
+        ),
+        contentPadding: const EdgeInsets.only(left: 20, top: 20),
+        hintText: widget.passtext,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(
+            color: isPass_error ? Colors.red : const Color(0xffDADADA),
+          ),
+        ),
+        fillColor: isPass_error
+            ? const Color(0xffFF0000).withOpacity(0.05)
+            : Colors.black.withOpacity(0.05),
+        filled: true,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(
+            color: isPass_error ? Colors.red : const Color(0xffDADADA),
+          ),
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          setState(() {
+            isPass_error = true;
+          });
+          return 'Bu alan boş bırakılamaz.';
+        } else if (value != widget.other_controller.text) {
+          setState(() {
+            isPass_error = true;
+          });
+          return "Girdiğiniz şifreler aynı olmalıdır";
+        }
+        setState(() {
+          isPass_error = false;
+        });
+        return null;
+      },
+    );
   }
 }
 
