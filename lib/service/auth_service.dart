@@ -33,4 +33,17 @@ class AuthService {
     });
     return jsonDecode(response.body);
   }
+
+  static Future login(String mail, String pass) async {
+    var response = await http.post(
+        Uri.parse(
+          "$root/client/login",
+        ),
+        body: {
+          'email': mail,
+          'pass': pass,
+        });
+
+    return jsonDecode(response.body);
+  }
 }

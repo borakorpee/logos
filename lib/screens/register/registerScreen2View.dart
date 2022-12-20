@@ -1,15 +1,11 @@
-// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, file_names, use_build_context_synchronously, use_full_hex_values_for_flutter_colors
-
-import 'dart:convert';
-
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, file_names, use_build_context_synchronously, use_full_hex_values_for_flutter_colors, must_be_immutable
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/forgot_pass/successScreenView.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/register/kvkkScreenView.dart';
-import "package:http/http.dart" as http;
+import 'package:logos/screens/register/registerSuccessScreenView.dart';
 import 'package:logos/service/auth_service.dart';
 import '../../components/customBackButton.dart';
 
@@ -263,10 +259,9 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                                       AuthService.registerClient(
                                               args, password1.text, mail.text)
                                           .then((data) {
-                                        print(data);
                                         if (data["status"] == true) {
                                           Navigator.of(context).pushNamed(
-                                              SuccessScreenView.routeName);
+                                              RegisterSuccess.routeName);
                                         }
                                       });
                                     }

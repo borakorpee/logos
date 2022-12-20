@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logos/models/client_model.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 
 class dddd extends StatefulWidget {
@@ -20,9 +21,25 @@ class _ddddState extends State<dddd> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final args = ModalRoute.of(context)!.settings.arguments as ClientModel?;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("giriş yaptın"),
+      body: SizedBox(
+        width: width,
+        height: height,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(args!.client!.sId.toString()),
+              Text(args.client!.name.toString()),
+              Text(args.client!.surName.toString()),
+              Text(args.client!.job.toString()),
+              Text(args.client!.county.toString()),
+              Text(args.client!.dateOfBirth.toString()),
+              Text(args.client!.createAt.toString()),
+              Text(args.client!.sex.toString()),
+            ]),
       ),
     );
   }
