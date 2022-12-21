@@ -1,5 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:logos/models/client_model.dart';
+import 'package:logos/providers/client_provider.dart';
+import 'package:provider/provider.dart';
+
 import '../screens/forgot_pass/email_OTP.dart';
 import 'package:http/http.dart' as http;
 
@@ -34,7 +39,7 @@ class AuthService {
     return jsonDecode(response.body);
   }
 
-  static Future login(String mail, String pass) async {
+  static Future login(String mail, String pass, BuildContext context) async {
     var response = await http.post(
         Uri.parse(
           "$root/client/login",
@@ -43,6 +48,9 @@ class AuthService {
           'email': mail,
           'pass': pass,
         });
+
+    Provider.of<ClientProvider>(context, listen: false)
+        .setClient(response.body);
 
     return jsonDecode(response.body);
   }

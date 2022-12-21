@@ -1,10 +1,16 @@
+import 'package:flutter/material.dart';
+
 class ClientModel {
   bool? status;
   String? message;
   String? token;
   Client? client;
 
-  ClientModel({this.status, this.message, this.token, this.client});
+  ClientModel(
+      {required this.status,
+      required this.message,
+      required this.token,
+      required this.client});
 
   ClientModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
