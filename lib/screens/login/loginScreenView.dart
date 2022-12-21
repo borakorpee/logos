@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/components/customBackButton.dart';
-import 'package:logos/d.dart';
 import 'package:logos/models/client_model.dart';
 import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
+import 'package:logos/screens/home/homeScreenView.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
 import 'package:logos/service/auth_service.dart';
 
@@ -244,12 +244,12 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                                                 MaterialPageRoute(
                                                     builder: (BuildContext
                                                             context) =>
-                                                        const dddd(),
+                                                        const HomeScreenView(),
                                                     settings: RouteSettings(
                                                         arguments:
                                                             _clientModel)),
                                                 ModalRoute.withName(
-                                                    dddd.routeName));
+                                                    HomeScreenView.routeName));
                                             setState(() {
                                               isLoading = false;
                                             });
@@ -288,49 +288,6 @@ class _LoginScreenViewState extends State<LoginScreenView> {
         ),
       ),
     ));
-  }
-}
-
-class LoginButton extends StatelessWidget {
-  const LoginButton({
-    Key? key,
-    required this.height,
-    required this.logintext,
-    required this.us,
-    required this.pas,
-  }) : super(key: key);
-
-  final double height;
-  final String logintext;
-  final TextEditingController us;
-  final TextEditingController pas;
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: height * 0.06,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xff46005F).withOpacity(0.8),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        ),
-        onPressed: () {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => const dddd()),
-              ModalRoute.withName(dddd.routeName));
-        },
-        child: Text(
-          logintext,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-    );
   }
 }
 

@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../login/loginScreenView.dart';
+
 class RegisterSuccess extends StatelessWidget {
   static const routeName = "/register-success";
   const RegisterSuccess({super.key});
@@ -87,7 +89,9 @@ class Button extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
         onPressed: () {
-          Navigator.of(context).pop();
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              LoginScreenView.routeName,
+              (Route<dynamic> route) => route.isFirst);
         },
         child: Text(
           text,
