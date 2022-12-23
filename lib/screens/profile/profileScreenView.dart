@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:logos/providers/client_provider.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +31,7 @@ class ProfileScreenView extends StatelessWidget {
               Text(client?.city ?? ""),
               Text(client?.county ?? ""),
               Text(client?.sId ?? ""),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(client?.toJson().toString() ?? ""),
             ]),
       ),

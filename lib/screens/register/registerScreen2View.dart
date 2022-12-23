@@ -2,7 +2,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:logos/screens/forgot_pass/successScreenView.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/register/kvkkScreenView.dart';
 import 'package:logos/screens/register/registerSuccessScreenView.dart';

@@ -1,7 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:logos/models/client_model.dart';
 import 'package:logos/providers/client_provider.dart';
 import 'package:provider/provider.dart';
 
