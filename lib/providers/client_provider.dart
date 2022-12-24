@@ -16,7 +16,7 @@ class ClientProvider extends ChangeNotifier {
   ClientModel get get_client => _client;
 
   void setClient(dynamic client) {
-    _client = ClientModel.fromJson(jsonDecode(client));
+    _client = ClientModel.fromJson(client);
 
     notifyListeners();
   }

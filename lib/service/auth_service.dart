@@ -1,8 +1,9 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names
 
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/providers/client_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -50,9 +51,14 @@ class AuthService {
           'pass': pass,
         });
 
-    Provider.of<ClientProvider>(context, listen: false)
-        .setClient(response.body);
-
+    var data = jsonDecode(response.body);
+    var all_psycs = await http
+        .get(Uri.parse("http://20.229.187.172:3001/api/psyc/psycs"), headers: {
+      'x-access-token': data["token"],
+    });
+    Provider.of<All_Psychologists_Provider>(context, listen: false)
+        .setPsycs(all_psycs.body);
+    Provider.of<ClientProvider>(context, listen: false).setClient(data);
     return jsonDecode(response.body);
   }
 }

@@ -1,7 +1,10 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:logos/models/all_psyc_model.dart';
+import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/screens/profile/profileScreenView.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreenView extends StatefulWidget {
   static const routeName = "/home";
@@ -31,7 +34,6 @@ class _HomeScreenViewState extends State<HomeScreenView> {
     },
   ];
   List<Map<String, dynamic>> yeni_liste = [];
-
   List<Map<String, dynamic>> doktor(
     List filterlist,
   ) {
@@ -66,6 +68,9 @@ class _HomeScreenViewState extends State<HomeScreenView> {
   ];
   @override
   Widget build(BuildContext context) {
+    List<Psychologists>? psycs =
+        Provider.of<All_Psychologists_Provider>(context).psyc_list;
+    final provider = Provider.of<All_Psychologists_Provider>(context);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -95,30 +100,29 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                             _filters.removeWhere((element) {
                               return element == types[index];
                             });
-                            doktor(_filters);
+                            provider.filtered_psycs(_filters);
                           }
                         });
-                        doktor(_filters);
+                        provider.filtered_psycs(_filters);
                       },
                     );
                   })),
           SizedBox(
             width: 300,
             height: 200,
-            child: ListView(
-              children: yeni_liste
-                  .map(
-                    (e) => Card(
-                      child: Text(e.values.toString()),
-                    ),
-                  )
-                  .toList(),
+            child: ListView.builder(
+              itemCount: provider.filtered_list.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: Text(provider.filtered_list[index].eMail.toString()),
+                );
+              },
             ),
           ),
           IconButton(
             onPressed: () {
-              yeni_liste.forEach((element) {
-                print(element.toString());
+              provider.filtered_list.forEach((element) {
+                print(element.eMail);
               });
             },
             icon: Icon(Icons.people),
@@ -148,5 +152,3 @@ class _HomeScreenViewState extends State<HomeScreenView> {
     });
   }
 }
-
-class deneme {}

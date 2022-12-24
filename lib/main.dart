@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/providers/client_provider.dart';
 import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
 import 'package:logos/screens/forgot_pass/newpassScreenView.dart';
@@ -23,7 +24,10 @@ void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => ClientProvider(),
-    )
+    ),
+    ChangeNotifierProvider(
+      create: (context) => All_Psychologists_Provider(),
+    ),
   ], child: const MyApp()));
 }
 
