@@ -15,56 +15,13 @@ class HomeScreenView extends StatefulWidget {
 }
 
 class _HomeScreenViewState extends State<HomeScreenView> {
-  List<Map<String, dynamic>> docs = [
-    {
-      "name": "ali",
-      "domains": ["Danışmanlık Psikologları", "Klinik Psikologlar"],
-    },
-    {
-      "name": "alper",
-      "domains": ["Bilişsel Nöropsikologlar", "Klinik Psikologlar"],
-    },
-    {
-      "name": "şahin",
-      "domains": ["Danışmanlık Psikologları", "Klinik Psikologlar"],
-    },
-    {
-      "name": "bora",
-      "domains": ["Eğitim Psikologları", "Askeri Psikologlar"],
-    },
-  ];
-  List<Map<String, dynamic>> yeni_liste = [];
-  List<Map<String, dynamic>> doktor(
-    List filterlist,
-  ) {
-    yeni_liste = [];
-    for (var filter in filterlist) {
-      for (var doc in docs) {
-        doc.forEach((key, values) {
-          if (key == "domains") {
-            for (var value in values) {
-              if (value == filter) {
-                yeni_liste.add(doc);
-              }
-            }
-          }
-        });
-      }
-    }
-    yeni_liste = yeni_liste.toSet().toList();
-    return yeni_liste;
-  }
-
   var _filters = [];
   var types = [
-    "Klinik Psikologlar",
-    "Danışmanlık Psikologları",
-    "Bilişsel Nöropsikologlar",
-    "Eğitim Psikologları",
-    "Endüstriyel-örgütsel psikologlar",
-    "Askeri Psikologlar",
-    "Kişilik psikologları",
-    "Topluluk psikologları"
+    "psikolog",
+    "ergen psikoloğu",
+    "klinik psikoloğu",
+    "cinsel_terapist",
+    "çift terapsiti",
   ];
   @override
   Widget build(BuildContext context) {
@@ -111,30 +68,34 @@ class _HomeScreenViewState extends State<HomeScreenView> {
             width: 300,
             height: 200,
             child: ListView.builder(
-              itemCount: provider.filtered_list.length,
+              itemCount: _filters.isEmpty
+                  ? provider.psyc_list?.length
+                  : provider.filtered_list.length,
               itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  child: Text(provider.filtered_list[index].eMail.toString()),
-                );
+                return provider.filtered_list.isEmpty
+                    ? Card(
+                        child: Column(
+                          children: [
+                            FittedBox(
+                              child: Text(
+                                  provider.psyc_list![index].tag.toString()),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Card(
+                        child: Column(
+                          children: [
+                            FittedBox(
+                              child: Text(
+                                  provider.filtered_list[index].tag.toString()),
+                            ),
+                          ],
+                        ),
+                      );
               },
             ),
           ),
-          IconButton(
-            onPressed: () {
-              provider.filtered_list.forEach((element) {
-                print(element.eMail);
-              });
-            },
-            icon: Icon(Icons.people),
-          ),
-          IconButton(
-            onPressed: () {
-              setState(() {
-                yeni_liste = [];
-              });
-            },
-            icon: Icon(Icons.reset_tv),
-          )
         ],
       ),
     );
