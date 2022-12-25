@@ -94,7 +94,7 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                     padding: EdgeInsets.symmetric(
                         vertical: height * 0.032, horizontal: width * 0.11),
                     child: isLoading
-                        ? Center(
+                        ? const Center(
                             child: CircularProgressIndicator(
                             color: Color(0xff6B337F),
                           ))

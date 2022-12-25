@@ -1,7 +1,6 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:logos/models/all_psyc_model.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/screens/profile/profileScreenView.dart';
 import 'package:logos/screens/psyc_profile/psycs_profileScreenView.dart';
@@ -16,7 +15,7 @@ class HomeScreenView extends StatefulWidget {
 }
 
 class _HomeScreenViewState extends State<HomeScreenView> {
-  var _filters = [];
+  final _filters = [];
   var types = [
     "psikolog",
     "ergen psikoloğu",
@@ -72,33 +71,13 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                   : provider.filtered_list.length,
               itemBuilder: (BuildContext context, int index) {
                 return provider.filtered_list.isEmpty
-                    ? GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(PsycsScreenView.routeName, arguments: {
-                            "id": provider.psyc_list![index].sId,
-                          });
-                        },
-                        child: Card(
-                          child: Column(
-                            children: [
-                              FittedBox(
-                                child: Text(
-                                    provider.psyc_list![index].tag.toString()),
-                              ),
-                            ],
-                          ),
-                        ),
+                    ? NewWidget(
+                        provider: provider,
+                        index: index,
                       )
-                    : Card(
-                        child: Column(
-                          children: [
-                            FittedBox(
-                              child: Text(
-                                  provider.filtered_list[index].tag.toString()),
-                            ),
-                          ],
-                        ),
+                    : NewWidget2(
+                        provider: provider,
+                        index: index,
                       );
               },
             ),
@@ -107,16 +86,118 @@ class _HomeScreenViewState extends State<HomeScreenView> {
       ),
     );
   }
+}
 
-  void _setFilters(bool val, int index) {
-    setState(() {
-      if (val) {
-        _filters.add(types[index]);
-      } else {
-        _filters.removeWhere((element) {
-          return element == types[index];
+class NewWidget2 extends StatelessWidget {
+  const NewWidget2({
+    Key? key,
+    required this.provider,
+    required this.index,
+  }) : super(key: key);
+
+  final All_Psychologists_Provider provider;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(PsycsScreenView.routeName, arguments: {
+          "id": provider.filtered_list[index].sId,
         });
-      }
-    });
+      },
+      child: Card(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                FittedBox(
+                  child: Text(
+                    provider.filtered_list[index].name ?? "",
+                  ),
+                ),
+                const SizedBox(width: 5),
+                FittedBox(
+                  child: Text(
+                    provider.filtered_list[index].surName ?? "",
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 40,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: provider.filtered_list[index].tag!.length,
+                itemBuilder: (BuildContext context, int indx) {
+                  return FilterChip(
+                      label: Text(
+                        provider.filtered_list[index].tag![indx],
+                      ),
+                      onSelected: ((value) {}));
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class NewWidget extends StatelessWidget {
+  const NewWidget({
+    Key? key,
+    required this.provider,
+    required this.index,
+  }) : super(key: key);
+
+  final All_Psychologists_Provider provider;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(PsycsScreenView.routeName, arguments: {
+          "id": provider.psyc_list![index].sId,
+        });
+      },
+      child: Card(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                FittedBox(
+                  child: Text(
+                    provider.psyc_list![index].name ?? "",
+                  ),
+                ),
+                const SizedBox(width: 5),
+                FittedBox(
+                  child: Text(
+                    provider.psyc_list![index].surName ?? "",
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              width: 300,
+              height: 50,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: provider.psyc_list![index].tag!.length,
+                itemBuilder: (BuildContext context, int indx) {
+                  return FilterChip(
+                      label: Text(provider.psyc_list![index].tag![indx]),
+                      onSelected: ((value) {}));
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

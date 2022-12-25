@@ -12,8 +12,6 @@ class ProfileScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final client = Provider.of<ClientProvider>(context).get_client.client;
-    final token = Provider.of<ClientProvider>(context).get_client;
-    print(token.token);
     return Scaffold(
       body: SizedBox(
         width: double.infinity,

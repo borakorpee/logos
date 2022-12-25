@@ -20,11 +20,10 @@ class All_Psyc_Model {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.psychologists != null) {
-      data['psychologists'] =
-          this.psychologists!.map((v) => v.toJson()).toList();
+    data['status'] = status;
+    data['message'] = message;
+    if (psychologists != null) {
+      data['psychologists'] = psychologists!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -69,16 +68,16 @@ class Psychologists {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['surName'] = this.surName;
-    data['pass'] = this.pass;
-    data['eMail'] = this.eMail;
-    data['tag'] = this.tag;
-    data['unvan'] = this.unvan;
-    data['about'] = this.about;
-    data['createAt'] = this.createAt;
-    data['__v'] = this.iV;
+    data['_id'] = sId;
+    data['name'] = name;
+    data['surName'] = surName;
+    data['pass'] = pass;
+    data['eMail'] = eMail;
+    data['tag'] = tag;
+    data['unvan'] = unvan;
+    data['about'] = about;
+    data['createAt'] = createAt;
+    data['__v'] = iV;
     return data;
   }
 }
