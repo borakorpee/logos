@@ -11,6 +11,7 @@ import 'package:logos/screens/home/homeScreenView.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/onboard/onboardScreenView.dart';
 import 'package:logos/screens/profile/profileScreenView.dart';
+import 'package:logos/screens/psyc_profile/psycs_profileScreenView.dart';
 import 'package:logos/screens/register/kvkkScreenView.dart';
 import 'package:logos/screens/register/registerScreen2View.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         RegisterScreen3.routeName: (ctx) => const RegisterScreen3(),
         RegisterSuccess.routeName: (ctx) => const RegisterSuccess(),
         KvkkScreen.routeName: (ctx) => const KvkkScreen(),
+        PsycsScreenView.routeName: (ctx) => const PsycsScreenView(),
       },
     );
   }

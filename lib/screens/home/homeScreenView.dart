@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:logos/models/all_psyc_model.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/screens/profile/profileScreenView.dart';
+import 'package:logos/screens/psyc_profile/psycs_profileScreenView.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreenView extends StatefulWidget {
@@ -25,8 +26,6 @@ class _HomeScreenViewState extends State<HomeScreenView> {
   ];
   @override
   Widget build(BuildContext context) {
-    List<Psychologists>? psycs =
-        Provider.of<All_Psychologists_Provider>(context).psyc_list;
     final provider = Provider.of<All_Psychologists_Provider>(context);
     return Scaffold(
       appBar: AppBar(
@@ -73,14 +72,22 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                   : provider.filtered_list.length,
               itemBuilder: (BuildContext context, int index) {
                 return provider.filtered_list.isEmpty
-                    ? Card(
-                        child: Column(
-                          children: [
-                            FittedBox(
-                              child: Text(
-                                  provider.psyc_list![index].tag.toString()),
-                            ),
-                          ],
+                    ? GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(PsycsScreenView.routeName, arguments: {
+                            "id": provider.psyc_list![index].sId,
+                          });
+                        },
+                        child: Card(
+                          child: Column(
+                            children: [
+                              FittedBox(
+                                child: Text(
+                                    provider.psyc_list![index].tag.toString()),
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     : Card(

@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, camel_case_types
 
 import 'dart:convert';
 
@@ -37,5 +37,9 @@ class All_Psychologists_Provider with ChangeNotifier {
     notifyListeners();
 
     return filtered_list;
+  }
+
+  Psychologists findById(String id) {
+    return _pscys.psychologists!.firstWhere((psycs) => psycs.sId == id);
   }
 }

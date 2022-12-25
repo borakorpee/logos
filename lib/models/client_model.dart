@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, prefer_collection_literals
+
 import 'package:flutter/material.dart';
 
 class ClientModel {
@@ -16,17 +18,16 @@ class ClientModel {
     status = json['status'];
     message = json['message'];
     token = json['token'];
-    client =
-        json['client'] != null ? new Client.fromJson(json['client']) : null;
+    client = json['client'] != null ? Client.fromJson(json['client']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    data['token'] = this.token;
-    if (this.client != null) {
-      data['client'] = this.client!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['status'] = status;
+    data['message'] = message;
+    data['token'] = token;
+    if (client != null) {
+      data['client'] = client!.toJson();
     }
     return data;
   }
@@ -76,19 +77,19 @@ class Client {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['surName'] = this.surName;
-    data['pass'] = this.pass;
-    data['eMail'] = this.eMail;
-    data['dateOfBirth'] = this.dateOfBirth;
-    data['city'] = this.city;
-    data['county'] = this.county;
-    data['job'] = this.job;
-    data['sex'] = this.sex;
-    data['createAt'] = this.createAt;
-    data['__v'] = this.iV;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['_id'] = sId;
+    data['name'] = name;
+    data['surName'] = surName;
+    data['pass'] = pass;
+    data['eMail'] = eMail;
+    data['dateOfBirth'] = dateOfBirth;
+    data['city'] = city;
+    data['county'] = county;
+    data['job'] = job;
+    data['sex'] = sex;
+    data['createAt'] = createAt;
+    data['__v'] = iV;
     return data;
   }
 }

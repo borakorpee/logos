@@ -1,13 +1,11 @@
+// ignore_for_file: camel_case_types, unnecessary_new, prefer_collection_literals
+
 class All_Psyc_Model {
   bool? status;
   String? message;
   List<Psychologists>? psychologists;
 
-  All_Psyc_Model({
-    required this.status,
-    required this.message,
-    required this.psychologists,
-  });
+  All_Psyc_Model({this.status, this.message, this.psychologists});
 
   All_Psyc_Model.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -39,6 +37,8 @@ class Psychologists {
   String? pass;
   String? eMail;
   List<String>? tag;
+  String? unvan;
+  String? about;
   String? createAt;
   int? iV;
 
@@ -49,6 +49,8 @@ class Psychologists {
       this.pass,
       this.eMail,
       this.tag,
+      this.unvan,
+      this.about,
       this.createAt,
       this.iV});
 
@@ -59,6 +61,8 @@ class Psychologists {
     pass = json['pass'];
     eMail = json['eMail'];
     tag = json['tag'].cast<String>();
+    unvan = json['unvan'];
+    about = json['about'];
     createAt = json['createAt'];
     iV = json['__v'];
   }
@@ -71,6 +75,8 @@ class Psychologists {
     data['pass'] = this.pass;
     data['eMail'] = this.eMail;
     data['tag'] = this.tag;
+    data['unvan'] = this.unvan;
+    data['about'] = this.about;
     data['createAt'] = this.createAt;
     data['__v'] = this.iV;
     return data;
