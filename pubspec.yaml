@@ -41,6 +41,8 @@ dependencies:
   pin_code_fields: ^7.4.0
   provider: ^6.0.5
   agora_rtc_engine: ^6.1.0
+  permission_handler: ^9.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

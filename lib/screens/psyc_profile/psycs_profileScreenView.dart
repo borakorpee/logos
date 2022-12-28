@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
+import 'package:logos/screens/psyc_profile/vide_call.dart';
 import 'package:provider/provider.dart';
 
 class PsycsScreenView extends StatelessWidget {
@@ -41,6 +42,11 @@ class PsycsScreenView extends StatelessWidget {
                 },
               ),
             ),
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(VideCall.routeName);
+                },
+                icon: const Icon(Icons.video_call))
           ],
         ),
       ),

@@ -16,6 +16,7 @@ migrate_working_dir/
 *.iws
 .idea/
 lib/screens/forgot_pass/email_OTP.dart
+lib/screens/psyc_profile/constant.dart
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
