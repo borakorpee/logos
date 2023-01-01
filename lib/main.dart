@@ -8,6 +8,7 @@ import 'package:logos/screens/forgot_pass/newpassScreenView.dart';
 import 'package:logos/screens/forgot_pass/otpScreenView.dart';
 import 'package:logos/screens/forgot_pass/successScreenView.dart';
 import 'package:logos/screens/home/homeScreenView.dart';
+import 'package:logos/screens/home/ui_test.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/onboard/onboardScreenView.dart';
 import 'package:logos/screens/profile/profileScreenView.dart';
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
       debugShowCheckedModeBanner: false,
-      home: const OnboardScreenView(),
+      // home: const OnboardScreenView(),
+      home: const UiTest(),
       routes: {
         ProfileScreenView.routeName: (ctx) => const ProfileScreenView(),
         HomeScreenView.routeName: (ctx) => const HomeScreenView(),
