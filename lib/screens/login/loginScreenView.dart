@@ -1,6 +1,9 @@
 // ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, avoid_print, non_constant_identifier_names, use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/components/customBackButton.dart';
 import 'package:logos/models/client_model.dart';
@@ -93,193 +96,203 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                   Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: height * 0.032, horizontal: width * 0.11),
-                    child: isLoading
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                            color: Color(0xff6B337F),
-                          ))
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              TextFormField(
-                                controller: mail,
-                                cursorColor: const Color(0xff46005F),
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                      const EdgeInsets.only(left: 20, top: 20),
-                                  hintText: mailtext,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                      color: isMail_error
-                                          ? Colors.red
-                                          : const Color(0xffDADADA),
-                                    ),
-                                  ),
-                                  fillColor: isMail_error
-                                      ? const Color(0xffFF0000)
-                                          .withOpacity(0.05)
-                                      : Colors.black.withOpacity(0.05),
-                                  filled: true,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                      color: isMail_error
-                                          ? Colors.red
-                                          : const Color(0xffDADADA),
-                                    ),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    setState(() {
-                                      isMail_error = true;
-                                    });
-                                    return 'Bu alan boş bırakılamaz.';
-                                  } else if (!RegExp(
-                                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                      .hasMatch(value)) {
-                                    setState(() {
-                                      isMail_error = true;
-                                    });
-                                    return "Lüften geçerli bir mail adresi giriniz. ";
-                                  }
-                                  setState(() {
-                                    isMail_error = false;
-                                  });
-                                  return null;
-                                },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        TextFormField(
+                          controller: mail,
+                          cursorColor: const Color(0xff46005F),
+                          decoration: InputDecoration(
+                            contentPadding:
+                                const EdgeInsets.only(left: 20, top: 20),
+                            hintText: mailtext,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: isMail_error
+                                    ? Colors.red
+                                    : const Color(0xffDADADA),
                               ),
-                              SizedBox(height: height * 0.016),
-                              TextFormField(
-                                controller: password,
-                                cursorColor: const Color(0xff46005F),
-                                obscureText: !passwordVisible,
-                                decoration: InputDecoration(
-                                  suffixIcon: IconButton(
-                                    icon: passwordVisible
-                                        ? Image.asset(
-                                            "assets/login/passicon.png")
-                                        : Image.asset(
-                                            "assets/login/Vector.png"),
-                                    onPressed: () {
+                            ),
+                            fillColor: isMail_error
+                                ? const Color(0xffFF0000).withOpacity(0.05)
+                                : Colors.black.withOpacity(0.05),
+                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: isMail_error
+                                    ? Colors.red
+                                    : const Color(0xffDADADA),
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              setState(() {
+                                isMail_error = true;
+                              });
+                              return 'Bu alan boş bırakılamaz.';
+                            } else if (!RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(value)) {
+                              setState(() {
+                                isMail_error = true;
+                              });
+                              return "Lüften geçerli bir mail adresi giriniz. ";
+                            }
+                            setState(() {
+                              isMail_error = false;
+                            });
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: height * 0.016),
+                        TextFormField(
+                          controller: password,
+                          cursorColor: const Color(0xff46005F),
+                          obscureText: !passwordVisible,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: passwordVisible
+                                  ? Image.asset("assets/login/passicon.png")
+                                  : Image.asset("assets/login/Vector.png"),
+                              onPressed: () {
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
+                                });
+                              },
+                            ),
+                            contentPadding:
+                                const EdgeInsets.only(left: 20, top: 20),
+                            hintText: passtext,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: isPass_error
+                                    ? Colors.red
+                                    : const Color(0xffDADADA),
+                              ),
+                            ),
+                            fillColor: isPass_error
+                                ? const Color(0xffFF0000).withOpacity(0.05)
+                                : Colors.black.withOpacity(0.05),
+                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: isPass_error
+                                    ? Colors.red
+                                    : const Color(0xffDADADA),
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              setState(() {
+                                isPass_error = true;
+                              });
+                              return 'Bu alan boş bırakılamaz.';
+                            }
+                            setState(() {
+                              isPass_error = false;
+                            });
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: height * 0.021),
+                        LinkText(
+                          text: forgotpasstext,
+                          routeName: ForgotPassScreenView.routeName,
+                        ),
+                        SizedBox(height: height * 0.06),
+                        SizedBox(
+                          width: double.infinity,
+                          height: height * 0.06,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color(0xff46005F).withOpacity(0.8),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                            ),
+                            onPressed: () async {
+                              if (_key.currentState!.validate()) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                AuthService.login(
+                                        mail.text, password.text, context)
+                                    .then(
+                                  (data) {
+                                    if (data["status"] == true) {
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  const HomeScreenView(),
+                                              settings: RouteSettings(
+                                                  arguments: _clientModel)),
+                                          ModalRoute.withName(
+                                              HomeScreenView.routeName));
                                       setState(() {
-                                        passwordVisible = !passwordVisible;
+                                        isLoading = false;
                                       });
-                                    },
-                                  ),
-                                  contentPadding:
-                                      const EdgeInsets.only(left: 20, top: 20),
-                                  hintText: passtext,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                      color: isPass_error
-                                          ? Colors.red
-                                          : const Color(0xffDADADA),
-                                    ),
-                                  ),
-                                  fillColor: isPass_error
-                                      ? const Color(0xffFF0000)
-                                          .withOpacity(0.05)
-                                      : Colors.black.withOpacity(0.05),
-                                  filled: true,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                      color: isPass_error
-                                          ? Colors.red
-                                          : const Color(0xffDADADA),
-                                    ),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    setState(() {
-                                      isPass_error = true;
-                                    });
-                                    return 'Bu alan boş bırakılamaz.';
-                                  }
-                                  setState(() {
-                                    isPass_error = false;
-                                  });
-                                  return null;
-                                },
-                              ),
-                              SizedBox(height: height * 0.021),
-                              LinkText(
-                                text: forgotpasstext,
-                                routeName: ForgotPassScreenView.routeName,
-                              ),
-                              SizedBox(height: height * 0.06),
-                              SizedBox(
-                                width: double.infinity,
-                                height: height * 0.06,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xff46005F)
-                                        .withOpacity(0.8),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                  ),
-                                  onPressed: () async {
-                                    if (_key.currentState!.validate()) {
-                                      setState(() {
-                                        isLoading = true;
-                                      });
-                                      AuthService.login(
-                                              mail.text, password.text, context)
-                                          .then(
-                                        (data) {
-                                          if (data["status"] == true) {
-                                            Navigator.pushAndRemoveUntil(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        const HomeScreenView(),
-                                                    settings: RouteSettings(
-                                                        arguments:
-                                                            _clientModel)),
-                                                ModalRoute.withName(
-                                                    HomeScreenView.routeName));
-                                            setState(() {
-                                              isLoading = false;
-                                            });
-                                          } else {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
-                                              content: Text(
-                                                  "Mail adresiniz veya şifreniz hatalı!"),
-                                            ));
-                                            setState(() {
-                                              isPass_error = true;
-                                              isMail_error = true;
-                                              isLoading = false;
-                                            });
-                                          }
-                                        },
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor: Colors.transparent,
+                                          elevation: 0,
+                                          content: Stack(
+                                            children: [
+                                              Container(
+                                                width: 438.w,
+                                                height: 132.h,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xff6B337F),
+                                                  borderRadius:
+                                                      BorderRadius.circular(32),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       );
+                                      setState(() {
+                                        isPass_error = true;
+                                        isMail_error = true;
+                                        isLoading = false;
+                                      });
                                     }
                                   },
-                                  child: Text(
+                                );
+                              }
+                            },
+                            child: isLoading
+                                ? const Center(
+                                    child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ))
+                                : Text(
                                     logintext,
                                     style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                ),
-                              ),
-                            ],
                           ),
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
