@@ -8,6 +8,7 @@ import 'package:logos/components/customBackButton.dart';
 import 'package:logos/models/client_model.dart';
 import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
 import 'package:logos/screens/home/homeScreenView.dart';
+import 'package:logos/screens/home/ui_test.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
 import 'package:logos/service/auth_service.dart';
 
@@ -237,11 +238,11 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (BuildContext context) =>
-                                                  const HomeScreenView(),
+                                                  const UiTest(),
                                               settings: RouteSettings(
                                                   arguments: _clientModel)),
                                           ModalRoute.withName(
-                                              HomeScreenView.routeName));
+                                              UiTest.routeName));
                                       setState(() {
                                         isLoading = false;
                                       });

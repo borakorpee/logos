@@ -1,21 +1,214 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:logos/providers/all_psyc_provider.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final _filters = [];
+  var types = [
+    "psikolog",
+    "ergen psikoloğu",
+    "klinik psikoloğu",
+    "cinsel_terapist",
+    "çift terapsiti",
+  ];
+  @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<All_Psychologists_Provider>(context);
+
     return Scaffold(
         body: Padding(
-      padding: const EdgeInsets.only(left: 40, right: 40, top: 55),
+      padding: const EdgeInsets.only(left: 40, right: 40, top: 55).r,
       child: Column(
         children: [
-          Appbar(),
-          SearchBar(),
+          const Appbar(),
+          const SearchBar(),
+          SizedBox(height: 27.w),
+          const Card(),
+          SizedBox(height: 17.w),
+          SizedBox(
+            height: 36.h,
+            child: Row(
+              children: [
+                FilterChip(
+                  showCheckmark: false,
+                  selectedColor: _filters.isEmpty
+                      ? const Color(0xff6B337F)
+                      : Colors.black.withOpacity(0.2),
+                  backgroundColor: Colors.black.withOpacity(0.1),
+                  selected: _filters.isEmpty ? true : false,
+                  label: Text(
+                    "Hepsi",
+                    style: TextStyle(
+                      color: _filters.isEmpty
+                          ? Colors.white
+                          : Colors.black.withOpacity(0.2),
+                      fontSize: 12.h,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onSelected: (_) {},
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: types.length,
+                      itemBuilder: (context, index) {
+                        return Row(
+                          children: [
+                            FilterChip(
+                              showCheckmark: false,
+                              selectedColor: Color(0xff6B337F),
+                              backgroundColor: Colors.black.withOpacity(0.1),
+                              label: Text(
+                                types[index],
+                                style: TextStyle(
+                                  color: _filters.contains(types[index])
+                                      ? Colors.white
+                                      : Colors.black.withOpacity(0.2),
+                                  fontSize: 12.h,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              selected: _filters.contains(types[index]),
+                              onSelected: (val) {
+                                setState(() {
+                                  if (val) {
+                                    _filters.add(types[index]);
+                                  } else {
+                                    _filters.removeWhere((element) {
+                                      return element == types[index];
+                                    });
+                                    provider.filtered_psycs(_filters);
+                                  }
+                                });
+                                provider.filtered_psycs(_filters);
+                              },
+                            ),
+                            SizedBox(width: 10.w),
+                          ],
+                        );
+                      }),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 29.h),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Tercih Edilen Psikologlar",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15.h,
+                  color: Colors.black.withOpacity(0.75)),
+            ),
+          ),
+          SizedBox(height: 21.h),
+          SizedBox(
+            width: double.infinity,
+            height: 113.h,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: provider.psyc_list!.length,
+                itemBuilder: (context, index) {
+                  return Row(
+                    children: [
+                      Container(
+                        width: 266.w,
+                        height: 113.h,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff6B337F),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 13, top: 20).r,
+                          child: Column(children: [
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: const Color(0xff6B337F),
+                                  child:
+                                      Image.asset("assets/snackbar/people.png"),
+                                ),
+                                SizedBox(width: 12.w),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      // ignore: prefer_interpolation_to_compose_strings
+                                      provider.psyc_list![index].name
+                                              .toString() +
+                                          " " +
+                                          provider.psyc_list![index].surName
+                                              .toString(),
+                                      style: TextStyle(
+                                        fontSize: 15.w,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Text(
+                                      provider.psyc_list![index].tag![0],
+                                      style: TextStyle(
+                                        fontSize: 12.w,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white.withOpacity(0.5),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ]),
+                        ),
+                      ),
+                      SizedBox(width: 15.w)
+                    ],
+                  );
+                }),
+          ),
+          SizedBox(height: 27.h),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Tercih Edilen Psikologlar",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15.h,
+                  color: Colors.black.withOpacity(0.75)),
+            ),
+          ),
         ],
       ),
     ));
+  }
+}
+
+class Card extends StatelessWidget {
+  const Card({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 356.w,
+      height: 161.h,
+      decoration: BoxDecoration(
+        color: const Color(0xff6B337F),
+        borderRadius: BorderRadius.circular(20),
+      ),
+    );
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:logos/screens/home/history_page.dart';
 import 'package:logos/screens/home/home_page.dart';
 
 class UiTest extends StatefulWidget {
+  static const routeName = "/ui-test";
   const UiTest({super.key});
 
   @override

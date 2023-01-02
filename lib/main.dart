@@ -66,6 +66,7 @@ class MyApp extends StatelessWidget {
             KvkkScreen.routeName: (ctx) => const KvkkScreen(),
             PsycsScreenView.routeName: (ctx) => const PsycsScreenView(),
             VideCall.routeName: (ctx) => const VideCall(),
+            UiTest.routeName: (ctx) => const UiTest(),
           },
         );
       }),
