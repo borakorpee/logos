@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
           const Appbar(),
           const SearchBar(),
           SizedBox(height: 27.w),
-          const Card(),
+          const CustomCard(),
           SizedBox(height: 17.w),
           SizedBox(
             height: 36.h,
@@ -114,88 +114,289 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SizedBox(height: 21.h),
-          SizedBox(
-            width: double.infinity,
-            height: 113.h,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: provider.psyc_list!.length,
-                itemBuilder: (context, index) {
-                  return Row(
-                    children: [
-                      Container(
-                        width: 266.w,
-                        height: 113.h,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff6B337F),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 13, top: 20).r,
-                          child: Column(children: [
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: const Color(0xff6B337F),
-                                  child:
-                                      Image.asset("assets/snackbar/people.png"),
-                                ),
-                                SizedBox(width: 12.w),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      // ignore: prefer_interpolation_to_compose_strings
-                                      provider.psyc_list![index].name
-                                              .toString() +
-                                          " " +
-                                          provider.psyc_list![index].surName
-                                              .toString(),
-                                      style: TextStyle(
-                                        fontSize: 15.w,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(
-                                      provider.psyc_list![index].tag![0],
-                                      style: TextStyle(
-                                        fontSize: 12.w,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white.withOpacity(0.5),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ]),
-                        ),
-                      ),
-                      SizedBox(width: 15.w)
-                    ],
-                  );
-                }),
-          ),
+          HorizontalList(provider: provider),
           SizedBox(height: 27.h),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Tercih Edilen Psikologlar",
+              "Anlaşmalı Psikologlarımız",
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 15.h,
                   color: Colors.black.withOpacity(0.75)),
             ),
           ),
+          SizedBox(
+            width: double.infinity,
+            height: 170,
+            child: ListView.builder(
+              itemCount: _filters.isEmpty
+                  ? provider.psyc_list?.length
+                  : provider.filtered_list.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    SizedBox(
+                        width: 356.w,
+                        height: 98.h,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xFFB6C6D4),
+                                spreadRadius: -8,
+                                blurRadius: 21.0,
+                                offset: Offset(10, 10),
+                              ),
+                              BoxShadow(
+                                color: Color.fromRGBO(255, 255, 255, 0.5),
+                                blurRadius: 6,
+                                offset: Offset(-3, -4),
+                              )
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 13, top: 20).r,
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor:
+                                          Colors.white.withOpacity(0.25),
+                                      child: Image.asset(
+                                          "assets/snackbar/grey.png"),
+                                    ),
+                                    SizedBox(width: 12.w),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          // ignore: prefer_interpolation_to_compose_strings
+                                          provider.filtered_list[index].name
+                                                  .toString() +
+                                              " " +
+                                              provider
+                                                  .filtered_list[index].surName
+                                                  .toString(),
+                                          style: TextStyle(
+                                            fontSize: 15.w,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        Text(
+                                          provider.filtered_list[index].tag![0],
+                                          style: TextStyle(
+                                            fontSize: 12.w,
+                                            fontWeight: FontWeight.w500,
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                          ),
+                                        ),
+                                        SizedBox(height: 8.h),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: 115.w,
+                                              height: 16.h,
+                                              decoration: BoxDecoration(
+                                                color: Colors.black
+                                                    .withOpacity(0.1),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                        top: 2, left: 14)
+                                                    .r,
+                                                child: Text(
+                                                  "50+ başarılı görüşme",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 8.w,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 3.w),
+                                            Container(
+                                              width: 73.w,
+                                              height: 16.h,
+                                              decoration: BoxDecoration(
+                                                color: Colors.black
+                                                    .withOpacity(0.1),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                        top: 2, left: 14)
+                                                    .r,
+                                                child: Text(
+                                                  "500₺/Saat",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 8.w,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        )),
+                    SizedBox(
+                      height: 10.h,
+                    )
+                  ],
+                );
+              },
+            ),
+          )
         ],
       ),
     ));
   }
 }
 
-class Card extends StatelessWidget {
-  const Card({
+class HorizontalList extends StatelessWidget {
+  const HorizontalList({
+    Key? key,
+    required this.provider,
+  }) : super(key: key);
+
+  final All_Psychologists_Provider provider;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 113.h,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: provider.psyc_list!.length,
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                Container(
+                  width: 266.w,
+                  height: 113.h,
+                  decoration: BoxDecoration(
+                    color: const Color(0xff6B337F),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 13, top: 20).r,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: const Color(0xff6B337F),
+                              child: Image.asset("assets/snackbar/people.png"),
+                            ),
+                            SizedBox(width: 12.w),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  // ignore: prefer_interpolation_to_compose_strings
+                                  provider.psyc_list![index].name.toString() +
+                                      " " +
+                                      provider.psyc_list![index].surName
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontSize: 15.w,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  provider.psyc_list![index].tag![0],
+                                  style: TextStyle(
+                                    fontSize: 12.w,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white.withOpacity(0.5),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 115.w,
+                              height: 16.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 2, left: 14).r,
+                                child: Text(
+                                  "50+ başarılı görüşme",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 8.w,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 3.w),
+                            Container(
+                              width: 73.w,
+                              height: 16.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 2, left: 14).r,
+                                child: Text(
+                                  "500₺/Saat",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 8.w,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(width: 15.w)
+              ],
+            );
+          }),
+    );
+  }
+}
+
+class CustomCard extends StatelessWidget {
+  const CustomCard({
     Key? key,
   }) : super(key: key);
 
