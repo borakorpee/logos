@@ -1,9 +1,8 @@
 // ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, avoid_print, non_constant_identifier_names, use_build_context_synchronously
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/components/customBackButton.dart';
 import 'package:logos/models/client_model.dart';
@@ -11,6 +10,8 @@ import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
 import 'package:logos/screens/home/homeScreenView.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
 import 'package:logos/service/auth_service.dart';
+
+import '../../components/snackbar.dart';
 
 class LoginScreenView extends StatefulWidget {
   static const routeName = "/login";
@@ -251,20 +252,7 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                                           behavior: SnackBarBehavior.floating,
                                           backgroundColor: Colors.transparent,
                                           elevation: 0,
-                                          content: Stack(
-                                            children: [
-                                              Container(
-                                                width: 438.w,
-                                                height: 132.h,
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xff6B337F),
-                                                  borderRadius:
-                                                      BorderRadius.circular(32),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                          content: ErrorSnackbar(context),
                                         ),
                                       );
                                       setState(() {
