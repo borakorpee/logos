@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _filters = [];
+  var _filters = ["Hepsi"];
   var types = [
     "Hepsi",
     "psikolog",
@@ -21,6 +21,10 @@ class _HomePageState extends State<HomePage> {
     "cinsel_terapist",
     "çift terapsiti",
   ];
+  bool isContains(String element) {
+    return _filters.contains(element);
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<All_Psychologists_Provider>(context);
@@ -39,29 +43,6 @@ class _HomePageState extends State<HomePage> {
             height: 36.h,
             child: Row(
               children: [
-                /*FilterChip(
-                  showCheckmark: false,
-                  selectedColor: _filters.isEmpty
-                      ? const Color(0xff6B337F)
-                      : Colors.black.withOpacity(0.2),
-                  backgroundColor: Colors.black.withOpacity(0.1),
-                  selected: _filters.isEmpty ? true : false,
-                  label: Text(
-                    "Hepsi",
-                    style: TextStyle(
-                      color: _filters.isEmpty
-                          ? Colors.white
-                          : Colors.black.withOpacity(0.2),
-                      fontSize: 12.h,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  onSelected: (_) {
-                    setState(() {
-                      _filters = [];
-                    });
-                  },
-                ),*/
                 SizedBox(width: 10.w),
                 Expanded(
                   child: ListView.builder(
@@ -70,24 +51,11 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (context, index) {
                         return Row(
                           children: [
-                            FilterChip(
-                              showCheckmark: false,
-                              selectedColor: Color(0xff6B337F),
-                              backgroundColor: Colors.black.withOpacity(0.1),
-                              label: Text(
-                                types[index],
-                                style: TextStyle(
-                                  color: _filters.contains(types[index])
-                                      ? Colors.white
-                                      : Colors.black.withOpacity(0.2),
-                                  fontSize: 12.h,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              selected: _filters.contains(types[index]),
-                              onSelected: (val) {
+                            GestureDetector(
+                              onTap: () {
                                 setState(() {
-                                  if (val) {
+                                  if (_filters.contains(types[index]) ==
+                                      false) {
                                     if (_filters.contains("Hepsi")) {
                                       _filters.remove("Hepsi");
                                       _filters.add(types[index]);
@@ -97,14 +65,46 @@ class _HomePageState extends State<HomePage> {
                                       _filters.add(types[index]);
                                     }
                                   } else {
-                                    _filters.removeWhere((element) {
-                                      return element == types[index];
-                                    });
-                                    provider.filtered_psycs(_filters);
+                                    _filters.removeWhere(
+                                      (element) {
+                                        return element == types[index];
+                                      },
+                                    );
+                                    if (_filters.isEmpty) {
+                                      _filters = ["Hepsi"];
+                                    }
                                   }
+                                  provider.filtered_psycs(_filters);
                                 });
-                                provider.filtered_psycs(_filters);
                               },
+                              child: Container(
+                                height: 36.h,
+                                decoration: BoxDecoration(
+                                  color: isContains(types[index])
+                                      ? Color(0xff6B337F)
+                                      : Colors.black.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                          vertical: 9, horizontal: 16)
+                                      .r,
+                                  child: Center(
+                                    child: FittedBox(
+                                      fit: BoxFit.fitWidth,
+                                      child: Text(
+                                        types[index],
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: isContains(types[index])
+                                                ? Colors.white
+                                                : Colors.black
+                                                    .withOpacity(0.2)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                             SizedBox(width: 10.w),
                           ],

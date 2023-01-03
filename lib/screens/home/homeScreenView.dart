@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/screens/profile/profileScreenView.dart';
 import 'package:logos/screens/psyc_profile/psycs_profileScreenView.dart';
@@ -15,7 +16,7 @@ class HomeScreenView extends StatefulWidget {
 }
 
 class _HomeScreenViewState extends State<HomeScreenView> {
-  var _filters = [];
+  var _filters = ["Tümü"];
   var types = [
     "Tümü",
     "psikolog",
@@ -24,6 +25,10 @@ class _HomeScreenViewState extends State<HomeScreenView> {
     "cinsel_terapist",
     "çift terapsiti",
   ];
+  bool isContains(String element) {
+    return _filters.contains(element);
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<All_Psychologists_Provider>(context);
@@ -40,17 +45,17 @@ class _HomeScreenViewState extends State<HomeScreenView> {
       body: Column(
         children: [
           SizedBox(
-              height: 100,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: types.length,
-                  itemBuilder: (context, index) {
-                    return FilterChip(
-                      label: Text(types[index]),
-                      selected: _filters.contains(types[index]),
-                      onSelected: (val) {
+            height: 100,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: types.length,
+              itemBuilder: (context, index) {
+                return Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
                         setState(() {
-                          if (val) {
+                          if (_filters.contains(types[index]) == false) {
                             if (_filters.contains("Tümü")) {
                               _filters.remove("Tümü");
                               _filters.add(types[index]);
@@ -60,16 +65,77 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                               _filters.add(types[index]);
                             }
                           } else {
-                            _filters.removeWhere((element) {
-                              return element == types[index];
-                            });
-                            provider.filtered_psycs(_filters);
+                            _filters.removeWhere(
+                              (element) {
+                                return element == types[index];
+                              },
+                            );
+                            if (_filters.isEmpty) {
+                              _filters = ["Tümü"];
+                            }
                           }
+                          provider.filtered_psycs(_filters);
+                        });
+                      },
+                      child: Container(
+                        height: 36.h,
+                        decoration: BoxDecoration(
+                          color: isContains(types[index])
+                              ? Color(0xff6B337F)
+                              : Colors.black.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                                  vertical: 9, horizontal: 16)
+                              .r,
+                          child: Center(
+                            child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text(
+                                types[index],
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: isContains(types[index])
+                                        ? Colors.white
+                                        : Colors.black.withOpacity(0.2)),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 9.w),
+                  ],
+                );
+
+                /*FilterChip(
+                  label: Text(types[index]),
+                  selected: _filters.contains(types[index]),
+                  onSelected: (val) {
+                    setState(() {
+                      if (val) {
+                        if (_filters.contains("Tümü")) {
+                          _filters.remove("Tümü");
+                          _filters.add(types[index]);
+                        } else if (types[index] == "Tümü") {
+                          _filters = ["Tümü"];
+                        } else {
+                          _filters.add(types[index]);
+                        }
+                      } else {
+                        _filters.removeWhere((element) {
+                          return element == types[index];
                         });
                         provider.filtered_psycs(_filters);
-                      },
-                    );
-                  })),
+                      }
+                    });
+                    provider.filtered_psycs(_filters);
+                  },
+                ); */
+              },
+            ),
+          ),
           SizedBox(
             width: 300,
             height: 200,
