@@ -15,8 +15,9 @@ class HomeScreenView extends StatefulWidget {
 }
 
 class _HomeScreenViewState extends State<HomeScreenView> {
-  final _filters = [];
+  var _filters = [];
   var types = [
+    "Tümü",
     "psikolog",
     "ergen psikoloğu",
     "klinik psikoloğu",
@@ -50,7 +51,14 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                       onSelected: (val) {
                         setState(() {
                           if (val) {
-                            _filters.add(types[index]);
+                            if (_filters.contains("Tümü")) {
+                              _filters.remove("Tümü");
+                              _filters.add(types[index]);
+                            } else if (types[index] == "Tümü") {
+                              _filters = ["Tümü"];
+                            } else {
+                              _filters.add(types[index]);
+                            }
                           } else {
                             _filters.removeWhere((element) {
                               return element == types[index];
@@ -66,19 +74,9 @@ class _HomeScreenViewState extends State<HomeScreenView> {
             width: 300,
             height: 200,
             child: ListView.builder(
-              itemCount: _filters.isEmpty
-                  ? provider.psyc_list?.length
-                  : provider.filtered_list.length,
-              itemBuilder: (BuildContext context, int index) {
-                return provider.filtered_list.isEmpty
-                    ? NewWidget(
-                        provider: provider,
-                        index: index,
-                      )
-                    : NewWidget2(
-                        provider: provider,
-                        index: index,
-                      );
+              itemCount: _filters.length,
+              itemBuilder: (context, index) {
+                return Text(_filters[index]);
               },
             ),
           ),

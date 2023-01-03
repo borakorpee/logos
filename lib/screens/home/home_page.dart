@@ -12,8 +12,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _filters = [];
+  var _filters = [];
   var types = [
+    "Hepsi",
     "psikolog",
     "ergen psikoloğu",
     "klinik psikoloğu",
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
             height: 36.h,
             child: Row(
               children: [
-                FilterChip(
+                /*FilterChip(
                   showCheckmark: false,
                   selectedColor: _filters.isEmpty
                       ? const Color(0xff6B337F)
@@ -55,8 +56,12 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  onSelected: (_) {},
-                ),
+                  onSelected: (_) {
+                    setState(() {
+                      _filters = [];
+                    });
+                  },
+                ),*/
                 SizedBox(width: 10.w),
                 Expanded(
                   child: ListView.builder(
@@ -83,7 +88,14 @@ class _HomePageState extends State<HomePage> {
                               onSelected: (val) {
                                 setState(() {
                                   if (val) {
-                                    _filters.add(types[index]);
+                                    if (_filters.contains("Hepsi")) {
+                                      _filters.remove("Hepsi");
+                                      _filters.add(types[index]);
+                                    } else if (types[index] == "Hepsi") {
+                                      _filters = ["Hepsi"];
+                                    } else {
+                                      _filters.add(types[index]);
+                                    }
                                   } else {
                                     _filters.removeWhere((element) {
                                       return element == types[index];
@@ -130,140 +142,159 @@ class _HomePageState extends State<HomePage> {
             width: double.infinity,
             height: 170,
             child: ListView.builder(
-              itemCount: _filters.isEmpty
+              itemCount: _filters.contains("Hepsi")
                   ? provider.psyc_list?.length
                   : provider.filtered_list.length,
               itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  children: [
-                    SizedBox(
-                        width: 356.w,
-                        height: 98.h,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0xFFB6C6D4),
-                                spreadRadius: -8,
-                                blurRadius: 21.0,
-                                offset: Offset(10, 10),
-                              ),
-                              BoxShadow(
-                                color: Color.fromRGBO(255, 255, 255, 0.5),
-                                blurRadius: 6,
-                                offset: Offset(-3, -4),
-                              )
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 13, top: 20).r,
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor:
-                                          Colors.white.withOpacity(0.25),
-                                      child: Image.asset(
-                                          "assets/snackbar/grey.png"),
+                return _filters.contains("Hepsi")
+                    ? Column(
+                        children: [
+                          Text(provider.psyc_list![index].name.toString())
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          SizedBox(
+                              width: 356.w,
+                              height: 98.h,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color(0xFFB6C6D4),
+                                      spreadRadius: -8,
+                                      blurRadius: 21.0,
+                                      offset: Offset(10, 10),
                                     ),
-                                    SizedBox(width: 12.w),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          // ignore: prefer_interpolation_to_compose_strings
-                                          provider.filtered_list[index].name
-                                                  .toString() +
-                                              " " +
-                                              provider
-                                                  .filtered_list[index].surName
-                                                  .toString(),
-                                          style: TextStyle(
-                                            fontSize: 15.w,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        Text(
-                                          provider.filtered_list[index].tag![0],
-                                          style: TextStyle(
-                                            fontSize: 12.w,
-                                            fontWeight: FontWeight.w500,
-                                            color:
-                                                Colors.black.withOpacity(0.5),
-                                          ),
-                                        ),
-                                        SizedBox(height: 8.h),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width: 115.w,
-                                              height: 16.h,
-                                              decoration: BoxDecoration(
-                                                color: Colors.black
-                                                    .withOpacity(0.1),
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                        top: 2, left: 14)
-                                                    .r,
-                                                child: Text(
-                                                  "50+ başarılı görüşme",
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 8.w,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 3.w),
-                                            Container(
-                                              width: 73.w,
-                                              height: 16.h,
-                                              decoration: BoxDecoration(
-                                                color: Colors.black
-                                                    .withOpacity(0.1),
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                        top: 2, left: 14)
-                                                    .r,
-                                                child: Text(
-                                                  "500₺/Saat",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 8.w,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                    BoxShadow(
+                                      color: Color.fromRGBO(255, 255, 255, 0.5),
+                                      blurRadius: 6,
+                                      offset: Offset(-3, -4),
+                                    )
                                   ],
                                 ),
-                              ],
-                            ),
-                          ),
-                        )),
-                    SizedBox(
-                      height: 10.h,
-                    )
-                  ],
-                );
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 13, top: 20)
+                                          .r,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundColor:
+                                                Colors.white.withOpacity(0.25),
+                                            child: Image.asset(
+                                                "assets/snackbar/grey.png"),
+                                          ),
+                                          SizedBox(width: 12.w),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                // ignore: prefer_interpolation_to_compose_strings
+                                                provider.filtered_list[index]
+                                                        .name
+                                                        .toString() +
+                                                    " " +
+                                                    provider
+                                                        .filtered_list[index]
+                                                        .surName
+                                                        .toString(),
+                                                style: TextStyle(
+                                                  fontSize: 15.w,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Text(
+                                                provider.filtered_list[index]
+                                                    .tag![0],
+                                                style: TextStyle(
+                                                  fontSize: 12.w,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                ),
+                                              ),
+                                              SizedBox(height: 8.h),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: 115.w,
+                                                    height: 16.h,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black
+                                                          .withOpacity(0.1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                                  top: 2,
+                                                                  left: 14)
+                                                              .r,
+                                                      child: Text(
+                                                        "50+ başarılı görüşme",
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 8.w,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 3.w),
+                                                  Container(
+                                                    width: 73.w,
+                                                    height: 16.h,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black
+                                                          .withOpacity(0.1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                                  top: 2,
+                                                                  left: 14)
+                                                              .r,
+                                                      child: Text(
+                                                        "500₺/Saat",
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 8.w,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )),
+                          SizedBox(
+                            height: 10.h,
+                          )
+                        ],
+                      );
               },
             ),
           )
