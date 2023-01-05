@@ -13,7 +13,6 @@ class All_Psychologists_Provider with ChangeNotifier {
   );
   List<Psychologists> filtered_list = [];
 
-  All_Psyc_Model get all_Psycs => _pscys;
   List<Psychologists>? get psyc_list => _pscys.psychologists;
 
   void setPsycs(dynamic all_psycs) {

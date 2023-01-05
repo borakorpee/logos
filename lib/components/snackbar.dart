@@ -112,14 +112,14 @@ Widget ErrorSnackbar(BuildContext context) {
   return Stack(
     children: [
       Container(
-        width: 438.w,
+        width: double.infinity,
         height: 132.h,
         decoration: BoxDecoration(
           color: const Color(0xff6B337F),
           borderRadius: BorderRadius.circular(32),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(left: 40, top: 25, bottom: 27).r,
+          padding: const EdgeInsets.only(left: 35, top: 25, bottom: 27).r,
           child: Row(
             children: [
               Image.asset("assets/snackbar/error.png"),
@@ -130,7 +130,7 @@ Widget ErrorSnackbar(BuildContext context) {
                   Text(
                     "Hata!",
                     style:
-                        TextStyle(fontWeight: FontWeight.w500, fontSize: 28.h),
+                        TextStyle(fontWeight: FontWeight.w500, fontSize: 28.sp),
                   ),
                   SizedBox(height: 10.h),
                   SizedBox(
@@ -138,7 +138,7 @@ Widget ErrorSnackbar(BuildContext context) {
                     child: Text(
                       "Girdiğiniz email veya şifre hatalı.\nLütfen kontrol ediniz.",
                       style: TextStyle(
-                          fontWeight: FontWeight.w400, fontSize: 12.h),
+                          fontWeight: FontWeight.w400, fontSize: 12.sp),
                     ),
                   ),
                 ],
@@ -148,7 +148,7 @@ Widget ErrorSnackbar(BuildContext context) {
         ),
       ),
       Positioned(
-        top: 25.h,
+        top: 25.w,
         right: 25.w,
         child: GestureDetector(
           onTap: (() {

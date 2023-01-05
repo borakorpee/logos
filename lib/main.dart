@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
           debugShowCheckedModeBanner: false,
           home: const OnboardScreenView(),
+          // home: const UiTest(),
           routes: {
             ProfileScreenView.routeName: (ctx) => const ProfileScreenView(),
             HomeScreenView.routeName: (ctx) => const HomeScreenView(),

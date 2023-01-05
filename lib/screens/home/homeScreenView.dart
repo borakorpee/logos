@@ -108,31 +108,6 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                     SizedBox(width: 9.w),
                   ],
                 );
-
-                /*FilterChip(
-                  label: Text(types[index]),
-                  selected: _filters.contains(types[index]),
-                  onSelected: (val) {
-                    setState(() {
-                      if (val) {
-                        if (_filters.contains("Tümü")) {
-                          _filters.remove("Tümü");
-                          _filters.add(types[index]);
-                        } else if (types[index] == "Tümü") {
-                          _filters = ["Tümü"];
-                        } else {
-                          _filters.add(types[index]);
-                        }
-                      } else {
-                        _filters.removeWhere((element) {
-                          return element == types[index];
-                        });
-                        provider.filtered_psycs(_filters);
-                      }
-                    });
-                    provider.filtered_psycs(_filters);
-                  },
-                ); */
               },
             ),
           ),
