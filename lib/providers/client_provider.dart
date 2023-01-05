@@ -11,11 +11,16 @@ class ClientProvider extends ChangeNotifier {
     token: '',
     client: null,
   );
-
+  String? get get_token => _client.token;
   ClientModel get get_client => _client;
 
-  void updateClient() {
-    _client.client!.name = "BORAAA";
+  void updateClient(
+      String name, String surname, String email, String password) {
+    _client.client!.name = name;
+    _client.client!.surName = surname;
+    _client.client!.eMail = email;
+    _client.client!.pass = password;
+
     notifyListeners();
   }
 

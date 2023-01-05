@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:logos/components/snackbar.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/providers/client_provider.dart';
 import 'package:provider/provider.dart';
@@ -497,7 +498,7 @@ class HorizontalList extends StatelessWidget {
       width: double.infinity,
       height: 113.h,
       child: ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 36).r,
+          padding: const EdgeInsets.symmetric(horizontal: 36).r,
           scrollDirection: Axis.horizontal,
           itemCount: provider.psyc_list!.length,
           itemBuilder: (context, index) {
@@ -695,7 +696,18 @@ class Appbar extends StatelessWidget {
             ),
             GestureDetector(
                 onTap: (() {
-                  CustomBottomSheet(context);
+                  CustomBottomSheet(context).then(
+                    (value) {
+                      if (value == "true") {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          content: SuccesSnackbar(context),
+                        ));
+                      }
+                    },
+                  );
                 }),
                 child: Container(
                   width: 37.w,
@@ -715,9 +727,17 @@ class Appbar extends StatelessWidget {
   }
 
   Future<dynamic> CustomBottomSheet(BuildContext context) {
-    final client =
-        Provider.of<ClientProvider>(context, listen: false).get_client.client;
-    final cl = Provider.of<ClientProvider>(context, listen: false);
+    final clientData =
+        Provider.of<ClientProvider>(context, listen: false).get_client.client!;
+    final client = Provider.of<ClientProvider>(context, listen: false);
+
+    TextEditingController nameController =
+        TextEditingController(text: clientData.name);
+    TextEditingController surnameController =
+        TextEditingController(text: clientData.surName);
+    TextEditingController emailController =
+        TextEditingController(text: clientData.eMail);
+    TextEditingController passwordController = TextEditingController();
     return showModalBottomSheet(
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
@@ -744,89 +764,174 @@ class Appbar extends StatelessWidget {
                   right: 20,
                   top: 55,
                 ).r,
-                child: Column(
+                child: ListView(
                   children: [
-                    Text(
-                      "Profil Düzenle",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20.sp,
-                        color: Colors.black.withOpacity(0.75),
-                      ),
-                    ),
-                    Text(
-                      "Sadece güncellemek istediğiniz ögeye tıklayınız",
-                      style: TextStyle(
-                        fontSize: 10.sp,
-                        color: Colors.black.withOpacity(0.25),
-                      ),
-                    ),
-                    SizedBox(height: 30.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
                       children: [
-                        Column(
+                        Text(
+                          "Profil Düzenle",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20.sp,
+                            color: Colors.black.withOpacity(0.75),
+                          ),
+                        ),
+                        Text(
+                          "Sadece güncellemek istediğiniz ögeye tıklayınız",
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            color: Colors.black.withOpacity(0.25),
+                          ),
+                        ),
+                        SizedBox(height: 30.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: 162.w,
-                              height: 110.h,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                      "assets/home/profile_picture.png"),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 162.w,
+                                  height: 110.h,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/home/profile_picture.png"),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                SizedBox(height: 5.h),
+                                Text(
+                                  "Fotoğrafı Güncelle",
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Colors.black.withOpacity(0.5)),
+                                ),
+                              ],
                             ),
-                            SizedBox(height: 5.h),
-                            Text(
-                              "Fotoğrafı Güncelle",
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: Colors.black.withOpacity(0.5)),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 40).r,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "İsim",
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Colors.black.withOpacity(0.5),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    width: 133.w,
+                                    height: 30.h,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 16,
+                                      ).r,
+                                      child: TextFormField(
+                                        controller: nameController,
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                        ),
+                                        style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.25)),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  Text(
+                                    "Soyisim",
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black.withOpacity(0.5),
+                                    ),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    width: 133.w,
+                                    height: 30.h,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 16,
+                                      ).r,
+                                      child: TextFormField(
+                                        controller: surnameController,
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                        ),
+                                        style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.25)),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
+                        SizedBox(height: 21.h),
                         Padding(
-                          padding: const EdgeInsets.only(right: 40).r,
+                          padding: const EdgeInsets.only(left: 36, right: 40).r,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "İsim",
+                                "E-posta",
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: Colors.black.withOpacity(0.5),
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
+                              SizedBox(height: 5.h),
                               Container(
                                 decoration: BoxDecoration(
                                   color: Colors.black.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                width: 133.w,
+                                width: 320.w,
                                 height: 30.h,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 16,
-                                  ).r,
+                                  padding: const EdgeInsets.only(left: 16).r,
                                   child: TextFormField(
+                                    controller: emailController,
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
                                     ),
-                                    initialValue: client!.name.toString(),
                                     style: TextStyle(
                                         color: Colors.black.withOpacity(0.25)),
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10.h),
+                              SizedBox(height: 28.h),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Parola Sıfırlama",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20.sp,
+                                    color: Colors.black.withOpacity(0.75),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
                               Text(
-                                "Soyisim",
+                                "Yeni Parola",
                                 style: TextStyle(
-                                  fontSize: 12.sp,
                                   fontWeight: FontWeight.w500,
+                                  fontSize: 12.sp,
                                   color: Colors.black.withOpacity(0.5),
                                 ),
                               ),
@@ -835,182 +940,113 @@ class Appbar extends StatelessWidget {
                                   color: Colors.black.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                width: 133.w,
+                                width: 320.w,
                                 height: 30.h,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 16,
-                                  ).r,
+                                  padding: const EdgeInsets.only(left: 16).r,
                                   child: TextFormField(
-                                    decoration: const InputDecoration(
+                                    controller: passwordController,
+                                    obscureText: true,
+                                    decoration: InputDecoration(
                                       border: InputBorder.none,
+                                      hintText: "●●●●●●●●●●●●●●●",
+                                      hintStyle: TextStyle(
+                                          color:
+                                              Colors.black.withOpacity(0.25)),
                                     ),
-                                    initialValue: client.surName.toString(),
                                     style: TextStyle(
                                         color: Colors.black.withOpacity(0.25)),
                                   ),
                                 ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                "Yeni Parola Tekrar Giriniz",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12.sp,
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                width: 320.w,
+                                height: 30.h,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 16).r,
+                                  child: TextFormField(
+                                    obscureText: true,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "●●●●●●●●●●●●●●●",
+                                      hintStyle: TextStyle(
+                                          color:
+                                              Colors.black.withOpacity(0.25)),
+                                    ),
+                                    style: TextStyle(
+                                        color: Colors.black.withOpacity(0.25)),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 46.h),
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: (() {
+                                      Navigator.pop(context);
+                                    }),
+                                    child: Container(
+                                      width: 54.w,
+                                      height: 54.w,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(0xffF7F7F7),
+                                      ),
+                                      child: Icon(
+                                        Icons.chevron_left,
+                                        color: Colors.black.withOpacity(0.5),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 23.h),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: (() {
+                                        print(nameController.text);
+                                        print(surnameController.text);
+                                        print(emailController.text);
+                                        print(passwordController.text);
+                                        Navigator.pop(context, "true");
+                                      }),
+                                      child: Container(
+                                        height: 54.h,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xff6B337F),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "Güncelle",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ],
                           ),
                         ),
                       ],
-                    ),
-                    SizedBox(height: 21.h),
-                    //
-
-                    Padding(
-                      padding: const EdgeInsets.only(left: 36, right: 40).r,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "E-posta",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: Colors.black.withOpacity(0.5),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(height: 5.h),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            width: 320.w,
-                            height: 30.h,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 16).r,
-                              child: TextFormField(
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                ),
-                                initialValue: client.eMail.toString(),
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(0.25)),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 28.h),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Parola Sıfırlama",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20.sp,
-                                color: Colors.black.withOpacity(0.75),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "Yeni Parola",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.sp,
-                              color: Colors.black.withOpacity(0.5),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            width: 320.w,
-                            height: 30.h,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 16).r,
-                              child: TextFormField(
-                                obscureText: true,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "●●●●●●●●●●●●●●●",
-                                  hintStyle: TextStyle(
-                                      color: Colors.black.withOpacity(0.25)),
-                                ),
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(0.25)),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "Yeni Parola Tekrar Giriniz",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.sp,
-                              color: Colors.black.withOpacity(0.5),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            width: 320.w,
-                            height: 30.h,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 16).r,
-                              child: TextFormField(
-                                obscureText: true,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "●●●●●●●●●●●●●●●",
-                                  hintStyle: TextStyle(
-                                      color: Colors.black.withOpacity(0.25)),
-                                ),
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(0.25)),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 46.h),
-                          Row(
-                            children: [
-                              Container(
-                                width: 54.w,
-                                height: 54.w,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color(0xffF7F7F7),
-                                ),
-                                child: Icon(
-                                  Icons.chevron_left,
-                                  color: Colors.black.withOpacity(0.5),
-                                ),
-                              ),
-                              SizedBox(width: 23.h),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: (() {
-                                    cl.updateClient();
-                                    Navigator.pop(context);
-                                  }),
-                                  child: Container(
-                                    height: 54.h,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xff6B337F),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "Güncelle",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
                     ),
                   ],
                 ),
@@ -1035,9 +1071,7 @@ class SearchBar extends StatelessWidget {
       child: SizedBox(
         height: 35.h,
         child: TextFormField(
-          onTap: (() {
-            print("object");
-          }),
+          onTap: (() {}),
           textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
             isDense: true,
