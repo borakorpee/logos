@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:logos/models/client_model.dart';
+import 'package:provider/provider.dart';
 
 class ClientProvider extends ChangeNotifier {
   ClientModel _client = ClientModel(
@@ -12,6 +13,11 @@ class ClientProvider extends ChangeNotifier {
   );
 
   ClientModel get get_client => _client;
+
+  void updateClient() {
+    _client.client!.name = "BORAAA";
+    notifyListeners();
+  }
 
   void setClient(dynamic client) {
     _client = ClientModel.fromJson(client);

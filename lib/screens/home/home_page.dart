@@ -1,11 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
+import 'package:logos/providers/client_provider.dart';
 import 'package:provider/provider.dart';
-
-import '../../models/all_psyc_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -77,18 +78,6 @@ class _HomePageState extends State<HomePage> {
               delegate: _HeaderSliver(),
               pinned: true,
             ),
-            /* for (var i = 0;
-                i <
-                    (_filters.contains("Hepsi")
-                        ? provider.psyc_list!.length
-                        : provider.filtered_list.length);
-                i++) ...[
-              SliverPersistentHeader(
-                  delegate: PsycList(
-                index: i,
-                provider: provider,
-              ),)
-            ]*/
             SliverList(
                 delegate: SliverChildBuilderDelegate(
               childCount: _filters.contains("Hepsi")
@@ -107,14 +96,13 @@ class _HomePageState extends State<HomePage> {
                               boxShadow: const [
                                 BoxShadow(
                                   color: Color(0xFFB6C6D4),
-                                  spreadRadius: -8,
-                                  blurRadius: 21.0,
-                                  offset: Offset(10, 10),
+                                  blurRadius: 40,
+                                  offset: Offset(0, 40),
                                 ),
                                 BoxShadow(
                                   color: Color.fromRGBO(255, 255, 255, 0.5),
-                                  blurRadius: 6,
-                                  offset: Offset(-3, -4),
+                                  blurRadius: 40,
+                                  offset: Offset(0, 0),
                                 )
                               ],
                             ),
@@ -234,14 +222,13 @@ class _HomePageState extends State<HomePage> {
                               boxShadow: const [
                                 BoxShadow(
                                   color: Color(0xFFB6C6D4),
-                                  spreadRadius: -8,
-                                  blurRadius: 21.0,
-                                  offset: Offset(10, 10),
+                                  blurRadius: 40,
+                                  offset: Offset(0, 40),
                                 ),
                                 BoxShadow(
                                   color: Color.fromRGBO(255, 255, 255, 0.5),
-                                  blurRadius: 6,
-                                  offset: Offset(-3, -4),
+                                  blurRadius: 40,
+                                  offset: Offset(0, 0),
                                 )
                               ],
                             ),
@@ -344,6 +331,7 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ],
                                           ),
+                                          SizedBox(height: 18.h),
                                         ],
                                       ),
                                     ],
@@ -361,250 +349,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-class PsycList extends SliverPersistentHeaderDelegate {
-  PsycList({required this.index, required this.provider});
-  final All_Psychologists_Provider provider;
-  final index;
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return _filters.contains("Hepsi")
-        ? Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 36).r,
-            child: SizedBox(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0xFFB6C6D4),
-                      spreadRadius: -8,
-                      blurRadius: 21.0,
-                      offset: Offset(10, 10),
-                    ),
-                    BoxShadow(
-                      color: Color.fromRGBO(255, 255, 255, 0.5),
-                      blurRadius: 6,
-                      offset: Offset(-3, -4),
-                    )
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 13, top: 20).r,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.white.withOpacity(0.25),
-                            child: Image.asset("assets/snackbar/grey.png"),
-                          ),
-                          SizedBox(width: 12.w),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                // ignore: prefer_interpolation_to_compose_strings
-                                provider.psyc_list![index].name.toString() +
-                                    " " +
-                                    provider.psyc_list![index].surName
-                                        .toString(),
-                                style: TextStyle(
-                                  fontSize: 15.w,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                provider.psyc_list![index].tag![0],
-                                style: TextStyle(
-                                  fontSize: 12.w,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black.withOpacity(0.5),
-                                ),
-                              ),
-                              SizedBox(height: 8.h),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 115.w,
-                                    height: 16.h,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                              top: 2, left: 14)
-                                          .r,
-                                      child: Text(
-                                        "50+ başarılı görüşme",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 8.w,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: 3.w),
-                                  Container(
-                                    width: 73.w,
-                                    height: 16.h,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                              top: 2, left: 14)
-                                          .r,
-                                      child: Text(
-                                        "500₺/Saat",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 8.w,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          )
-        : SizedBox(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0xFFB6C6D4),
-                    spreadRadius: -8,
-                    blurRadius: 21.0,
-                    offset: Offset(10, 10),
-                  ),
-                  BoxShadow(
-                    color: Color.fromRGBO(255, 255, 255, 0.5),
-                    blurRadius: 6,
-                    offset: Offset(-3, -4),
-                  )
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 13, top: 20).r,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white.withOpacity(0.25),
-                          child: Image.asset("assets/snackbar/grey.png"),
-                        ),
-                        SizedBox(width: 12.w),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              // ignore: prefer_interpolation_to_compose_strings
-                              provider.filtered_list[index].name.toString() +
-                                  " " +
-                                  provider.filtered_list[index].surName
-                                      .toString(),
-                              style: TextStyle(
-                                fontSize: 15.w,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Text(
-                              provider.filtered_list[index].tag![0],
-                              style: TextStyle(
-                                fontSize: 12.w,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black.withOpacity(0.5),
-                              ),
-                            ),
-                            SizedBox(height: 8.h),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 115.w,
-                                  height: 16.h,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.only(top: 2, left: 14)
-                                            .r,
-                                    child: Text(
-                                      "50+ başarılı görüşme",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 8.w,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 3.w),
-                                Container(
-                                  width: 73.w,
-                                  height: 16.h,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.only(top: 2, left: 14)
-                                            .r,
-                                    child: Text(
-                                      "500₺/Saat",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 8.w,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-  }
-
-  @override
-  double get maxExtent => 100.h;
-
-  @override
-  double get minExtent => 100.h;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
 }
 
 class _HeaderSliver extends SliverPersistentHeaderDelegate {
@@ -949,16 +693,332 @@ class Appbar extends StatelessWidget {
                 const Text("LOGOS")
               ],
             ),
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(
-                "assets/home/people.svg",
-              ),
-              iconSize: 40.w,
-            )
+            GestureDetector(
+                onTap: (() {
+                  CustomBottomSheet(context);
+                }),
+                child: Container(
+                  width: 37.w,
+                  height: 37.w,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage("assets/home/profile_picture.png"),
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                )),
           ],
         ),
       ),
+    );
+  }
+
+  Future<dynamic> CustomBottomSheet(BuildContext context) {
+    final client =
+        Provider.of<ClientProvider>(context, listen: false).get_client.client;
+    final cl = Provider.of<ClientProvider>(context, listen: false);
+    return showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50)),
+              ),
+              width: double.infinity,
+              height: 700.h,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 28,
+                  right: 20,
+                  top: 55,
+                ).r,
+                child: Column(
+                  children: [
+                    Text(
+                      "Profil Düzenle",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20.sp,
+                        color: Colors.black.withOpacity(0.75),
+                      ),
+                    ),
+                    Text(
+                      "Sadece güncellemek istediğiniz ögeye tıklayınız",
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        color: Colors.black.withOpacity(0.25),
+                      ),
+                    ),
+                    SizedBox(height: 30.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              width: 162.w,
+                              height: 110.h,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                      "assets/home/profile_picture.png"),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 5.h),
+                            Text(
+                              "Fotoğrafı Güncelle",
+                              style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: Colors.black.withOpacity(0.5)),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 40).r,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "İsim",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: Colors.black.withOpacity(0.5),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                width: 133.w,
+                                height: 30.h,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 16,
+                                  ).r,
+                                  child: TextFormField(
+                                    decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                    ),
+                                    initialValue: client!.name.toString(),
+                                    style: TextStyle(
+                                        color: Colors.black.withOpacity(0.25)),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10.h),
+                              Text(
+                                "Soyisim",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                width: 133.w,
+                                height: 30.h,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 16,
+                                  ).r,
+                                  child: TextFormField(
+                                    decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                    ),
+                                    initialValue: client.surName.toString(),
+                                    style: TextStyle(
+                                        color: Colors.black.withOpacity(0.25)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 21.h),
+                    //
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 36, right: 40).r,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "E-posta",
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: Colors.black.withOpacity(0.5),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 5.h),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: 320.w,
+                            height: 30.h,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16).r,
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                ),
+                                initialValue: client.eMail.toString(),
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.25)),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 28.h),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Parola Sıfırlama",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20.sp,
+                                color: Colors.black.withOpacity(0.75),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            "Yeni Parola",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.sp,
+                              color: Colors.black.withOpacity(0.5),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: 320.w,
+                            height: 30.h,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16).r,
+                              child: TextFormField(
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "●●●●●●●●●●●●●●●",
+                                  hintStyle: TextStyle(
+                                      color: Colors.black.withOpacity(0.25)),
+                                ),
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.25)),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            "Yeni Parola Tekrar Giriniz",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.sp,
+                              color: Colors.black.withOpacity(0.5),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: 320.w,
+                            height: 30.h,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16).r,
+                              child: TextFormField(
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "●●●●●●●●●●●●●●●",
+                                  hintStyle: TextStyle(
+                                      color: Colors.black.withOpacity(0.25)),
+                                ),
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.25)),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 46.h),
+                          Row(
+                            children: [
+                              Container(
+                                width: 54.w,
+                                height: 54.w,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xffF7F7F7),
+                                ),
+                                child: Icon(
+                                  Icons.chevron_left,
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                              ),
+                              SizedBox(width: 23.h),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: (() {
+                                    cl.updateClient();
+                                    Navigator.pop(context);
+                                  }),
+                                  child: Container(
+                                    height: 54.h,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff6B337F),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "Güncelle",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
