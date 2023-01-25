@@ -14,8 +14,17 @@ class ClientProvider extends ChangeNotifier {
   String? get get_token => _client.token;
   ClientModel get get_client => _client;
 
-  void updateClient(
-      String name, String surname, String email, String password) {
+  void updateClient({
+    required String name,
+    required String surname,
+    required String email,
+    required String password,
+  }) {
+    print("Updated");
+    print(name);
+    print(surname);
+    print(email);
+    print(password);
     _client.client!.name = name;
     _client.client!.surName = surname;
     _client.client!.eMail = email;

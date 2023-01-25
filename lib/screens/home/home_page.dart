@@ -1015,10 +1015,13 @@ class Appbar extends StatelessWidget {
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: (() {
-                                        print(nameController.text);
-                                        print(surnameController.text);
-                                        print(emailController.text);
-                                        print(passwordController.text);
+                                        client.updateClient(
+                                          email: emailController.text,
+                                          name: nameController.text,
+                                          password: passwordController.text,
+                                          surname: surnameController.text,
+                                        );
+
                                         Navigator.pop(context, "true");
                                       }),
                                       child: Container(
