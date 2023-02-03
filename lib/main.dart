@@ -8,8 +8,7 @@ import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
 import 'package:logos/screens/forgot_pass/newpassScreenView.dart';
 import 'package:logos/screens/forgot_pass/otpScreenView.dart';
 import 'package:logos/screens/forgot_pass/successScreenView.dart';
-import 'package:logos/screens/home/homeScreenView.dart';
-import 'package:logos/screens/home/ui_test.dart';
+import 'package:logos/screens/home/bottom_navbar.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/onboard/onboardScreenView.dart';
 import 'package:logos/screens/profile/profileScreenView.dart';
@@ -52,7 +51,6 @@ class MyApp extends StatelessWidget {
           // home: const UiTest(),
           routes: {
             ProfileScreenView.routeName: (ctx) => const ProfileScreenView(),
-            HomeScreenView.routeName: (ctx) => const HomeScreenView(),
             LoginScreenView.routeName: (ctx) => const LoginScreenView(),
             ForgotPassScreenView.routeName: (ctx) =>
                 const ForgotPassScreenView(),
@@ -66,7 +64,7 @@ class MyApp extends StatelessWidget {
             KvkkScreen.routeName: (ctx) => const KvkkScreen(),
             PsycsScreenView.routeName: (ctx) => const PsycsScreenView(),
             VideCall.routeName: (ctx) => const VideCall(),
-            UiTest.routeName: (ctx) => const UiTest(),
+            BottomNavbar.routeName: (ctx) => const BottomNavbar(),
           },
         );
       }),

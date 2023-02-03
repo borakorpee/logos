@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:logos/models/client_model.dart';
-import 'package:provider/provider.dart';
 
 class ClientProvider extends ChangeNotifier {
   ClientModel _client = ClientModel(

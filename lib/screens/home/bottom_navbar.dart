@@ -4,15 +4,15 @@ import 'package:logos/screens/home/favorites_page.dart';
 import 'package:logos/screens/home/history_page.dart';
 import 'package:logos/screens/home/home_page.dart';
 
-class UiTest extends StatefulWidget {
+class BottomNavbar extends StatefulWidget {
   static const routeName = "/ui-test";
-  const UiTest({super.key});
+  const BottomNavbar({super.key});
 
   @override
-  State<UiTest> createState() => _UiTestState();
+  State<BottomNavbar> createState() => _BottomNavbarState();
 }
 
-class _UiTestState extends State<UiTest> {
+class _BottomNavbarState extends State<BottomNavbar> {
   int _selectedIndex = 0;
 
   List pages = [

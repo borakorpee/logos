@@ -52,12 +52,14 @@ class AuthService {
           'pass': pass,
         });
     var data = jsonDecode(response.body);
+    log("LOGIN LOG ");
     log(data.toString());
 
     if (data["status"]) {
       var all_psycs = await http.get(Uri.parse("$root/psyc/psycs"), headers: {
         'x-access-token': data["token"],
       });
+      log("PSYC LIST LOG ");
       log(all_psycs.body);
       Provider.of<All_Psychologists_Provider>(context, listen: false)
           .setPsycs(all_psycs.body);
