@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:logos/components/snackbar.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/providers/client_provider.dart';
+import 'package:logos/screens/register/kvkkScreenView.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/customBottomSheet.dart';
@@ -509,7 +510,9 @@ class SearchBar extends StatelessWidget {
         height: 35.h,
         child: TextFormField(
           onTap: (() {
-            showSearch(context: context, delegate: DataSearch());
+            showSearch(
+                context: context,
+                delegate: DataSearch(hintText: 'Arama Sonuçları'));
           }),
           textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
@@ -546,11 +549,36 @@ class SearchBar extends StatelessWidget {
 }
 
 class DataSearch extends SearchDelegate<String> {
+  DataSearch({
+    required String hintText,
+  }) : super(
+          searchFieldStyle: TextStyle(),
+          searchFieldLabel: hintText,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.search,
+        );
+
+  ThemeData appBarTheme(BuildContext context) {
+    return super.appBarTheme(context).copyWith(
+            appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          elevation: 0,
+        ));
+  }
+
   final listt = ["bora", "körpe", "asdas", "test"];
   final recent = ["bora"];
   @override
   List<Widget>? buildActions(BuildContext context) {
-    return [IconButton(onPressed: () {}, icon: const Icon(Icons.clear))];
+    return [
+      IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.clear,
+            color: Colors.transparent,
+          ))
+    ];
   }
 
   @override
@@ -560,6 +588,7 @@ class DataSearch extends SearchDelegate<String> {
           Navigator.pop(context);
         },
         icon: AnimatedIcon(
+          color: Colors.black.withOpacity(0.5),
           icon: AnimatedIcons.menu_arrow,
           progress: transitionAnimation,
         ));
