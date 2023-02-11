@@ -1,8 +1,6 @@
 // ignore_for_file: file_names, must_be_immutable, prefer_initializing_formals, avoid_print, non_constant_identifier_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/components/customBackButton.dart';
 import 'package:logos/models/client_model.dart';

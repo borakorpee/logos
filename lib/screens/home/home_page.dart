@@ -1,13 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logos/components/snackbar.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
-import 'package:logos/providers/client_provider.dart';
-import 'package:logos/screens/register/kvkkScreenView.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/customBottomSheet.dart';
@@ -462,7 +458,7 @@ class __HorizontalFiltersStateState extends State<_HorizontalFiltersState> {
                           height: 36.h,
                           decoration: BoxDecoration(
                             color: isContains(widget.types[index])
-                                ? Color(0xff6B337F)
+                                ? const Color(0xff6B337F)
                                 : Colors.black.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -552,15 +548,16 @@ class DataSearch extends SearchDelegate<String> {
   DataSearch({
     required String hintText,
   }) : super(
-          searchFieldStyle: TextStyle(),
+          searchFieldStyle: TextStyle(color: Colors.black, fontSize: 15.sp),
           searchFieldLabel: hintText,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.search,
         );
 
+  @override
   ThemeData appBarTheme(BuildContext context) {
     return super.appBarTheme(context).copyWith(
-            appBarTheme: AppBarTheme(
+            appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
           centerTitle: true,
           elevation: 0,
@@ -607,7 +604,7 @@ class DataSearch extends SearchDelegate<String> {
       itemCount: suggest.length,
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
-          leading: Icon(Icons.people),
+          leading: const Icon(Icons.people),
           title: Text(suggest[index]),
         );
       },

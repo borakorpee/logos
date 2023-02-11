@@ -16,9 +16,9 @@ class _BottomNavbarState extends State<BottomNavbar> {
   int _selectedIndex = 0;
 
   List pages = [
-    HomePage(),
-    HistoryPage(),
-    FavoritesPage(),
+    const HomePage(),
+    const HistoryPage(),
+    const FavoritesPage(),
   ];
 
   void _onItemTapped(int index) {
