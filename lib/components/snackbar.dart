@@ -29,7 +29,7 @@ Widget SuccesSnackbar(BuildContext context) {
                   ),
                   SizedBox(height: 10.h),
                   Text(
-                    "İşlem başarılı1 bir şekilde gerçekleşti.",
+                    "İşlem başarılı bir şekilde gerçekleşti.",
                     style:
                         TextStyle(fontWeight: FontWeight.w400, fontSize: 12.h),
                   ),
