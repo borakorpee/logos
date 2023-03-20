@@ -23,7 +23,7 @@ Widget SuccesSnackbar(BuildContext context) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Başarılı!",
+                    "Başarılı1!",
                     style:
                         TextStyle(fontWeight: FontWeight.w500, fontSize: 28.h),
                   ),
