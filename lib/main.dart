@@ -21,18 +21,18 @@ import 'package:logos/screens/register/registerSuccessScreenView.dart';
 import 'package:logos/screens/reservation/calendar.dart';
 import 'package:provider/provider.dart';
 import 'screens/register/registerScreen3View.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(
-      create: (context) => ClientProvider(),
-    ),
-    ChangeNotifierProvider(
-      create: (context) => All_Psychologists_Provider(),
-    ),
-  ], child: const MyApp()));
+  initializeDateFormatting().then((_) => runApp(MultiProvider(providers: [
+        ChangeNotifierProvider(
+          create: (context) => ClientProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => All_Psychologists_Provider(),
+        ),
+      ], child: const MyApp())));
 }
 
 class MyApp extends StatelessWidget {

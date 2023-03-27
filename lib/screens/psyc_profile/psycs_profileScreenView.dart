@@ -35,7 +35,7 @@ class _PsycsScreenViewState extends State<PsycsScreenView>
     return Scaffold(
         body: Column(
       children: [
-        const Appbar(),
+        const PsycAppbar(),
         SizedBox(height: 35.h),
         const PsycPic(),
         SizedBox(height: 14.h),
@@ -45,20 +45,20 @@ class _PsycsScreenViewState extends State<PsycsScreenView>
         SizedBox(height: 24.h),
         AboutSection(tabController: _tabController),
         SizedBox(height: 33.h),
-        Container(
-          width: 356,
-          height: 54,
-          decoration: BoxDecoration(
-            color: const Color(0xff6B337F),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context)
-                  .pushNamed(ReservationCalendar.routeName, arguments: {
-                "id": provider.sId,
-              });
-            },
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context)
+                .pushNamed(ReservationCalendar.routeName, arguments: {
+              "id": provider.sId,
+            });
+          },
+          child: Container(
+            width: 356,
+            height: 54,
+            decoration: BoxDecoration(
+              color: const Color(0xff6B337F),
+              borderRadius: BorderRadius.circular(20),
+            ),
             child: Center(
                 child: Text(
               "Randevu Ayarla",
@@ -266,16 +266,16 @@ class PsycPic extends StatelessWidget {
   }
 }
 
-class Appbar extends StatefulWidget {
-  const Appbar({
+class PsycAppbar extends StatefulWidget {
+  const PsycAppbar({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<Appbar> createState() => _AppbarState();
+  State<PsycAppbar> createState() => _PsycAppbarState();
 }
 
-class _AppbarState extends State<Appbar> {
+class _PsycAppbarState extends State<PsycAppbar> {
   bool img = false;
 
   @override
@@ -313,41 +313,3 @@ class _AppbarState extends State<Appbar> {
     );
   }
 }
-
-
-/*
-
- Center(
-        child: Column(
-          children: [
-            Text(provider.name.toString()),
-            Text(provider.surName.toString()),
-            Text(provider.eMail.toString()),
-            Text(provider.tag.toString()),
-            Text(provider.unvan.toString()),
-            Text(provider.about.toString()),
-            SizedBox(
-              width: double.infinity,
-              height: 40,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: provider.tag!.length,
-                itemBuilder: (BuildContext context, int indx) {
-                  return FilterChip(
-                      label: Text(
-                        provider.tag![indx],
-                      ),
-                      onSelected: ((value) {}));
-                },
-              ),
-            ),
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(VideCall.routeName);
-                },
-                icon: const Icon(Icons.video_call))
-          ],
-        ),
-      ),
-
- */
