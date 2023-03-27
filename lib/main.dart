@@ -18,6 +18,7 @@ import 'package:logos/screens/register/kvkkScreenView.dart';
 import 'package:logos/screens/register/registerScreen2View.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
 import 'package:logos/screens/register/registerSuccessScreenView.dart';
+import 'package:logos/screens/reservation/calendar.dart';
 import 'package:provider/provider.dart';
 import 'screens/register/registerScreen3View.dart';
 
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
             PsycsScreenView.routeName: (ctx) => const PsycsScreenView(),
             VideCall.routeName: (ctx) => const VideCall(),
             BottomNavbar.routeName: (ctx) => const BottomNavbar(),
+            ReservationCalendar.routeName: (ctx) => const ReservationCalendar(),
           },
         );
       }),

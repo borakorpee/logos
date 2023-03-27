@@ -72,6 +72,7 @@ flutter:
     - assets/forgot_pass/
     - assets/home/
     - assets/snackbar/
+    - assets/psyc_profile/
 
   #   - images/a_dot_ham.jpeg
 
