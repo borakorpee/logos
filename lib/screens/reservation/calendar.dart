@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import 'package:intl/intl.dart';
 import '../../providers/all_psyc_provider.dart';
 
 class ReservationCalendar extends StatelessWidget {
@@ -22,7 +22,35 @@ class ReservationCalendar extends StatelessWidget {
             padding: const EdgeInsets.only(top: 65, left: 33, right: 33).r,
             child: const Header(),
           ),
-          const CustomCalendar()
+          const CustomCalendar(),
+          SizedBox(height: 340.h),
+          GestureDetector(
+            onTap: () {
+              /*
+             
+              Navigator.of(context)
+                  .pushNamed(ReservationCalendar.routeName, arguments: {
+                "id": provider.sId,
+              });
+             */
+            },
+            child: Container(
+              width: 356,
+              height: 54,
+              decoration: BoxDecoration(
+                color: const Color(0xff6B337F),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                  child: Text(
+                "Randevu Ayarla",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13.sp),
+              )),
+            ),
+          ),
         ],
       ),
     );
@@ -42,112 +70,123 @@ class _CustomCalendarState extends State<CustomCalendar> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  String? day;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 21, right: 21).r,
-      child: TableCalendar(
-        enabledDayPredicate: (day) => !(day.weekday == 6 || day.weekday == 7),
-        daysOfWeekVisible: true,
-        headerStyle: HeaderStyle(
-          leftChevronIcon: Container(
-            width: 35.w,
-            height: 35.h,
-            decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: const Color(0xffF4F5F7), width: 1)),
-            child: const Icon(
-              Icons.chevron_left,
-              color: Colors.black,
+      child: Column(
+        children: [
+          TableCalendar(
+            enabledDayPredicate: (day) =>
+                !(day.weekday == 6 || day.weekday == 7),
+            daysOfWeekVisible: true,
+            headerStyle: HeaderStyle(
+              leftChevronIcon: Container(
+                width: 35.w,
+                height: 35.h,
+                decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                    border:
+                        Border.all(color: const Color(0xffF4F5F7), width: 1)),
+                child: const Icon(
+                  Icons.chevron_left,
+                  color: Colors.black,
+                ),
+              ),
+              rightChevronIcon: Container(
+                width: 35.w,
+                height: 35.h,
+                decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                    border:
+                        Border.all(color: const Color(0xffF4F5F7), width: 1)),
+                child: const Icon(
+                  Icons.chevron_right,
+                  color: Colors.black,
+                ),
+              ),
+              formatButtonVisible: false,
+              titleCentered: true,
             ),
-          ),
-          rightChevronIcon: Container(
-            width: 35.w,
-            height: 35.h,
-            decoration: BoxDecoration(
+            locale: 'tr_TR',
+            calendarStyle: CalendarStyle(
+              cellMargin:
+                  const EdgeInsets.symmetric(horizontal: 11, vertical: 7).r,
+              markerSize: 22,
+              todayDecoration: BoxDecoration(
                 shape: BoxShape.rectangle,
-                color: Colors.transparent,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: const Color(0xffF4F5F7), width: 1)),
-            child: const Icon(
-              Icons.chevron_right,
-              color: Colors.black,
+                color: const Color(0xff6B337F).withOpacity(0.3),
+              ),
+              selectedDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: const Color(0xff6B337F),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              defaultDecoration: const BoxDecoration(
+                shape: BoxShape.rectangle,
+              ),
+              weekendDecoration: const BoxDecoration(
+                shape: BoxShape.rectangle,
+              ),
+              holidayDecoration: const BoxDecoration(
+                shape: BoxShape.rectangle,
+              ),
+              outsideDecoration: const BoxDecoration(
+                shape: BoxShape.rectangle,
+              ),
+              withinRangeDecoration: const BoxDecoration(
+                shape: BoxShape.rectangle,
+              ),
+              rangeStartDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.yellow,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              rangeEndDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.yellow,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              rangeHighlightColor: Colors.red,
+              weekendTextStyle: Theme.of(context).textTheme.bodyText2!,
+              defaultTextStyle: Theme.of(context).textTheme.bodyText2!,
             ),
-          ),
-          formatButtonVisible: false,
-          titleCentered: true,
-        ),
-        locale: 'tr_TR',
-        calendarStyle: CalendarStyle(
-          cellMargin: const EdgeInsets.symmetric(horizontal: 11, vertical: 7).r,
-          markerSize: 22,
-          todayDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(10),
-            color: const Color(0xff6B337F).withOpacity(0.3),
-          ),
-          selectedDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: const Color(0xff6B337F),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          defaultDecoration: const BoxDecoration(
-            shape: BoxShape.rectangle,
-          ),
-          weekendDecoration: const BoxDecoration(
-            shape: BoxShape.rectangle,
-          ),
-          holidayDecoration: const BoxDecoration(
-            shape: BoxShape.rectangle,
-          ),
-          outsideDecoration: const BoxDecoration(
-            shape: BoxShape.rectangle,
-          ),
-          withinRangeDecoration: const BoxDecoration(
-            shape: BoxShape.rectangle,
-          ),
-          rangeStartDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: Colors.yellow,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          rangeEndDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: Colors.yellow,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          rangeHighlightColor: Colors.red,
-          weekendTextStyle: Theme.of(context).textTheme.bodyText2!,
-          defaultTextStyle: Theme.of(context).textTheme.bodyText2!,
-        ),
-        firstDay: DateTime.now(),
-        lastDay: DateTime.utc(2030, 3, 14),
-        focusedDay: _focusedDay,
-        calendarFormat: _calendarFormat,
-        selectedDayPredicate: (day) {
-          return isSameDay(_selectedDay, day);
-        },
-        onDaySelected: (selectedDay, focusedDay) {
-          if (!isSameDay(_selectedDay, selectedDay)) {
-            setState(() {
-              _selectedDay = selectedDay;
+            firstDay: DateTime.now(),
+            lastDay: DateTime.utc(2030, 3, 14),
+            focusedDay: _focusedDay,
+            calendarFormat: _calendarFormat,
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              if (!isSameDay(_selectedDay, selectedDay)) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                  DateFormat formatter = DateFormat('dd-MM-yyyy');
+                  day = formatter.format(_selectedDay!);
+                });
+              }
+            },
+            onFormatChanged: (format) {
+              if (_calendarFormat != format) {
+                setState(() {
+                  _calendarFormat = format;
+                });
+              }
+            },
+            onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
-              print(_selectedDay);
-            });
-          }
-        },
-        onFormatChanged: (format) {
-          if (_calendarFormat != format) {
-            setState(() {
-              _calendarFormat = format;
-            });
-          }
-        },
-        onPageChanged: (focusedDay) {
-          _focusedDay = focusedDay;
-        },
+            },
+          ),
+          Text(day.toString()),
+        ],
       ),
     );
   }
