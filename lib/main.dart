@@ -24,6 +24,7 @@ import 'screens/register/registerScreen3View.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
   initializeDateFormatting().then((_) => runApp(MultiProvider(providers: [
         ChangeNotifierProvider(
