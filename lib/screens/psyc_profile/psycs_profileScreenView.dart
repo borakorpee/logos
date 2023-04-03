@@ -289,7 +289,7 @@ class _PsycAppbarState extends State<PsycAppbar> {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     return Padding(
-      padding: const EdgeInsets.only(top: 35, left: 33, right: 33).r,
+      padding: const EdgeInsets.only(top: 55, left: 33, right: 33).r,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

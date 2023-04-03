@@ -748,7 +748,7 @@ class HorizontalList extends StatelessWidget {
                                       "500₺/Saat",
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 8.w,
+                                        fontSize: 8.sp,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
