@@ -8,6 +8,8 @@ import 'package:logos/screens/psyc_profile/vide_call.dart';
 import 'package:logos/screens/reservation/calendar.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/client_provider.dart';
+
 class PsycsScreenView extends StatefulWidget {
   static const routeName = "/psycs-profile";
   const PsycsScreenView({super.key});
@@ -36,7 +38,7 @@ class _PsycsScreenViewState extends State<PsycsScreenView>
         body: Column(
       children: [
         const PsycAppbar(),
-        SizedBox(height: 35.h),
+        SizedBox(height: 25.h),
         const PsycPic(),
         SizedBox(height: 14.h),
         PsycBio(provider: provider),
@@ -44,7 +46,7 @@ class _PsycsScreenViewState extends State<PsycsScreenView>
         const BioRow(),
         SizedBox(height: 24.h),
         AboutSection(tabController: _tabController),
-        SizedBox(height: 33.h),
+        SizedBox(height: 30.h),
         GestureDetector(
           onTap: () {
             Navigator.of(context)
@@ -53,8 +55,8 @@ class _PsycsScreenViewState extends State<PsycsScreenView>
             });
           },
           child: Container(
-            width: 356,
-            height: 54,
+            width: 356.w,
+            height: 54.h,
             decoration: BoxDecoration(
               color: const Color(0xff6B337F),
               borderRadius: BorderRadius.circular(20),
@@ -89,7 +91,7 @@ class AboutSection extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 36).r,
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(20)),
+            color: Colors.white, borderRadius: BorderRadius.circular(20).r),
         child: Column(
           children: [
             TabBar(
@@ -101,11 +103,13 @@ class AboutSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               controller: _tabController,
-              tabs: const <Widget>[
+              tabs: <Widget>[
                 Tab(
+                  height: 50.h,
                   text: "Muayene Detayı",
                 ),
                 Tab(
+                  height: 50.h,
                   text: "Doktor Hakkında",
                 ),
               ],
@@ -252,8 +256,8 @@ class PsycPic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 135,
-      height: 135,
+      width: 135.w,
+      height: 135.h,
       decoration: const BoxDecoration(
         color: Colors.red,
         shape: BoxShape.circle,
@@ -280,8 +284,12 @@ class _PsycAppbarState extends State<PsycAppbar> {
 
   @override
   Widget build(BuildContext context) {
+    final client = Provider.of<ClientProvider>(context).get_client.client!;
+    final fav = Provider.of<ClientProvider>(context);
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     return Padding(
-      padding: const EdgeInsets.only(top: 65, left: 33, right: 33).r,
+      padding: const EdgeInsets.only(top: 35, left: 33, right: 33).r,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -297,12 +305,12 @@ class _PsycAppbarState extends State<PsycAppbar> {
           ),
           IconButton(
             onPressed: () {
-              setState(() {
-                img = !img;
-              });
+              client.favorites!.contains(args["id"])
+                  ? fav.removeFavorites(args["id"])
+                  : fav.addFavorites(args["id"]);
             },
             icon: Image.asset(
-              img
+              client.favorites!.contains(args["id"])
                   ? "assets/psyc_profile/bookmark_filled.png"
                   : "assets/psyc_profile/bookmark.png",
               color: Colors.black,
