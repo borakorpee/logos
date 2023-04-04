@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
     });
     return SafeArea(
       child: Scaffold(
+        drawer: Drawer(child: Text("asd")),
         body: CustomScrollView(
           shrinkWrap: true,
           slivers: [
@@ -851,18 +852,7 @@ class Appbar extends StatelessWidget {
             ),
             GestureDetector(
                 onTap: (() {
-                  CustomBottomSheet(context).then(
-                    (value) {
-                      if (value == "true") {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          backgroundColor: Colors.transparent,
-                          elevation: 0,
-                          content: SuccesSnackbar(context),
-                        ));
-                      }
-                    },
-                  );
+                  Scaffold.of(context).openDrawer();
                 }),
                 child: Container(
                   width: 37.w,

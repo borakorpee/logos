@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/components/customBackButton.dart';
 import 'package:logos/models/client_model.dart';
 import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
+import 'package:logos/screens/home/new_home.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
 import 'package:logos/service/auth_service.dart';
 
@@ -235,11 +236,11 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (BuildContext context) =>
-                                                  const BottomNavbar(),
+                                                  const NewHomePage(),
                                               settings: RouteSettings(
                                                   arguments: _clientModel)),
                                           ModalRoute.withName(
-                                              BottomNavbar.routeName));
+                                              NewHomePage.routeName));
                                       setState(() {
                                         isLoading = false;
                                       });
