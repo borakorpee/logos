@@ -5,8 +5,6 @@ import 'package:logos/providers/client_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreenView extends StatelessWidget {
-  static const routeName = "/profile";
-
   const ProfileScreenView({super.key});
 
   @override

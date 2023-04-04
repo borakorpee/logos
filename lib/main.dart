@@ -13,6 +13,7 @@ import 'package:logos/screens/home/new_home.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/onboard/onboardScreenView.dart';
 import 'package:logos/screens/profile/profileScreenView.dart';
+import 'package:logos/screens/profile/profile_page.dart';
 import 'package:logos/screens/psyc_profile/psycs_profileScreenView.dart';
 import 'package:logos/screens/psyc_profile/vide_call.dart';
 import 'package:logos/screens/register/kvkkScreenView.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
           home: const OnboardScreenView(),
           // home: const UiTest(),
           routes: {
-            ProfileScreenView.routeName: (ctx) => const ProfileScreenView(),
+            ProfilePage.routeName: (ctx) => const ProfilePage(),
             LoginScreenView.routeName: (ctx) => const LoginScreenView(),
             ForgotPassScreenView.routeName: (ctx) =>
                 const ForgotPassScreenView(),
