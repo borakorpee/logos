@@ -75,6 +75,7 @@ flutter:
     - assets/snackbar/
     - assets/psyc_profile/
     - assets/drawer/
+    - assets/client_profile/
 
   #   - images/a_dot_ham.jpeg
 

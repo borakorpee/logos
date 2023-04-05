@@ -12,7 +12,7 @@ import 'package:logos/screens/home/bottom_navbar.dart';
 import 'package:logos/screens/home/new_home.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/onboard/onboardScreenView.dart';
-import 'package:logos/screens/profile/profileScreenView.dart';
+import 'package:logos/screens/profile/edit_profile_page.dart';
 import 'package:logos/screens/profile/profile_page.dart';
 import 'package:logos/screens/psyc_profile/psycs_profileScreenView.dart';
 import 'package:logos/screens/psyc_profile/vide_call.dart';
@@ -52,9 +52,9 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
           debugShowCheckedModeBanner: false,
           home: const OnboardScreenView(),
-          // home: const UiTest(),
           routes: {
             ProfilePage.routeName: (ctx) => const ProfilePage(),
+            EditProfile.routeName: (ctx) => const EditProfile(),
             LoginScreenView.routeName: (ctx) => const LoginScreenView(),
             ForgotPassScreenView.routeName: (ctx) =>
                 const ForgotPassScreenView(),
