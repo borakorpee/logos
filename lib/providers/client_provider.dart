@@ -46,22 +46,39 @@ class ClientProvider extends ChangeNotifier {
     print(_client.client!.favorites!);
   }
 
-  void updateClient({
+  Future<void> updateClient({
     required String name,
     required String surname,
+    required String il,
+    required String ilce,
     required String email,
+    required String meslek,
     required String password,
-  }) {
-    print("Updated");
-    print(name);
-    print(surname);
-    print(email);
-    print(password);
-    _client.client!.name = name;
-    _client.client!.surName = surname;
-    _client.client!.eMail = email;
-    _client.client!.pass = password;
+  }) async {
+    _client.client!.name = name.isEmpty ? _client.client!.name : name;
+    _client.client!.surName =
+        surname.isEmpty ? _client.client!.surName : surname;
+    _client.client!.city = il.isEmpty ? _client.client!.city : il;
+    _client.client!.county = ilce.isEmpty ? _client.client!.county : ilce;
+    _client.client!.eMail = email.isEmpty ? _client.client!.eMail : email;
+    _client.client!.job = meslek.isEmpty ? _client.client!.job : meslek;
+    _client.client!.pass = password.isEmpty ? _client.client!.pass : password;
 
+    var response = await http.put(
+      Uri.parse("$root/client/update/${_client.client!.sId}"),
+      headers: {"x-access-token": _client.token!},
+      body: {
+        "name": _client.client!.name,
+        "surName": _client.client!.surName,
+        "city": _client.client!.city,
+        "county": _client.client!.county,
+        "eMail": _client.client!.eMail,
+        "job": _client.client!.job,
+        "pass": _client.client!.pass,
+      },
+    );
+    var data = jsonDecode(response.body);
+    print(data);
     notifyListeners();
   }
 

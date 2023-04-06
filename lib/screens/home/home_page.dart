@@ -6,7 +6,6 @@ import 'package:logos/components/snackbar.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/customBottomSheet.dart';
 import '../psyc_profile/psycs_profileScreenView.dart';
 
 class HomePage extends StatefulWidget {

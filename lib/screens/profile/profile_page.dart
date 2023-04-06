@@ -38,9 +38,11 @@ class ProfilePage extends StatelessWidget {
                 children: const [
                   DetailTo(
                     navigateTo: 'Randevularım',
+                    iconPath: 'assets/client_profile/randevularım.svg',
                   ),
                   DetailTo(
                     navigateTo: 'Geçmiş',
+                    iconPath: 'assets/client_profile/gecmis.svg',
                   ),
                 ],
               ),
@@ -54,9 +56,12 @@ class ProfilePage extends StatelessWidget {
 
 class DetailTo extends StatelessWidget {
   final String navigateTo;
+  final String iconPath;
+
   const DetailTo({
     Key? key,
     required this.navigateTo,
+    required this.iconPath,
   }) : super(key: key);
 
   @override
@@ -65,6 +70,8 @@ class DetailTo extends StatelessWidget {
       padding: const EdgeInsets.only(left: 36, right: 36, top: 22).r,
       child: Row(
         children: [
+          SvgPicture.asset(iconPath),
+          SizedBox(width: 10.w),
           Text(
             navigateTo,
             style: TextStyle(
