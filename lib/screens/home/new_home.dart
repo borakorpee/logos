@@ -81,7 +81,7 @@ class CustomDrawer extends StatelessWidget {
     return Drawer(
       width: 381.w,
       child: Padding(
-        padding: const EdgeInsets.only(left: 65, top: 67, bottom: 30).r,
+        padding: const EdgeInsets.only(left: 65, top: 87, bottom: 30).r,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -90,12 +90,12 @@ class CustomDrawer extends StatelessWidget {
               height: 73.h,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("assets/home/logoBlack 2.png"),
+                  image: AssetImage("assets/drawer/logoBlack 2.png"),
                   fit: BoxFit.fill,
                 ),
               ),
             ),
-            SizedBox(height: 37.h),
+            SizedBox(height: 17.h),
             const DrawerRow(
               drawerIconPath: 'assets/drawer/anasayfa.png',
               drawerTitle: 'Anasayfa',
