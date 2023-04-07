@@ -23,7 +23,9 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CustomAppbar(),
+            const CustomAppbar(
+              appBarTitle: 'Profilim',
+            ),
             SizedBox(height: 43.h),
             Bio(client: client),
             SizedBox(height: 25.h),
@@ -83,7 +85,7 @@ class DetailTo extends StatelessWidget {
           const Spacer(),
           GestureDetector(
             onTap: () {
-              //Navigator.of(context).pop();
+              Navigator.of(context).pop();
             },
             child: Container(
               width: 42.w,
@@ -251,8 +253,10 @@ class InfoBox extends StatelessWidget {
 }
 
 class CustomAppbar extends StatelessWidget {
+  final String appBarTitle;
   const CustomAppbar({
     Key? key,
+    required this.appBarTitle,
   }) : super(key: key);
 
   @override
@@ -280,7 +284,7 @@ class CustomAppbar extends StatelessWidget {
           ),
           const Spacer(),
           Text(
-            "Profilim",
+            appBarTitle,
             style: TextStyle(
                 color: Colors.black.withOpacity(0.75),
                 fontWeight: FontWeight.w500,

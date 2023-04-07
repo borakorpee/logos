@@ -9,6 +9,7 @@ import 'package:logos/screens/forgot_pass/newpassScreenView.dart';
 import 'package:logos/screens/forgot_pass/otpScreenView.dart';
 import 'package:logos/screens/forgot_pass/successScreenView.dart';
 import 'package:logos/screens/home/bottom_navbar.dart';
+import 'package:logos/screens/home/favorites_page.dart';
 import 'package:logos/screens/home/new_home.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/onboard/onboardScreenView.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
             BottomNavbar.routeName: (ctx) => const BottomNavbar(),
             ReservationCalendar.routeName: (ctx) => const ReservationCalendar(),
             NewHomePage.routeName: (ctx) => const NewHomePage(),
+            FavoritesPage.routeName: (ctx) => const FavoritesPage(),
           },
         );
       }),

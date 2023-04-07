@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logos/screens/home/favorites_page.dart';
+import 'package:logos/screens/profile/profile_page.dart';
+
+import 'home_page.dart';
 
 class NewHomePage extends StatelessWidget {
   static const routeName = "/new_home";
@@ -10,7 +14,7 @@ class NewHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
-      appBar: AppBar(
+      /*appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
           Builder(
@@ -22,8 +26,47 @@ class NewHomePage extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      ),*/
+
       drawer: const CustomDrawer(),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 75).r,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30).r,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image.asset("assets/home/asd.png"),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(FavoritesPage.routeName);
+                    },
+                    child: Container(
+                      width: 42.w,
+                      height: 42.h,
+                      decoration: BoxDecoration(
+                        border:
+                            Border.all(color: Colors.black.withOpacity(0.1)),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.favorite_border,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 7.w),
+                  const DrawerButton(),
+                ],
+              ),
+            ),
+            SearchBar(),
+          ],
+        ),
+      ),
     );
   }
 }

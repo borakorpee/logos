@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logos/models/all_psyc_model.dart';
+import 'package:logos/screens/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/all_psyc_provider.dart';
 import '../../providers/client_provider.dart';
 
 class FavoritesPage extends StatefulWidget {
+  static const routeName = "/favorites";
   const FavoritesPage({super.key});
 
   @override
@@ -26,10 +28,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                "Kaydedilenler",
-                style: TextStyle(color: Colors.black, fontSize: 15.sp),
-                textAlign: TextAlign.center,
+              Padding(
+                padding: const EdgeInsets.only(left: 27, right: 27).r,
+                child: const CustomAppbar(
+                  appBarTitle: 'Favori Psikologlarım',
+                ),
               ),
               client.favorites!.isEmpty
                   ? Expanded(
@@ -52,156 +55,107 @@ class _FavoritesPageState extends State<FavoritesPage> {
                               Provider.of<All_Psychologists_Provider>(context)
                                   .findById(client.favorites![index]);
                           return Padding(
-                            padding: const EdgeInsets.only(top: 10).r,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 40,
-                                  )
-                                ],
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 30)
-                                        .r,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: Colors.white),
-                                  width: 356.w,
-                                  height: 119.h,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                            vertical: 17, horizontal: 20)
-                                        .r,
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 38).r,
+                            child: SizedBox(
+                              width: 428.w,
+                              height: 100.h,
+                              child: Row(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topCenter,
+                                    child: Container(
+                                      width: 70.w,
+                                      height: 70.h,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                "assets/home/dummypp.png"),
+                                            fit: BoxFit.contain),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 20.w),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${psyc.name}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black.withOpacity(0.75),
+                                        ),
+                                      ),
+                                      SizedBox(height: 5.h),
+                                      Row(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              const StarIcon(),
+                                              SizedBox(width: 5.w),
+                                              const StarIcon(),
+                                              SizedBox(width: 5.w),
+                                              const StarIcon(),
+                                              SizedBox(width: 5.w),
+                                              const StarIcon(),
+                                              SizedBox(width: 5.w),
+                                              const StarIcon(),
+                                            ],
+                                          ),
+                                          const SizedBox(width: 5),
+                                          Text(
+                                            "4.6 (1526 Oylama)",
+                                            style: TextStyle(
+                                              fontSize: 8.sp,
+                                              color:
+                                                  Colors.black.withOpacity(0.5),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 5.h),
+                                      Text(
+                                        psyc.tag![0],
+                                        style: TextStyle(
+                                          fontSize: 10.sp,
+                                          color: Colors.black.withOpacity(0.35),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  Align(
+                                    alignment: Alignment.topCenter,
                                     child: Column(
                                       children: [
-                                        Row(
-                                          children: [
-                                            const CircleAvatar(
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              backgroundImage: NetworkImage(
-                                                  "https://www.mecgale.com/wp-content/uploads/2017/08/dummy-profile.png"),
-                                            ),
-                                            SizedBox(width: 20.w),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "${psyc.name!} ${psyc.surName!}",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 15.sp),
-                                                ),
-                                                Text(
-                                                  psyc.tag![0],
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 10.sp),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                        Container(
+                                          width: 40.w,
+                                          height: 40.h,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: const Color(0xffF0735A)
+                                                .withOpacity(0.1),
+                                          ),
+                                          child: Icon(
+                                            Icons.favorite,
+                                            color: const Color(0xffF0735A),
+                                            size: 15.w,
+                                          ),
                                         ),
-                                        Expanded(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Container(
-                                                    width: 119.w,
-                                                    height: 18.h,
-                                                    decoration: BoxDecoration(
-                                                      color: const Color(
-                                                          0xff6B337F),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                                  left: 14)
-                                                              .r,
-                                                      child: ListView.builder(
-                                                        scrollDirection:
-                                                            Axis.horizontal,
-                                                        itemCount: 5,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          return Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.star,
-                                                                color: Colors
-                                                                    .white,
-                                                                size: 15.w,
-                                                              ),
-                                                              SizedBox(
-                                                                  width: 4.w),
-                                                            ],
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 5.w,
-                                                  ),
-                                                  Container(
-                                                    width: 85.w,
-                                                    height: 19.h,
-                                                    decoration: BoxDecoration(
-                                                      color: const Color(
-                                                          0xff6B337F),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                    ),
-                                                    child: Center(
-                                                      child: Text(
-                                                        "500₺/Saat",
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 10.sp,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "İstanbul, Türkiye",
-                                                    style: TextStyle(
-                                                        fontSize: 10.sp,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Colors.black
-                                                            .withOpacity(0.25)),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
+                                        Text(
+                                          "Kaldır",
+                                          style: TextStyle(
+                                            color: const Color(0xffF0735A),
+                                            fontSize: 8.sp,
+                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ),
+                                  )
+                                ],
                               ),
                             ),
                           );
@@ -210,6 +164,26 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class StarIcon extends StatelessWidget {
+  const StarIcon({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 9.w,
+      height: 9.h,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/home/Star 11.png"),
+          fit: BoxFit.contain,
         ),
       ),
     );
