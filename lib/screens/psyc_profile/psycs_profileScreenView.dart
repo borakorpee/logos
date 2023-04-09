@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:logos/models/all_psyc_model.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/screens/psyc_profile/vide_call.dart';
@@ -54,21 +55,44 @@ class _PsycsScreenViewState extends State<PsycsScreenView>
               "id": provider.sId,
             });
           },
-          child: Container(
-            width: 356.w,
-            height: 54.h,
-            decoration: BoxDecoration(
-              color: const Color(0xff6B337F),
-              borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 36).r,
+            child: Row(
+              children: [
+                Container(
+                  width: 273.w,
+                  height: 54.h,
+                  decoration: BoxDecoration(
+                    color: const Color(0xffA950C9),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Randevu Ayarla",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13.sp,
+                      ),
+                    ),
+                  ),
+                ),
+                Spacer(),
+                Container(
+                  width: 70.w,
+                  height: 50.h,
+                  decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: SvgPicture.asset(
+                    "assets/psyc_profile/message.svg",
+                    width: 10.w,
+                    height: 10.h,
+                    fit: BoxFit.none,
+                  ),
+                ),
+              ],
             ),
-            child: Center(
-                child: Text(
-              "Randevu Ayarla",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 13.sp),
-            )),
           ),
         ),
       ],
@@ -76,7 +100,7 @@ class _PsycsScreenViewState extends State<PsycsScreenView>
   }
 }
 
-class AboutSection extends StatelessWidget {
+class AboutSection extends StatefulWidget {
   const AboutSection({
     Key? key,
     required TabController tabController,
@@ -86,27 +110,35 @@ class AboutSection extends StatelessWidget {
   final TabController _tabController;
 
   @override
+  State<AboutSection> createState() => _AboutSectionState();
+}
+
+class _AboutSectionState extends State<AboutSection> {
+  int tabindex = 0;
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 36).r,
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(20).r),
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(10).r),
         child: Column(
           children: [
             TabBar(
+              labelColor: const Color(0xffA950C9),
               unselectedLabelColor: Colors.black.withOpacity(0.25),
               unselectedLabelStyle: TextStyle(fontSize: 13.sp),
               automaticIndicatorColorAdjustment: false,
               indicator: BoxDecoration(
-                color: const Color(0xff6B337F),
-                borderRadius: BorderRadius.circular(20),
+                color: const Color(0xff6B337F).withOpacity(0.25),
+                borderRadius: BorderRadius.circular(10),
               ),
-              controller: _tabController,
+              controller: widget._tabController,
               tabs: <Widget>[
                 Tab(
-                  height: 50.h,
                   text: "Muayene Detayı",
+                  height: 50.h,
                 ),
                 Tab(
                   height: 50.h,
@@ -118,15 +150,15 @@ class AboutSection extends StatelessWidget {
               width: 325.w,
               height: 325.h,
               child: TabBarView(
-                controller: _tabController,
+                controller: widget._tabController,
                 children: <Widget>[
                   SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 28).r,
                       child: Text(
                         """Uyum bozuklukları uzmanı, psikolojik danışmanlık ve terapi hizmetleri sunan bir sağlık profesyonelidir. Uyum bozuklukları, bireylerin hayatlarında önemli bir stres kaynağı olabilir ve iş, okul ve sosyal ilişkiler gibi yaşamın birçok alanını etkileyebilir. Bu nedenle, uyum bozuklukları uzmanları, hastalarının günlük yaşamlarında karşılaştıkları zorluklara yardımcı olmak için özel olarak eğitilirler.
-
-Uyum bozuklukları uzmanları, çeşitli terapi teknikleri kullanarak hastalarının uyum sorunlarını ele alır. Bunlar arasında bilişsel davranışçı terapi, kişilerarası terapi, aile terapisi ve psikodinamik terapi gibi terapiler yer alır. Uzmanlar, hastalarının yaşadıkları sorunları ve hissettikleri duyguları anlamak için bireysel danışmanlık, grup terapisi veya aile terapisi gibi farklı terapi yöntemleri kullanabilirler. """,
+            
+            Uyum bozuklukları uzmanları, çeşitli terapi teknikleri kullanarak hastalarının uyum sorunlarını ele alır. Bunlar arasında bilişsel davranışçı terapi, kişilerarası terapi, aile terapisi ve psikodinamik terapi gibi terapiler yer alır. Uzmanlar, hastalarının yaşadıkları sorunları ve hissettikleri duyguları anlamak için bireysel danışmanlık, grup terapisi veya aile terapisi gibi farklı terapi yöntemleri kullanabilirler. """,
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.5),
                           fontSize: 13.sp,
@@ -139,8 +171,8 @@ Uyum bozuklukları uzmanları, çeşitli terapi teknikleri kullanarak hastaları
                       padding: const EdgeInsets.only(top: 28).r,
                       child: Text(
                         """Uyum bozuklukları uzmanı, psikolojik danışmanlık ve terapi hizmetleri sunan bir sağlık profesyonelidir. Uyum bozuklukları, bireylerin hayatlarında önemli bir stres kaynağı olabilir ve iş, okul ve sosyal ilişkiler gibi yaşamın birçok alanını etkileyebilir. Bu nedenle, uyum bozuklukları uzmanları, hastalarının günlük yaşamlarında karşılaştıkları zorluklara yardımcı olmak için özel olarak eğitilirler.
-
-Uyum bozuklukları uzmanları, çeşitli terapi teknikleri kullanarak hastalarının uyum sorunlarını ele alır. Bunlar arasında bilişsel davranışçı terapi, kişilerarası terapi, aile terapisi ve psikodinamik terapi gibi terapiler yer alır. Uzmanlar, hastalarının yaşadıkları sorunları ve hissettikleri duyguları anlamak için bireysel danışmanlık, grup terapisi veya aile terapisi gibi farklı terapi yöntemleri kullanabilirler. """,
+            
+            Uyum bozuklukları uzmanları, çeşitli terapi teknikleri kullanarak hastalarının uyum sorunlarını ele alır. Bunlar arasında bilişsel davranışçı terapi, kişilerarası terapi, aile terapisi ve psikodinamik terapi gibi terapiler yer alır. Uzmanlar, hastalarının yaşadıkları sorunları ve hissettikleri duyguları anlamak için bireysel danışmanlık, grup terapisi veya aile terapisi gibi farklı terapi yöntemleri kullanabilirler. """,
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.5),
                           fontSize: 13.sp,
@@ -170,9 +202,23 @@ class BioRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: const [
-          Spec(title: 'Tam Zamanlı'),
-          Spec(title: '50+ başarılı görüşme'),
-          Spec(title: '500₺/Saat'),
+          Spec(
+            iconPath: 'assets/psyc_profile/hasta.svg',
+            specTitle: 'Hasta',
+            stats: '2.56K',
+          ),
+          Spacer(),
+          Spec(
+            iconPath: 'assets/psyc_profile/inceleme.svg',
+            specTitle: 'İnceleme',
+            stats: '5.85K',
+          ),
+          Spacer(),
+          Spec(
+            iconPath: 'assets/psyc_profile/tecrube.svg',
+            specTitle: 'Tecrübe',
+            stats: '8 Sene',
+          ),
         ],
       ),
     );
@@ -180,30 +226,46 @@ class BioRow extends StatelessWidget {
 }
 
 class Spec extends StatelessWidget {
-  final String title;
+  final String specTitle;
+  final String iconPath;
+  final String stats;
+
   const Spec({
     Key? key,
-    required this.title,
+    required this.specTitle,
+    required this.iconPath,
+    required this.stats,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: const Color(0xff6B337F),
-      ),
-      height: 25.h,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4).r,
-        child: Center(
-            child: Text(
-          title,
-          style: TextStyle(
-              fontSize: 10.sp,
-              color: Colors.white,
-              fontWeight: FontWeight.w500),
-        )),
+    return FittedBox(
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            iconPath,
+          ),
+          SizedBox(width: 5.w),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                specTitle,
+                style: (TextStyle(
+                  color: Colors.black.withOpacity(0.35),
+                  fontSize: 10.sp,
+                )),
+              ),
+              Text(
+                stats,
+                style: TextStyle(
+                    color: const Color(0xffA950C9),
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
@@ -222,8 +284,11 @@ class PsycBio extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "${provider.name} ${provider.surName}",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.sp),
+          "${provider.unvan} ${provider.name} ${provider.surName}",
+          style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 20.sp,
+              color: Colors.black.withOpacity(0.75)),
         ),
         SizedBox(height: 1.h),
         SizedBox(
@@ -237,7 +302,7 @@ class PsycBio extends StatelessWidget {
                 ' ${provider.tag![index][0].toUpperCase()}${provider.tag![index].substring(1)} ${index != provider.tag!.length - 1 ? '|' : ''}',
                 style: TextStyle(
                   fontSize: 12.sp,
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withOpacity(0.35),
                 ),
               );
             },
@@ -289,15 +354,26 @@ class _PsycAppbarState extends State<PsycAppbar> {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     return Padding(
-      padding: const EdgeInsets.only(top: 55, left: 33, right: 33).r,
+      padding: const EdgeInsets.only(top: 75, left: 33, right: 33).r,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          IconButton(
-            onPressed: () {
+          GestureDetector(
+            onTap: () {
               Navigator.of(context).pop();
             },
-            icon: const Icon(Icons.chevron_left),
+            child: Container(
+              width: 42.w,
+              height: 42.h,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black.withOpacity(0.1)),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.chevron_left,
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ),
           ),
           Text(
             "Psikiyatri Detayları",
