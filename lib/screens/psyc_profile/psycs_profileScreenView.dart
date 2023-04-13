@@ -389,7 +389,6 @@ class _PsycAppbarState extends State<PsycAppbar> {
               client.favorites!.contains(args["id"])
                   ? "assets/psyc_profile/bookmark_filled.png"
                   : "assets/psyc_profile/bookmark.png",
-              color: Colors.black,
             ),
           ),
         ],

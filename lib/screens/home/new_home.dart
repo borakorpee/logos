@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/screens/home/favorites_page.dart';
 import 'package:logos/screens/profile/profile_page.dart';
+import 'package:provider/provider.dart';
 
 class NewHomePage extends StatelessWidget {
   static const routeName = "/new_home";
   const NewHomePage({super.key});
   @override
   Widget build(BuildContext context) {
+    final psyc = Provider.of<All_Psychologists_Provider>(context).psyc_list!;
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       drawer: const CustomDrawer(),
@@ -18,8 +21,11 @@ class NewHomePage extends StatelessWidget {
         child: Column(
           children: [
             const HomeAppbar(),
+            SizedBox(height: 15.h),
             const SearchBar(),
+            SizedBox(height: 15.h),
             const HorizontalList(),
+            SizedBox(height: 15.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: const [
@@ -35,6 +41,164 @@ class NewHomePage extends StatelessWidget {
                   buttonIconPath: 'assets/home/svg3.svg',
                   buttonText: 'Görüş',
                 ),
+              ],
+            ),
+            Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 35)
+                          .r,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "En İyi Psikologlar",
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.75),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15.sp,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 220.h,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 4,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 35, top: 5).r,
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 210.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.15),
+                                    blurRadius: 15,
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    width: 170.w,
+                                    height: 110.h,
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                              left: 15, right: 15)
+                                          .r,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${psyc[index].unvan} ${psyc[index].name} ${psyc[index].surName}",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12.sp,
+                                              color: Colors.black
+                                                  .withOpacity(0.75),
+                                            ),
+                                          ),
+                                          Text(
+                                            psyc[index].tag![0],
+                                            style: TextStyle(
+                                                color: Colors.black
+                                                    .withOpacity(0.35),
+                                                fontSize: 7.sp),
+                                          ),
+                                          SizedBox(height: 7.h),
+                                          Row(
+                                            children: [
+                                              const StarIcon(),
+                                              Text(
+                                                "  4.6 (1620 Oylama)",
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  fontSize: 6.sp,
+                                                ),
+                                              ),
+                                              const Spacer(),
+                                              SizedBox(
+                                                width: 10.w,
+                                                height: 10.h,
+                                                child: SvgPicture.asset(
+                                                    "assets/psyc_profile/tecrube.svg"),
+                                              ),
+                                              Text(
+                                                "  5+ Tecrübe",
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  fontSize: 6.sp,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 7.h),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "249.90 ₺",
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.75),
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              SizedBox(width: 5.w),
+                                              Text(
+                                                "Seans başı",
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  fontSize: 6.sp,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              top: 0,
+                              child: Container(
+                                width: 170.w,
+                                height: 110.h,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      "assets/home/psyc_pic${index + 1}.png",
+                                    ),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                )
               ],
             )
           ],
@@ -95,6 +259,7 @@ class HorizontalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScrollController _controller = ScrollController(initialScrollOffset: 325.w);
     final List HorizontalListEntries = [
       "Bir Sonraki Randevunuzu\nÇevrimiçi Olarak Ayırtın!",
       "İhtiyaçlarınız İçin\ndoğru doktoru bulun",
@@ -106,6 +271,7 @@ class HorizontalList extends StatelessWidget {
         width: double.infinity,
         height: 175.h,
         child: ListView.builder(
+          controller: _controller,
           scrollDirection: Axis.horizontal,
           itemCount: 3,
           itemBuilder: (BuildContext context, int index) {
@@ -255,14 +421,29 @@ class HomeAppbar extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 10).r,
-            child: Container(
-              width: 112.w,
-              height: 57.h,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/home/logoBlack 2.png"),
-                    fit: BoxFit.contain),
-              ),
+            child: Row(
+              children: [
+                Container(
+                  width: 52.w,
+                  height: 57.h,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/home/yeniLogoSiyah 2.png"),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 100.w,
+                  height: 57.h,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/home/yeniLogoSiyah 3.png"),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           const Spacer(),
@@ -301,70 +482,90 @@ class CustomDrawer extends StatelessWidget {
     return Drawer(
       width: 381.w,
       child: Padding(
-        padding: const EdgeInsets.only(left: 65, top: 87, bottom: 30).r,
+        padding: const EdgeInsets.only(left: 55, top: 87, bottom: 30).r,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 145.w,
-              height: 70.h,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/home/logoBlack 2.png"),
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            const DrawerRow(
-              drawerIconPath: 'assets/drawer/anasayfa.png',
-              drawerTitle: 'Anasayfa',
-              route: '/new_home',
-            ),
-            const DrawerRow(
-              drawerIconPath: 'assets/drawer/psikiyatristler.png',
-              drawerTitle: 'Psikologlar',
-              route: '/psyc_search',
-            ),
-            const DrawerRow(
-              drawerIconPath: 'assets/drawer/bildirimler.png',
-              drawerTitle: 'Bildirimler',
-              route: '/profile',
-            ),
-            const DrawerRow(
-              drawerIconPath: 'assets/drawer/profil.png',
-              drawerTitle: 'Profilim',
-              route: '/profile',
-            ),
-            const DrawerRow(
-              drawerIconPath: 'assets/drawer/mesajlar.png',
-              drawerTitle: 'Mesajlar',
-              route: '/profile',
-            ),
-            const DrawerRow(
-              drawerIconPath: 'assets/drawer/ayarlar.png',
-              drawerTitle: 'Ayarlar',
-              route: '/profile',
-            ),
-            const Spacer(),
-            SizedBox(
-              width: 381.w,
-              height: 75.h,
-              child: Row(
-                children: [
-                  SizedBox(
-                      width: 25.w,
-                      height: 25.h,
-                      child: Image.asset(
-                        "assets/drawer/yardım.png",
-                        fit: BoxFit.contain,
-                      )),
-                  SizedBox(width: 25.w),
-                  Text(
-                    'Yardım',
-                    style: GoogleFonts.karla(
-                        fontSize: 18.sp, color: const Color(0xff6D6C6C)),
+            SizedBox(height: 41.h),
+            Row(
+              children: [
+                SizedBox(
+                  width: 55.w,
+                  height: 55.h,
+                  child: Image.asset(
+                    "assets/home/yeniLogoSiyah 2.png",
                   ),
-                ],
+                ),
+                SizedBox(
+                  width: 120.w,
+                  height: 55.h,
+                  child: Image.asset(
+                    "assets/home/yeniLogoSiyah 3.png",
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 25.h),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 13).r,
+                child: Column(
+                  children: [
+                    const DrawerRow(
+                      drawerIconPath: 'assets/drawer/anasayfa.png',
+                      drawerTitle: 'Anasayfa',
+                      route: '/new_home',
+                    ),
+                    const DrawerRow(
+                      drawerIconPath: 'assets/drawer/psikiyatristler.png',
+                      drawerTitle: 'Psikologlar',
+                      route: '/psyc_search',
+                    ),
+                    const DrawerRow(
+                      drawerIconPath: 'assets/drawer/bildirimler.png',
+                      drawerTitle: 'Bildirimler',
+                      route: '/profile',
+                    ),
+                    const DrawerRow(
+                      drawerIconPath: 'assets/drawer/profil.png',
+                      drawerTitle: 'Profilim',
+                      route: '/profile',
+                    ),
+                    const DrawerRow(
+                      drawerIconPath: 'assets/drawer/mesajlar.png',
+                      drawerTitle: 'Mesajlar',
+                      route: '/profile',
+                    ),
+                    const DrawerRow(
+                      drawerIconPath: 'assets/drawer/ayarlar.png',
+                      drawerTitle: 'Ayarlar',
+                      route: '/profile',
+                    ),
+                    const Spacer(),
+                    SizedBox(
+                      width: 381.w,
+                      height: 75.h,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                              width: 25.w,
+                              height: 25.h,
+                              child: Image.asset(
+                                "assets/drawer/yardım.png",
+                                fit: BoxFit.contain,
+                              )),
+                          SizedBox(width: 25.w),
+                          Text(
+                            'Yardım',
+                            style: GoogleFonts.karla(
+                                fontSize: 18.sp,
+                                color: const Color(0xff6D6C6C)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
