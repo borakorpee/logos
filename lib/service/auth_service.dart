@@ -51,6 +51,7 @@ class AuthService {
           'email': mail,
           'pass': pass,
         });
+
     var data = jsonDecode(response.body);
     log("LOGIN LOG ");
     log(data.toString());

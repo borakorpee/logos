@@ -10,7 +10,6 @@ import 'package:logos/screens/register/registerScreenView.dart';
 import 'package:logos/service/auth_service.dart';
 
 import '../../components/snackbar.dart';
-import '../home/bottom_navbar.dart';
 
 class LoginScreenView extends StatefulWidget {
   static const routeName = "/login";

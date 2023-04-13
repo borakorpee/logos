@@ -5,8 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/screens/home/favorites_page.dart';
 import 'package:logos/screens/profile/profile_page.dart';
 
-import 'home_page.dart';
-
 class NewHomePage extends StatelessWidget {
   static const routeName = "/new_home";
   const NewHomePage({super.key});
@@ -20,7 +18,6 @@ class NewHomePage extends StatelessWidget {
         child: Column(
           children: [
             const HomeAppbar(),
-            SizedBox(height: 15.h),
             const SearchBar(),
             const HorizontalList(),
             Row(
@@ -310,24 +307,23 @@ class CustomDrawer extends StatelessWidget {
           children: [
             Container(
               width: 145.w,
-              height: 73.h,
+              height: 70.h,
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/home/logoBlack 2.png"),
-                  fit: BoxFit.fill,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
-            SizedBox(height: 17.h),
             const DrawerRow(
               drawerIconPath: 'assets/drawer/anasayfa.png',
               drawerTitle: 'Anasayfa',
-              route: '/profile',
+              route: '/new_home',
             ),
             const DrawerRow(
               drawerIconPath: 'assets/drawer/psikiyatristler.png',
               drawerTitle: 'Psikologlar',
-              route: '/profile',
+              route: '/psyc_search',
             ),
             const DrawerRow(
               drawerIconPath: 'assets/drawer/bildirimler.png',
@@ -413,6 +409,53 @@ class DrawerRow extends StatelessWidget {
               style: TextStyle(fontSize: 18.sp, color: const Color(0xff6D6C6C)),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  const SearchBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 36).r,
+      child: SizedBox(
+        height: 35.h,
+        child: TextFormField(
+          onTap: (() {}),
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            isDense: true,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                width: 0.7.w,
+                color: Colors.black.withOpacity(0.25),
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                width: 0.7.w,
+                color: Colors.black.withOpacity(0.25),
+              ),
+            ),
+            hintText: "Psikiyatri Doktoru Ara...",
+            hintStyle: TextStyle(
+              fontSize: 12.h,
+              fontWeight: FontWeight.w400,
+            ),
+            prefixIcon: IconButton(
+              onPressed: null,
+              icon: SvgPicture.asset("assets/home/search.svg"),
+              iconSize: 20.w,
+            ),
+          ),
         ),
       ),
     );
