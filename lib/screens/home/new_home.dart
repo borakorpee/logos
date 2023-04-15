@@ -7,6 +7,8 @@ import 'package:logos/screens/home/favorites_page.dart';
 import 'package:logos/screens/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
+import '../psyc_profile/psycs_profileScreenView.dart';
+
 class NewHomePage extends StatelessWidget {
   static const routeName = "/new_home";
   const NewHomePage({super.key});
@@ -70,130 +72,137 @@ class NewHomePage extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 35, top: 5).r,
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 170.w,
-                              height: 210.h,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.15),
-                                    blurRadius: 15,
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    width: 170.w,
-                                    height: 110.h,
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                              left: 15, right: 15)
-                                          .r,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${psyc[index].unvan} ${psyc[index].name} ${psyc[index].surName}",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12.sp,
-                                              color: Colors.black
-                                                  .withOpacity(0.75),
-                                            ),
-                                          ),
-                                          Text(
-                                            psyc[index].tag![0],
-                                            style: TextStyle(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                                PsycsScreenView.routeName,
+                                arguments: {"id": psyc[index].sId});
+                          },
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: 170.w,
+                                height: 210.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.15),
+                                      blurRadius: 15,
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      width: 170.w,
+                                      height: 110.h,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                                left: 15, right: 15)
+                                            .r,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${psyc[index].unvan} ${psyc[index].name} ${psyc[index].surName}",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12.sp,
                                                 color: Colors.black
-                                                    .withOpacity(0.35),
-                                                fontSize: 7.sp),
-                                          ),
-                                          SizedBox(height: 7.h),
-                                          Row(
-                                            children: [
-                                              const StarIcon(),
-                                              Text(
-                                                "  4.6 (1620 Oylama)",
-                                                style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontSize: 6.sp,
-                                                ),
+                                                    .withOpacity(0.75),
                                               ),
-                                              const Spacer(),
-                                              SizedBox(
-                                                width: 10.w,
-                                                height: 10.h,
-                                                child: SvgPicture.asset(
-                                                    "assets/psyc_profile/tecrube.svg"),
-                                              ),
-                                              Text(
-                                                "  5+ Tecrübe",
-                                                style: TextStyle(
+                                            ),
+                                            Text(
+                                              psyc[index].tag![0],
+                                              style: TextStyle(
                                                   color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontSize: 6.sp,
+                                                      .withOpacity(0.35),
+                                                  fontSize: 7.sp),
+                                            ),
+                                            SizedBox(height: 7.h),
+                                            Row(
+                                              children: [
+                                                const StarIcon(),
+                                                Text(
+                                                  "  4.6 (1620 Oylama)",
+                                                  style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    fontSize: 6.sp,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 7.h),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "249.90 ₺",
-                                                style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.75),
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w500,
+                                                const Spacer(),
+                                                SizedBox(
+                                                  width: 10.w,
+                                                  height: 10.h,
+                                                  child: SvgPicture.asset(
+                                                      "assets/psyc_profile/tecrube.svg"),
                                                 ),
-                                              ),
-                                              SizedBox(width: 5.w),
-                                              Text(
-                                                "Seans başı",
-                                                style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontSize: 6.sp,
+                                                Text(
+                                                  "  5+ Tecrübe",
+                                                  style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    fontSize: 6.sp,
+                                                  ),
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                        ],
+                                              ],
+                                            ),
+                                            SizedBox(height: 7.h),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "249.90 ₺",
+                                                  style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.75),
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                SizedBox(width: 5.w),
+                                                Text(
+                                                  "Seans başı",
+                                                  style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    fontSize: 6.sp,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Positioned(
-                              top: 0,
-                              child: Container(
-                                width: 170.w,
-                                height: 110.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                      "assets/home/psyc_pic${index + 1}.png",
+                              Positioned(
+                                top: 0,
+                                child: Container(
+                                  width: 170.w,
+                                  height: 110.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                        "assets/home/psyc_pic${index + 1}.png",
+                                      ),
+                                      fit: BoxFit.fill,
                                     ),
-                                    fit: BoxFit.fill,
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },

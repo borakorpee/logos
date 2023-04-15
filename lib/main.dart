@@ -14,7 +14,7 @@ import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/onboard/onboardScreenView.dart';
 import 'package:logos/screens/profile/edit_profile_page.dart';
 import 'package:logos/screens/profile/profile_page.dart';
-import 'package:logos/screens/psyc_profile/psyc_search.dart';
+import 'package:logos/screens/psyc_profile/all_pyscs.dart';
 import 'package:logos/screens/psyc_profile/psycs_profileScreenView.dart';
 import 'package:logos/screens/psyc_profile/vide_call.dart';
 import 'package:logos/screens/register/kvkkScreenView.dart';

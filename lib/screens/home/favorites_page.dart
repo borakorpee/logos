@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logos/models/all_psyc_model.dart';
@@ -157,146 +159,161 @@ class FavRow extends StatelessWidget {
             const Spacer(),
             GestureDetector(
               onTap: () {
-                showModalBottomSheet<void>(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.horizontal(
-                        left: Radius.circular(20), right: Radius.circular(20)),
-                  ),
+                showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return Container(
-                      height: 276.h,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(40)),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                    left: 55, right: 55, top: 33)
-                                .r,
-                            child: Row(
-                              children: [
-                                Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Container(
-                                    width: 70.w,
-                                    height: 70.h,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/home/dummypp.png"),
-                                          fit: BoxFit.contain),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 20.w),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                    final deletefav = Provider.of<ClientProvider>(context);
+
+                    return Align(
+                      alignment: Alignment.bottomCenter,
+                      child: IntrinsicHeight(
+                        child: Container(
+                          width: 390.w,
+                          height: 276.h,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                        left: 55, right: 55, top: 33)
+                                    .r,
+                                child: Row(
                                   children: [
-                                    Text(
-                                      "${psyc.unvan} ${psyc.name} ${psyc.surName}",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black.withOpacity(0.75),
+                                    Align(
+                                      alignment: Alignment.topCenter,
+                                      child: Container(
+                                        width: 70.w,
+                                        height: 70.h,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/home/dummypp.png"),
+                                              fit: BoxFit.contain),
+                                        ),
                                       ),
                                     ),
-                                    SizedBox(height: 5.h),
-                                    Row(
+                                    SizedBox(width: 20.w),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Row(
-                                          children: [
-                                            const StarIcon(),
-                                            SizedBox(width: 5.w),
-                                            const StarIcon(),
-                                            SizedBox(width: 5.w),
-                                            const StarIcon(),
-                                            SizedBox(width: 5.w),
-                                            const StarIcon(),
-                                            SizedBox(width: 5.w),
-                                            const StarIcon(),
-                                          ],
-                                        ),
-                                        const SizedBox(width: 5),
                                         Text(
-                                          "4.6 (1526 Oylama)",
+                                          "${psyc.unvan} ${psyc.name} ${psyc.surName}",
                                           style: TextStyle(
-                                            fontSize: 8.sp,
+                                            fontWeight: FontWeight.w500,
                                             color:
-                                                Colors.black.withOpacity(0.5),
+                                                Colors.black.withOpacity(0.75),
                                           ),
                                         ),
+                                        SizedBox(height: 5.h),
+                                        Row(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const StarIcon(),
+                                                SizedBox(width: 5.w),
+                                                const StarIcon(),
+                                                SizedBox(width: 5.w),
+                                                const StarIcon(),
+                                                SizedBox(width: 5.w),
+                                                const StarIcon(),
+                                                SizedBox(width: 5.w),
+                                                const StarIcon(),
+                                              ],
+                                            ),
+                                            const SizedBox(width: 5),
+                                            Text(
+                                              "4.6 (1526 Oylama)",
+                                              style: TextStyle(
+                                                fontSize: 8.sp,
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 5.h),
+                                        Text(
+                                          psyc.tag![0],
+                                          style: TextStyle(
+                                            fontSize: 10.sp,
+                                            color:
+                                                Colors.black.withOpacity(0.35),
+                                          ),
+                                        )
                                       ],
                                     ),
-                                    SizedBox(height: 5.h),
-                                    Text(
-                                      psyc.tag![0],
-                                      style: TextStyle(
-                                        fontSize: 10.sp,
-                                        color: Colors.black.withOpacity(0.35),
-                                      ),
-                                    )
                                   ],
                                 ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 20.h),
-                          Text(
-                            "Favorilerden kaldırmak \nistediğinize emin misiniz?",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.black.withOpacity(0.65),
-                                fontSize: 15.sp),
-                          ),
-                          SizedBox(height: 20.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Container(
-                                  width: 170.w,
-                                  height: 40.h,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xffA950C9)
-                                        .withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "İptal",
-                                      style: TextStyle(
-                                          color: const Color(0xffA950C9),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16.sp),
+                              ),
+                              SizedBox(height: 20.h),
+                              Text(
+                                "Favorilerden kaldırmak \nistediğinize emin misiniz?",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.65),
+                                    fontSize: 15.sp),
+                              ),
+                              SizedBox(height: 20.h),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Container(
+                                      width: 150.w,
+                                      height: 40.h,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xffA950C9)
+                                            .withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "İptal",
+                                          style: TextStyle(
+                                              color: const Color(0xffA950C9),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16.sp),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              Container(
-                                width: 170.w,
-                                height: 40.h,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffA950C9),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Kaldır",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16.sp),
+                                  GestureDetector(
+                                    onTap: () {
+                                      deletefav.removeFavorites(psyc.sId!);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Container(
+                                      width: 150.w,
+                                      height: 40.h,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xffA950C9),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "Kaldır",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16.sp),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     );
                   },

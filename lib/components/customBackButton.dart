@@ -10,14 +10,7 @@ Widget CustomBackButton(BuildContext context) {
       children: <Widget>[
         IconButton(
           onPressed: () {
-            Builder(
-              builder: (ctx) => IconButton(
-                onPressed: () {
-                  Scaffold.of(ctx).openDrawer();
-                },
-                icon: const Icon(Icons.ad_units),
-              ),
-            );
+            Navigator.of(context).pop();
           },
           icon: const Icon(Icons.chevron_left),
         ),
