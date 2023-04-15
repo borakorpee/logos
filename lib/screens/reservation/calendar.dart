@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logos/providers/client_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import '../../providers/all_psyc_provider.dart';
+import 'package:http/http.dart' as http;
+
+import '../forgot_pass/email_OTP.dart';
 
 class ReservationCalendar extends StatelessWidget {
   static const routeName = "/reservation_calendar";
@@ -11,6 +17,7 @@ class ReservationCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final client = Provider.of<ClientProvider>(context).get_client;
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     final provider =
@@ -22,34 +29,9 @@ class ReservationCalendar extends StatelessWidget {
             padding: const EdgeInsets.only(top: 65, left: 33, right: 33).r,
             child: const Header(),
           ),
-          const CustomCalendar(),
-          SizedBox(height: 340.h),
-          GestureDetector(
-            onTap: () {
-              /*
-             
-              Navigator.of(context)
-                  .pushNamed(ReservationCalendar.routeName, arguments: {
-                "id": provider.sId,
-              });
-             */
-            },
-            child: Container(
-              width: 356,
-              height: 54,
-              decoration: BoxDecoration(
-                color: const Color(0xff6B337F),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Center(
-                  child: Text(
-                "Randevu Ayarla",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 13.sp),
-              )),
-            ),
+          CustomCalendar(
+            psycId: args["id"],
+            clientToken: client.token.toString(),
           ),
         ],
       ),
@@ -58,8 +40,13 @@ class ReservationCalendar extends StatelessWidget {
 }
 
 class CustomCalendar extends StatefulWidget {
+  final String psycId;
+  final String clientToken;
+
   const CustomCalendar({
     Key? key,
+    required this.psycId,
+    required this.clientToken,
   }) : super(key: key);
 
   @override
@@ -121,11 +108,11 @@ class _CustomCalendarState extends State<CustomCalendar> {
               todayDecoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(10),
-                color: const Color(0xff6B337F).withOpacity(0.3),
+                color: const Color(0xffA950C9).withOpacity(0.3),
               ),
               selectedDecoration: BoxDecoration(
                 shape: BoxShape.rectangle,
-                color: const Color(0xff6B337F),
+                color: const Color(0xffA950C9),
                 borderRadius: BorderRadius.circular(10),
               ),
               defaultDecoration: const BoxDecoration(
@@ -169,8 +156,11 @@ class _CustomCalendarState extends State<CustomCalendar> {
                 setState(() {
                   _selectedDay = selectedDay;
                   _focusedDay = focusedDay;
-                  DateFormat formatter = DateFormat('dd-MM-yyyy');
-                  day = formatter.format(_selectedDay!);
+
+                  String formattedDate =
+                      DateFormat('dd.MM.yyyy').format(_selectedDay!);
+
+                  day = formattedDate;
                 });
               }
             },
@@ -185,8 +175,156 @@ class _CustomCalendarState extends State<CustomCalendar> {
               _focusedDay = focusedDay;
             },
           ),
-          Text(day.toString()),
+          FutureBuilder(
+            future: getData(widget.psycId, widget.clientToken),
+            builder: (context, snapshot) {
+              var daySpecificTimeList = snapshot.data as List<String>;
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasError) {
+                return Text(snapshot.error.toString());
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.all(25).r,
+                  child: Container(
+                    width: 360.w,
+                    height: 235.h,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8).r,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              TimeButton(
+                                time1: '09.00',
+                                time2: '10.00',
+                                timeList: daySpecificTimeList,
+                              ),
+                              TimeButton(
+                                time1: '10.00',
+                                time2: '11.00',
+                                timeList: daySpecificTimeList,
+                              ),
+                              TimeButton(
+                                time1: '11.00',
+                                time2: '12.00',
+                                timeList: daySpecificTimeList,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              TimeButton(
+                                time1: '12.00',
+                                time2: '13.00',
+                                timeList: daySpecificTimeList,
+                              ),
+                              TimeButton(
+                                time1: '13.00',
+                                time2: '14.00',
+                                timeList: daySpecificTimeList,
+                              ),
+                              TimeButton(
+                                time1: '14.00',
+                                time2: '15.00',
+                                timeList: daySpecificTimeList,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              TimeButton(
+                                time1: '15.00',
+                                time2: '16.00',
+                                timeList: daySpecificTimeList,
+                              ),
+                              TimeButton(
+                                time1: '16.00',
+                                time2: '17.00',
+                                timeList: daySpecificTimeList,
+                              ),
+                              TimeButton(
+                                time1: '17.00',
+                                time2: '18.00',
+                                timeList: daySpecificTimeList,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
         ],
+      ),
+    );
+  }
+
+  Future<List<String>> getData(String id, String clientToken) async {
+    List<String> resTimes = [];
+    var response = await http.post(
+        Uri.parse("$root/reservation/reservation/lookup_doktor/${id}"),
+        headers: {
+          "x-access-token": clientToken,
+        },
+        body: {
+          "day": day,
+        });
+    var data = jsonDecode(response.body);
+
+    for (int i = 0; i < data.length; i++) {
+      resTimes.add(data[i]["time"]);
+    }
+    print(resTimes);
+    return resTimes;
+  }
+}
+
+class TimeButton extends StatelessWidget {
+  final String time1;
+  final String time2;
+  final List<String> timeList;
+  const TimeButton({
+    Key? key,
+    required this.time1,
+    required this.time2,
+    required this.timeList,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: timeList.contains(time1) ? Colors.red : Colors.white,
+          borderRadius: BorderRadius.circular(20)),
+      child: FittedBox(
+        child: Center(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 15, top: 20, bottom: 20, right: 15),
+            child: Text(
+              "${time1} - ${time2}",
+              style: TextStyle(
+                  color: Colors.black.withOpacity(0.5),
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500),
+            ),
+          ),
+        ),
       ),
     );
   }

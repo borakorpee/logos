@@ -30,7 +30,7 @@ class PsycSearchScreen extends StatelessWidget {
                   child: const CustomAppbar(appBarTitle: "Psikologlar"),
                 ),
                 SizedBox(
-                  height: constraints.maxHeight,
+                  height: constraints.maxHeight - 55.h,
                   child: ListView.builder(
                     itemCount: psyc.length,
                     itemBuilder: (BuildContext context, int index) {
