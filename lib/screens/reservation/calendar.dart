@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logos/providers/client_provider.dart';
+import 'package:logos/screens/reservation/checkout.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -56,8 +57,9 @@ class CustomCalendar extends StatefulWidget {
 class _CustomCalendarState extends State<CustomCalendar> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+  DateTime? _selectedDay = DateTime.now();
   String? day;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -65,8 +67,8 @@ class _CustomCalendarState extends State<CustomCalendar> {
       child: Column(
         children: [
           TableCalendar(
-            enabledDayPredicate: (day) =>
-                !(day.weekday == 6 || day.weekday == 7),
+            /*  enabledDayPredicate: (day) =>
+                !(day.weekday == 6 || day.weekday == 7),*/
             daysOfWeekVisible: true,
             headerStyle: HeaderStyle(
               leftChevronIcon: Container(
@@ -178,14 +180,11 @@ class _CustomCalendarState extends State<CustomCalendar> {
           FutureBuilder(
             future: getData(widget.psycId, widget.clientToken),
             builder: (context, snapshot) {
-              var daySpecificTimeList = snapshot.data as List<String>;
+              var daySpecificTimeList = snapshot.data as List<String>?;
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              }
-              if (snapshot.hasError) {
-                return Text(snapshot.error.toString());
               } else {
                 return Padding(
                   padding: const EdgeInsets.all(25).r,
@@ -208,16 +207,19 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time1: '09.00',
                                 time2: '10.00',
                                 timeList: daySpecificTimeList,
+                                psycid: widget.psycId,
                               ),
                               TimeButton(
                                 time1: '10.00',
                                 time2: '11.00',
                                 timeList: daySpecificTimeList,
+                                psycid: widget.psycId,
                               ),
                               TimeButton(
                                 time1: '11.00',
                                 time2: '12.00',
                                 timeList: daySpecificTimeList,
+                                psycid: widget.psycId,
                               ),
                             ],
                           ),
@@ -228,16 +230,19 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time1: '12.00',
                                 time2: '13.00',
                                 timeList: daySpecificTimeList,
+                                psycid: widget.psycId,
                               ),
                               TimeButton(
                                 time1: '13.00',
                                 time2: '14.00',
                                 timeList: daySpecificTimeList,
+                                psycid: widget.psycId,
                               ),
                               TimeButton(
                                 time1: '14.00',
                                 time2: '15.00',
                                 timeList: daySpecificTimeList,
+                                psycid: widget.psycId,
                               ),
                             ],
                           ),
@@ -248,16 +253,19 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time1: '15.00',
                                 time2: '16.00',
                                 timeList: daySpecificTimeList,
+                                psycid: widget.psycId,
                               ),
                               TimeButton(
                                 time1: '16.00',
                                 time2: '17.00',
                                 timeList: daySpecificTimeList,
+                                psycid: widget.psycId,
                               ),
                               TimeButton(
                                 time1: '17.00',
                                 time2: '18.00',
                                 timeList: daySpecificTimeList,
+                                psycid: widget.psycId,
                               ),
                             ],
                           ),
@@ -269,12 +277,31 @@ class _CustomCalendarState extends State<CustomCalendar> {
               }
             },
           ),
+          /* Container(
+            width: 356.w,
+            height: 55.h,
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.25),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Text(
+                "Randevu Al",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),*/
         ],
       ),
     );
   }
 
   Future<List<String>> getData(String id, String clientToken) async {
+    String today = DateFormat('dd.MM.yyyy').format(DateTime.now());
+    List<String> empty = [];
     List<String> resTimes = [];
     var response = await http.post(
         Uri.parse("$root/reservation/reservation/lookup_doktor/${id}"),
@@ -282,46 +309,71 @@ class _CustomCalendarState extends State<CustomCalendar> {
           "x-access-token": clientToken,
         },
         body: {
-          "day": day,
+          "day": day ?? today,
         });
-    var data = jsonDecode(response.body);
 
-    for (int i = 0; i < data.length; i++) {
-      resTimes.add(data[i]["time"]);
+    var data = jsonDecode(response.body);
+    if (data["status"] == false) {
+      return empty;
     }
-    print(resTimes);
+    for (int i = 0; i < data.length; i++) {
+      resTimes.add(data["result"][i]["time"]);
+    }
     return resTimes;
   }
 }
 
-class TimeButton extends StatelessWidget {
+class TimeButton extends StatefulWidget {
   final String time1;
   final String time2;
-  final List<String> timeList;
+  final String psycid;
+  final List<String>? timeList;
   const TimeButton({
     Key? key,
     required this.time1,
     required this.time2,
     required this.timeList,
+    required this.psycid,
   }) : super(key: key);
 
   @override
+  State<TimeButton> createState() => _TimeButtonState();
+}
+
+class _TimeButtonState extends State<TimeButton> {
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: timeList.contains(time1) ? Colors.red : Colors.white,
-          borderRadius: BorderRadius.circular(20)),
-      child: FittedBox(
-        child: Center(
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 15, top: 20, bottom: 20, right: 15),
-            child: Text(
-              "${time1} - ${time2}",
-              style: TextStyle(
-                  color: Colors.black.withOpacity(0.5),
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          widget.timeList!.contains(widget.time1)
+              ? null
+              : Navigator.of(context)
+                  .pushNamed(CheckoutScreen.routeName, arguments: {
+                  "time1": widget.time1,
+                  "time2": widget.time2,
+                  "psyc": widget.psycid,
+                });
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: widget.timeList!.contains(widget.time1)
+                ? Colors.red
+                : Colors.white,
+            borderRadius: BorderRadius.circular(20)),
+        child: FittedBox(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 15, top: 20, bottom: 20, right: 15),
+              child: Text(
+                "${widget.time1} - ${widget.time2}",
+                style: TextStyle(
+                    color: Colors.black.withOpacity(0.5),
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500),
+              ),
             ),
           ),
         ),
