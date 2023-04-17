@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logos/models/all_psyc_model.dart';
+import 'package:logos/providers/client_provider.dart';
+import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/home/new_home.dart';
 import 'package:logos/screens/reservation/my_reservation.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../providers/all_psyc_provider.dart';
 import '../profile/profile_page.dart';
+import "package:http/http.dart" as http;
 
 class CheckoutScreen extends StatelessWidget {
   static const routeName = '/checkout';
@@ -17,6 +21,8 @@ class CheckoutScreen extends StatelessWidget {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     DateTime date = DateFormat('dd.MM.yyyy').parse(args["date"]);
+    String apidate = DateFormat('yyyy.MM.dd').format(date);
+
     String formattedDate = DateFormat('dd MMMM', 'tr_TR').format(date);
     final psyc =
         Provider.of<All_Psychologists_Provider>(context).findById(args["psyc"]);
@@ -35,143 +41,181 @@ class CheckoutScreen extends StatelessWidget {
             SizedBox(height: 30.h),
             const PaymentSelection(),
             const Spacer(),
-            GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Align(
-                      alignment: Alignment.bottomCenter,
-                      child: IntrinsicHeight(
-                        child: Container(
-                          width: 390.w,
-                          height: 300.h,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(height: 40.h),
-                              SvgPicture.asset("assets/checkout/done.svg"),
-                              SizedBox(height: 15.h),
-                              Text(
-                                "Ödeme başarılı bir şekilde \n gerçekleşti.",
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.65),
-                                  fontSize: 16.sp,
-                                  decoration: TextDecoration.none,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(height: 17.h),
-                              RichText(
-                                textAlign: TextAlign.center,
-                                text: TextSpan(
-                                  text:
-                                      "${psyc.unvan} ${psyc.name}${psyc.surName}",
-                                  style: TextStyle(
-                                    decoration: TextDecoration.none,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black.withOpacity(0.65),
-                                  ),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: "'den ",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        decoration: TextDecoration.none,
-                                        color: Colors.black.withOpacity(0.45),
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: formattedDate,
-                                      style: const TextStyle(
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: " saat \n",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        decoration: TextDecoration.none,
-                                        color: Colors.black.withOpacity(0.45),
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          "${args["time1"]}-${args["time2"]} ",
-                                      style: const TextStyle(
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          "arası olacak şekilde randevu aldınız.",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        decoration: TextDecoration.none,
-                                        color: Colors.black.withOpacity(0.45),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 15.h),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(MyReservationsPage.routeName);
-                                },
-                                child: Container(
-                                  width: 225.w,
-                                  height: 45.h,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xffA950C9),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "Randevularıma Git",
-                                      style: TextStyle(
-                                        decoration: TextDecoration.none,
-                                        color: Colors.white,
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-              child: Container(
-                width: 356.w,
-                height: 60.h,
-                decoration: BoxDecoration(
-                    color: const Color(0xffA950C9),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Center(
-                  child: Text(
-                    "Ödeme Yap",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
+            ProceedCheckoutButton(
+              psyc: psyc,
+              formattedDate: formattedDate,
+              args: args,
+              apidate: apidate,
             ),
             SizedBox(height: 44.h),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProceedCheckoutButton extends StatelessWidget {
+  const ProceedCheckoutButton({
+    Key? key,
+    required this.psyc,
+    required this.formattedDate,
+    required this.args,
+    required this.apidate,
+  }) : super(key: key);
+
+  final Psychologists psyc;
+  final String formattedDate;
+  final String apidate;
+
+  final Map<String, dynamic> args;
+
+  @override
+  Widget build(BuildContext context) {
+    final client = Provider.of<ClientProvider>(context).get_client;
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Align(
+              alignment: Alignment.bottomCenter,
+              child: IntrinsicHeight(
+                child: Container(
+                  width: 390.w,
+                  height: 300.h,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(height: 40.h),
+                      SvgPicture.asset("assets/checkout/done.svg"),
+                      SizedBox(height: 15.h),
+                      Text(
+                        "Ödeme başarılı bir şekilde \n gerçekleşti.",
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.65),
+                          fontSize: 16.sp,
+                          decoration: TextDecoration.none,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 17.h),
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: "${psyc.unvan} ${psyc.name}${psyc.surName}",
+                          style: TextStyle(
+                            decoration: TextDecoration.none,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black.withOpacity(0.65),
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: "'den ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                decoration: TextDecoration.none,
+                                color: Colors.black.withOpacity(0.45),
+                              ),
+                            ),
+                            TextSpan(
+                              text: formattedDate,
+                              style: const TextStyle(
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " saat \n",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                decoration: TextDecoration.none,
+                                color: Colors.black.withOpacity(0.45),
+                              ),
+                            ),
+                            TextSpan(
+                              text: "${args["time1"]}-${args["time2"]} ",
+                              style: const TextStyle(
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "arası olacak şekilde randevu aldınız.",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                decoration: TextDecoration.none,
+                                color: Colors.black.withOpacity(0.45),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 15.h),
+                      GestureDetector(
+                        onTap: () async {
+                          var response = await http.post(
+                            Uri.parse("$root/reservation/add"),
+                            headers: {
+                              "x-access-token": client.token.toString()
+                            },
+                            body: {
+                              "psyc": psyc.sId,
+                              "client": client.client!.sId,
+                              "day": apidate,
+                              "time": args["time1"],
+                            },
+                          );
+                          Navigator.popUntil(
+                              context, ModalRoute.withName('/psycs-profile'));
+                          Navigator.of(context)
+                              .pushNamed(MyReservationsPage.routeName);
+                        },
+                        child: Container(
+                          width: 225.w,
+                          height: 45.h,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffA950C9),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Randevularıma Git",
+                              style: TextStyle(
+                                decoration: TextDecoration.none,
+                                color: Colors.white,
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+      child: Container(
+        width: 356.w,
+        height: 60.h,
+        decoration: BoxDecoration(
+            color: const Color(0xffA950C9),
+            borderRadius: BorderRadius.circular(10)),
+        child: Center(
+          child: Text(
+            "Ödeme Yap",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
       ),
     );

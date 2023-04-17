@@ -160,7 +160,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                   _focusedDay = focusedDay;
 
                   String formattedDate =
-                      DateFormat('dd.MM.yyyy').format(_selectedDay!);
+                      DateFormat('yyyy.MM.dd').format(_selectedDay!);
 
                   day = formattedDate;
                 });
@@ -304,18 +304,16 @@ class _CustomCalendarState extends State<CustomCalendar> {
   }
 
   Future<List<String>> getData(String id, String clientToken) async {
-    String today = DateFormat('dd.MM.yyyy').format(DateTime.now());
+    String today = DateFormat('yyyy.MM.dd').format(DateTime.now());
     List<String> empty = [];
     List<String> resTimes = [];
-    var response = await http.post(
-        Uri.parse("$root/reservation/reservation/lookup_doktor/${id}"),
-        headers: {
-          "x-access-token": clientToken,
-        },
-        body: {
-          "day": day ?? today,
-        });
-
+    var response = await http
+        .post(Uri.parse("$root/reservation/lookup_doktor/${id}"), headers: {
+      "x-access-token": clientToken,
+    }, body: {
+      "day": day ?? today,
+    });
+    print(response.body);
     var data = jsonDecode(response.body);
     if (data["status"] == false) {
       return empty;
@@ -368,7 +366,7 @@ class _TimeButtonState extends State<TimeButton> {
       child: Container(
         decoration: BoxDecoration(
             color: widget.timeList!.contains(widget.time1)
-                ? Colors.red
+                ? Colors.black.withOpacity(0.35)
                 : Colors.white,
             borderRadius: BorderRadius.circular(20)),
         child: FittedBox(
