@@ -23,6 +23,7 @@ import 'package:logos/screens/register/registerScreenView.dart';
 import 'package:logos/screens/register/registerSuccessScreenView.dart';
 import 'package:logos/screens/reservation/calendar.dart';
 import 'package:logos/screens/reservation/checkout.dart';
+import 'package:logos/screens/reservation/my_reservation.dart';
 import 'package:provider/provider.dart';
 import 'screens/register/registerScreen3View.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
             FavoritesPage.routeName: (ctx) => const FavoritesPage(),
             PsycSearchScreen.routeName: (ctx) => const PsycSearchScreen(),
             CheckoutScreen.routeName: (ctx) => const CheckoutScreen(),
+            MyReservationsPage.routeName: (ctx) => const MyReservationsPage(),
           },
         );
       }),

@@ -201,6 +201,18 @@ class _CustomCalendarState extends State<CustomCalendar> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(daySpecificTimeList.toString()),
+                              Text(
+                                day ??
+                                    DateFormat('dd.MM.yyyy')
+                                        .format(DateTime.now())
+                                        .toString(),
+                              ),
+                            ],
+                          ),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               TimeButton(
@@ -208,18 +220,21 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time2: '10.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
+                                resDate: day,
                               ),
                               TimeButton(
                                 time1: '10.00',
                                 time2: '11.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
+                                resDate: day,
                               ),
                               TimeButton(
                                 time1: '11.00',
                                 time2: '12.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
+                                resDate: day,
                               ),
                             ],
                           ),
@@ -231,18 +246,21 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time2: '13.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
+                                resDate: day,
                               ),
                               TimeButton(
                                 time1: '13.00',
                                 time2: '14.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
+                                resDate: day,
                               ),
                               TimeButton(
                                 time1: '14.00',
                                 time2: '15.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
+                                resDate: day,
                               ),
                             ],
                           ),
@@ -254,18 +272,21 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time2: '16.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
+                                resDate: day,
                               ),
                               TimeButton(
                                 time1: '16.00',
                                 time2: '17.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
+                                resDate: day,
                               ),
                               TimeButton(
                                 time1: '17.00',
                                 time2: '18.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
+                                resDate: day,
                               ),
                             ],
                           ),
@@ -277,23 +298,6 @@ class _CustomCalendarState extends State<CustomCalendar> {
               }
             },
           ),
-          /* Container(
-            width: 356.w,
-            height: 55.h,
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.25),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Center(
-              child: Text(
-                "Randevu Al",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-          ),*/
         ],
       ),
     );
@@ -316,7 +320,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
     if (data["status"] == false) {
       return empty;
     }
-    for (int i = 0; i < data.length; i++) {
+    for (int i = 0; i < data["result"].length; i++) {
       resTimes.add(data["result"][i]["time"]);
     }
     return resTimes;
@@ -324,6 +328,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
 }
 
 class TimeButton extends StatefulWidget {
+  final String? resDate;
   final String time1;
   final String time2;
   final String psycid;
@@ -334,6 +339,7 @@ class TimeButton extends StatefulWidget {
     required this.time2,
     required this.timeList,
     required this.psycid,
+    required this.resDate,
   }) : super(key: key);
 
   @override
@@ -341,6 +347,8 @@ class TimeButton extends StatefulWidget {
 }
 
 class _TimeButtonState extends State<TimeButton> {
+  String today = DateFormat('dd.MM.yyyy').format(DateTime.now());
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -353,6 +361,7 @@ class _TimeButtonState extends State<TimeButton> {
                   "time1": widget.time1,
                   "time2": widget.time2,
                   "psyc": widget.psycid,
+                  "date": widget.resDate ?? today,
                 });
         });
       },
