@@ -11,6 +11,7 @@ import 'package:logos/providers/client_provider.dart';
 import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/home/new_home.dart';
 import 'package:http/http.dart' as http;
+import 'package:logos/screens/reservation/completed_reservations.dart';
 import 'package:provider/provider.dart';
 import '../profile/profile_page.dart';
 
@@ -42,252 +43,278 @@ class _MyReservationsPageState extends State<MyReservationsPage>
   Widget build(BuildContext context) {
     final client = Provider.of<ClientProvider>(context).get_client;
     return Scaffold(
-      drawer: const CustomDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 75).r,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 27, right: 27).r,
-              child: const CustomAppbar(appBarTitle: "Randevularım"),
-            ),
-            SizedBox(height: 20.h),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 36).r,
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(10).r),
-                child: Column(
-                  children: [
-                    TabBar(
-                      labelColor: const Color(0xffA950C9),
-                      unselectedLabelColor: Colors.black.withOpacity(0.25),
-                      unselectedLabelStyle: TextStyle(fontSize: 13.sp),
-                      automaticIndicatorColorAdjustment: false,
-                      indicator: BoxDecoration(
-                        color: const Color(0xff6B337F).withOpacity(0.25),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      controller: _tabController,
-                      tabs: <Widget>[
-                        Tab(
-                          text: "Aktif",
-                          height: 40.h,
-                        ),
-                        Tab(
-                          height: 40.h,
-                          text: "Geçmiş",
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 325.h,
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: <Widget>[
-                          FutureBuilder(
-                            future: getActiveReservations(
-                                client.client!.sId, client.token),
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              } else {
-                                return ListView.builder(
-                                    itemCount: snapshot.data.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      DateTime date = DateTime.parse(
-                                          snapshot.data[index].day);
-                                      String formattedDate =
-                                          DateFormat('dd MMMM y', 'tr')
-                                              .format(date);
+        drawer: const CustomDrawer(),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 75).r,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 27, right: 27).r,
+                    child: const CustomAppbar(appBarTitle: "Randevularım"),
+                  ),
+                  SizedBox(height: 20.h),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 36).r,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(10).r),
+                      child: Column(
+                        children: [
+                          TabBar(
+                            labelColor: const Color(0xffA950C9),
+                            unselectedLabelColor:
+                                Colors.black.withOpacity(0.25),
+                            unselectedLabelStyle: TextStyle(fontSize: 13.sp),
+                            automaticIndicatorColorAdjustment: false,
+                            indicator: BoxDecoration(
+                              color: const Color(0xff6B337F).withOpacity(0.25),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            controller: _tabController,
+                            tabs: <Widget>[
+                              Tab(
+                                text: "Aktif",
+                                height: 40.h,
+                              ),
+                              Tab(
+                                height: 40.h,
+                                text: "Geçmiş",
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            height: constraints.maxHeight - 185.h,
+                            child: TabBarView(
+                              controller: _tabController,
+                              children: <Widget>[
+                                FutureBuilder(
+                                  future: getActiveReservations(
+                                      client.client!.sId, client.token),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    } else {
+                                      return ListView.builder(
+                                          itemCount: snapshot.data.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            DateTime date = DateTime.parse(
+                                                snapshot.data[index].day);
+                                            String formattedDate =
+                                                DateFormat('dd MMMM y', 'tr')
+                                                    .format(date);
 
-                                      return Column(
-                                        children: [
-                                          Container(
-                                            child: Row(
+                                            return Column(
                                               children: [
-                                                Align(
-                                                  alignment:
-                                                      Alignment.topCenter,
-                                                  child: Container(
-                                                    width: 70.w,
-                                                    height: 70.h,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      image: DecorationImage(
-                                                          image: AssetImage(
-                                                              "assets/home/dummypp.png"),
-                                                          fit: BoxFit.contain),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(width: 20.w),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "${snapshot.data[index].psycId.unvan} ${snapshot.data[index].psycId.name} ${snapshot.data[index].psycId.surName}",
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Colors.black
-                                                            .withOpacity(0.75),
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 2.h),
-                                                    Text(
-                                                      snapshot.data[index]
-                                                          .psycId.tag![0],
-                                                      style: TextStyle(
-                                                        fontSize: 10.sp,
-                                                        color: Colors.black
-                                                            .withOpacity(0.35),
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                            "assets/checkout/Union.svg"),
-                                                        SizedBox(width: 5.w),
-                                                        Text(
-                                                          formattedDate,
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      0.35),
-                                                              fontSize: 12.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                        SizedBox(width: 5.w),
-                                                        Text(
-                                                          "Saat: ",
-                                                          style: TextStyle(
-                                                            color: Colors.black
-                                                                .withOpacity(
-                                                                    0.35),
-                                                            fontSize: 12.sp,
+                                                Container(
+                                                  child: Row(
+                                                    children: [
+                                                      Align(
+                                                        alignment:
+                                                            Alignment.topCenter,
+                                                        child: Container(
+                                                          width: 70.w,
+                                                          height: 70.h,
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            image: DecorationImage(
+                                                                image: AssetImage(
+                                                                    "assets/home/dummypp.png"),
+                                                                fit: BoxFit
+                                                                    .contain),
                                                           ),
                                                         ),
-                                                        Text(
-                                                          snapshot
-                                                              .data[index].time,
-                                                          style: TextStyle(
+                                                      ),
+                                                      SizedBox(width: 20.w),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            "${snapshot.data[index].psycId.unvan} ${snapshot.data[index].psycId.name} ${snapshot.data[index].psycId.surName}",
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: Colors
+                                                                  .black
+                                                                  .withOpacity(
+                                                                      0.75),
+                                                            ),
+                                                          ),
+                                                          SizedBox(height: 2.h),
+                                                          Text(
+                                                            snapshot.data[index]
+                                                                .psycId.tag![0],
+                                                            style: TextStyle(
+                                                              fontSize: 10.sp,
                                                               color: Colors
                                                                   .black
                                                                   .withOpacity(
                                                                       0.35),
-                                                              fontSize: 12.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                                const Spacer(),
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    String resId = snapshot
-                                                        .data[index].sId;
-                                                    var response = await http
-                                                        .delete(
-                                                            Uri.parse(
-                                                                "$root/reservation/delete/${resId}"),
-                                                            headers: {
-                                                          "x-access-token":
-                                                              client.token
-                                                                  .toString()
-                                                        });
+                                                            ),
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                  "assets/checkout/Union.svg"),
+                                                              SizedBox(
+                                                                  width: 5.w),
+                                                              Text(
+                                                                formattedDate,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                            0.35),
+                                                                    fontSize:
+                                                                        12.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                              SizedBox(
+                                                                  width: 5.w),
+                                                              Text(
+                                                                "Saat: ",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          0.35),
+                                                                  fontSize:
+                                                                      12.sp,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                snapshot
+                                                                    .data[index]
+                                                                    .time,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                            0.35),
+                                                                    fontSize:
+                                                                        12.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                      const Spacer(),
+                                                      GestureDetector(
+                                                        onTap: () async {
+                                                          String resId =
+                                                              snapshot
+                                                                  .data[index]
+                                                                  .sId;
+                                                          var response =
+                                                              await http.delete(
+                                                                  Uri.parse(
+                                                                      "$root/reservation/delete/${resId}"),
+                                                                  headers: {
+                                                                "x-access-token":
+                                                                    client.token
+                                                                        .toString()
+                                                              });
 
-                                                    print(response.body);
-                                                    setState(() {});
-                                                  },
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        width: 40.w,
-                                                        height: 40.h,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: const Color(
-                                                                  0xffF0735A)
-                                                              .withOpacity(
-                                                                  0.10),
-                                                          shape:
-                                                              BoxShape.circle,
-                                                        ),
-                                                        child: SvgPicture.asset(
-                                                          "assets/checkout/deleteRes.svg",
-                                                          width: 15.w,
-                                                          height: 15.h,
-                                                          fit: BoxFit.scaleDown,
+                                                          print(response.body);
+                                                          setState(() {});
+                                                        },
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              width: 40.w,
+                                                              height: 40.h,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: const Color(
+                                                                        0xffF0735A)
+                                                                    .withOpacity(
+                                                                        0.10),
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                              ),
+                                                              child: SvgPicture
+                                                                  .asset(
+                                                                "assets/checkout/deleteRes.svg",
+                                                                width: 15.w,
+                                                                height: 15.h,
+                                                                fit: BoxFit
+                                                                    .scaleDown,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                                height: 5.h),
+                                                            Text(
+                                                              "İptal Et",
+                                                              style: TextStyle(
+                                                                color: const Color(
+                                                                    0xffF0735A),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 8.sp,
+                                                              ),
+                                                            )
+                                                          ],
                                                         ),
                                                       ),
-                                                      SizedBox(height: 5.h),
-                                                      Text(
-                                                        "İptal Et",
-                                                        style: TextStyle(
-                                                          color: const Color(
-                                                              0xffF0735A),
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 8.sp,
-                                                        ),
-                                                      )
                                                     ],
                                                   ),
-                                                )
+                                                ),
+                                                const Divider(
+                                                  thickness: 1,
+                                                ),
                                               ],
-                                            ),
-                                          ),
-                                          const Divider(
-                                            thickness: 1,
-                                          ),
-                                        ],
+                                            );
+                                          });
+                                    }
+                                  },
+                                ),
+                                FutureBuilder(
+                                  future: getInactiveReservations(
+                                      client.client!.sId, client.token),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    } else {
+                                      return InactiveReservations(
+                                        snapshot: snapshot,
                                       );
-                                    });
-                              }
-                            },
-                          ),
-                          FutureBuilder(
-                            future: getInactiveReservations(
-                                client.client!.sId, client.token),
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              } else {
-                                return InactiveReservations(
-                                  snapshot: snapshot,
-                                );
-                              }
-                            },
-                          ),
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
-      ),
-    );
+            );
+          },
+        ));
   }
 
   Future<List<Reservation>> getActiveReservations(
@@ -334,6 +361,7 @@ class InactiveReservations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        shrinkWrap: true,
         itemCount: snapshot.data.length,
         itemBuilder: (BuildContext context, int index) {
           DateTime date = DateTime.parse(snapshot.data[index].day);
@@ -407,6 +435,44 @@ class InactiveReservations extends StatelessWidget {
                       ],
                     ),
                     const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                            CompletedReservations.routeName,
+                            arguments: {
+                              "id": snapshot.data[index].psycId.sId,
+                              "date": formattedDate,
+                              "time": snapshot.data[index].time,
+                            });
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 40.w,
+                            height: 40.h,
+                            decoration: BoxDecoration(
+                              color: const Color(0xff0093B3).withOpacity(0.10),
+                              shape: BoxShape.circle,
+                            ),
+                            child: SvgPicture.asset(
+                              "assets/checkout/details.svg",
+                              width: 15.w,
+                              height: 15.h,
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ),
+                          SizedBox(height: 5.h),
+                          Text(
+                            "Detay",
+                            style: TextStyle(
+                              color: const Color(0xff0093B3),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 8.sp,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

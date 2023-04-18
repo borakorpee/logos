@@ -23,6 +23,7 @@ import 'package:logos/screens/register/registerScreenView.dart';
 import 'package:logos/screens/register/registerSuccessScreenView.dart';
 import 'package:logos/screens/reservation/calendar.dart';
 import 'package:logos/screens/reservation/checkout.dart';
+import 'package:logos/screens/reservation/completed_reservations.dart';
 import 'package:logos/screens/reservation/my_reservation.dart';
 import 'package:provider/provider.dart';
 import 'screens/register/registerScreen3View.dart';
@@ -77,6 +78,8 @@ class MyApp extends StatelessWidget {
             PsycSearchScreen.routeName: (ctx) => const PsycSearchScreen(),
             CheckoutScreen.routeName: (ctx) => const CheckoutScreen(),
             MyReservationsPage.routeName: (ctx) => const MyReservationsPage(),
+            CompletedReservations.routeName: (ctx) =>
+                const CompletedReservations(),
           },
         );
       }),

@@ -320,15 +320,20 @@ class PsycPic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 135.w,
-      height: 135.h,
-      decoration: const BoxDecoration(
-        color: Colors.red,
-        shape: BoxShape.circle,
-        image: DecorationImage(
-          image: NetworkImage(
-              "https://www.mecgale.com/wp-content/uploads/2017/08/dummy-profile.png"),
+    return GestureDetector(
+      onLongPress: () {
+        print("asdasdad");
+      },
+      child: Container(
+        width: 135.w,
+        height: 135.h,
+        decoration: const BoxDecoration(
+          color: Colors.red,
+          shape: BoxShape.circle,
+          image: DecorationImage(
+            image: NetworkImage(
+                "https://www.mecgale.com/wp-content/uploads/2017/08/dummy-profile.png"),
+          ),
         ),
       ),
     );
@@ -376,7 +381,7 @@ class _PsycAppbarState extends State<PsycAppbar> {
             ),
           ),
           Text(
-            "Psikiyatri Detayları",
+            "Randevu Detayları",
             style: TextStyle(fontSize: 15.sp),
           ),
           IconButton(

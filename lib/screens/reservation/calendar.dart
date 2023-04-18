@@ -181,6 +181,8 @@ class _CustomCalendarState extends State<CustomCalendar> {
             future: getData(widget.psycId, widget.clientToken),
             builder: (context, snapshot) {
               var daySpecificTimeList = snapshot.data as List<String>?;
+              String today = DateFormat('yyyy.MM.dd').format(DateTime.now());
+
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -222,7 +224,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time2: '10.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
-                                resDate: day,
+                                resDate: day ?? today,
                                 currentTime: saat,
                               ),
                               TimeButton(
@@ -230,7 +232,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time2: '11.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
-                                resDate: day,
+                                resDate: day ?? today,
                                 currentTime: saat,
                               ),
                               TimeButton(
@@ -238,7 +240,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time2: '12.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
-                                resDate: day,
+                                resDate: day ?? today,
                                 currentTime: saat,
                               ),
                             ],
@@ -251,7 +253,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time2: '13.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
-                                resDate: day,
+                                resDate: day ?? today,
                                 currentTime: saat,
                               ),
                               TimeButton(
@@ -259,7 +261,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time2: '14.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
-                                resDate: day,
+                                resDate: day ?? today,
                                 currentTime: saat,
                               ),
                               TimeButton(
@@ -267,7 +269,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time2: '15.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
-                                resDate: day,
+                                resDate: day ?? today,
                                 currentTime: saat,
                               ),
                             ],
@@ -280,7 +282,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time2: '16.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
-                                resDate: day,
+                                resDate: day ?? today,
                                 currentTime: saat,
                               ),
                               TimeButton(
@@ -288,7 +290,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time2: '17.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
-                                resDate: day,
+                                resDate: day ?? today,
                                 currentTime: saat,
                               ),
                               TimeButton(
@@ -296,7 +298,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 time2: '18.00',
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
-                                resDate: day,
+                                resDate: day ?? today,
                                 currentTime: saat,
                               ),
                             ],
@@ -337,7 +339,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
 }
 
 class TimeButton extends StatefulWidget {
-  final String? resDate;
+  final String resDate;
   final String time1;
   final String time2;
   final String psycid;
@@ -363,13 +365,19 @@ class _TimeButtonState extends State<TimeButton> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime date1 = DateTime.parse(widget.resDate!.replaceAll(".", "-"));
+    DateTime date1 = DateTime.parse(widget.resDate.replaceAll(".", "-"));
     String formattedDate1 = DateFormat("yyyy-MM-dd").format(date1);
     DateTime date2 = DateTime.parse(today.replaceAll(".", "-"));
     String formattedDate2 = DateFormat("yyyy-MM-dd").format(date2);
+    DateTime date1formatted =
+        DateTime.parse(formattedDate1.replaceAll(".", "-"));
+    DateTime date2formatted =
+        DateTime.parse(formattedDate2.replaceAll(".", "-"));
+    List<String> parts = widget.currentTime.split(":");
+    String formatted = "${parts[0]}.${parts[1]}";
+    double currentTime = double.parse(formatted);
+    double saat1 = double.parse(widget.time1);
 
-    print(formattedDate1);
-    print(formattedDate2);
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -380,13 +388,15 @@ class _TimeButtonState extends State<TimeButton> {
                   "time1": widget.time1,
                   "time2": widget.time2,
                   "psyc": widget.psycid,
-                  "date": widget.resDate ?? today,
+                  "date": widget.resDate,
                 });
         });
       },
       child: Container(
         decoration: BoxDecoration(
-            color: widget.timeList!.contains(widget.time1)
+            color: widget.timeList!.contains(widget.time1) ||
+                    date1formatted.isAtSameMomentAs(date2formatted) &&
+                        currentTime > saat1
                 ? Colors.black.withOpacity(0.35)
                 : Colors.white,
             borderRadius: BorderRadius.circular(20)),
