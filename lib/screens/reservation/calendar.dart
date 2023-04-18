@@ -59,7 +59,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay = DateTime.now();
   String? day;
-
+  String saat = DateFormat('HH:mm').format(DateTime.now());
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -210,6 +210,8 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                         .format(DateTime.now())
                                         .toString(),
                               ),
+                              SizedBox(width: 5.w),
+                              Text(saat),
                             ],
                           ),
                           Row(
@@ -221,6 +223,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
                                 resDate: day,
+                                currentTime: saat,
                               ),
                               TimeButton(
                                 time1: '10.00',
@@ -228,6 +231,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
                                 resDate: day,
+                                currentTime: saat,
                               ),
                               TimeButton(
                                 time1: '11.00',
@@ -235,6 +239,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
                                 resDate: day,
+                                currentTime: saat,
                               ),
                             ],
                           ),
@@ -247,6 +252,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
                                 resDate: day,
+                                currentTime: saat,
                               ),
                               TimeButton(
                                 time1: '13.00',
@@ -254,6 +260,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
                                 resDate: day,
+                                currentTime: saat,
                               ),
                               TimeButton(
                                 time1: '14.00',
@@ -261,6 +268,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
                                 resDate: day,
+                                currentTime: saat,
                               ),
                             ],
                           ),
@@ -273,6 +281,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
                                 resDate: day,
+                                currentTime: saat,
                               ),
                               TimeButton(
                                 time1: '16.00',
@@ -280,6 +289,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
                                 resDate: day,
+                                currentTime: saat,
                               ),
                               TimeButton(
                                 time1: '17.00',
@@ -287,6 +297,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                                 timeList: daySpecificTimeList,
                                 psycid: widget.psycId,
                                 resDate: day,
+                                currentTime: saat,
                               ),
                             ],
                           ),
@@ -330,6 +341,8 @@ class TimeButton extends StatefulWidget {
   final String time1;
   final String time2;
   final String psycid;
+  final String currentTime;
+
   final List<String>? timeList;
   const TimeButton({
     Key? key,
@@ -338,6 +351,7 @@ class TimeButton extends StatefulWidget {
     required this.timeList,
     required this.psycid,
     required this.resDate,
+    required this.currentTime,
   }) : super(key: key);
 
   @override
@@ -345,10 +359,17 @@ class TimeButton extends StatefulWidget {
 }
 
 class _TimeButtonState extends State<TimeButton> {
-  String today = DateFormat('dd.MM.yyyy').format(DateTime.now());
+  String today = DateFormat('yyyy.MM.dd').format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
+    DateTime date1 = DateTime.parse(widget.resDate!.replaceAll(".", "-"));
+    String formattedDate1 = DateFormat("yyyy-MM-dd").format(date1);
+    DateTime date2 = DateTime.parse(today.replaceAll(".", "-"));
+    String formattedDate2 = DateFormat("yyyy-MM-dd").format(date2);
+
+    print(formattedDate1);
+    print(formattedDate2);
     return GestureDetector(
       onTap: () {
         setState(() {

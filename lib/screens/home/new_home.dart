@@ -34,14 +34,17 @@ class NewHomePage extends StatelessWidget {
                 RouteButtons(
                   buttonIconPath: 'assets/home/asd.svg',
                   buttonText: 'Psikologlar',
+                  buttonRouteName: '/psyc_search',
                 ),
                 RouteButtons(
                   buttonIconPath: 'assets/home/svg2.svg',
                   buttonText: 'Randevularım',
+                  buttonRouteName: '/my_reservations',
                 ),
                 RouteButtons(
                   buttonIconPath: 'assets/home/svg3.svg',
                   buttonText: 'Görüş',
+                  buttonRouteName: '/my_reservations',
                 ),
               ],
             ),
@@ -220,42 +223,50 @@ class NewHomePage extends StatelessWidget {
 class RouteButtons extends StatelessWidget {
   final String buttonText;
   final String buttonIconPath;
+  final String buttonRouteName;
+
   const RouteButtons({
     Key? key,
     required this.buttonText,
     required this.buttonIconPath,
+    required this.buttonRouteName,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 35.h,
-      decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(10)),
-      child: Row(
-        children: [
-          FittedBox(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 15).r,
-              child: Row(
-                children: [
-                  SvgPicture.asset(buttonIconPath),
-                  SizedBox(width: 5.w),
-                  Text(
-                    buttonText,
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.3),
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w400,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(buttonRouteName);
+      },
+      child: Container(
+        height: 35.h,
+        decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          children: [
+            FittedBox(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15).r,
+                child: Row(
+                  children: [
+                    SvgPicture.asset(buttonIconPath),
+                    SizedBox(width: 5.w),
+                    Text(
+                      buttonText,
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.3),
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

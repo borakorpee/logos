@@ -20,7 +20,8 @@ class CheckoutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    DateTime date = DateFormat('dd.MM.yyyy').parse(args["date"]);
+    String reservation_date = args["date"];
+    DateTime date = DateFormat("yyyy.MM.dd").parse(reservation_date);
     String apidate = DateFormat('yyyy.MM.dd').format(date);
 
     String formattedDate = DateFormat('dd MMMM', 'tr_TR').format(date);
@@ -38,6 +39,9 @@ class CheckoutScreen extends StatelessWidget {
             SizedBox(height: 20.h),
             SizedBox(height: 20.h),
             const PaymentDetails(),
+            Text(reservation_date),
+            Text(apidate),
+            Text(formattedDate),
             SizedBox(height: 30.h),
             const PaymentSelection(),
             const Spacer(),
@@ -107,7 +111,7 @@ class ProceedCheckoutButton extends StatelessWidget {
                       RichText(
                         textAlign: TextAlign.center,
                         text: TextSpan(
-                          text: "${psyc.unvan} ${psyc.name}${psyc.surName}",
+                          text: "${psyc.unvan} ${psyc.name} ${psyc.surName}",
                           style: TextStyle(
                             decoration: TextDecoration.none,
                             fontWeight: FontWeight.w600,
@@ -168,6 +172,7 @@ class ProceedCheckoutButton extends StatelessWidget {
                               "time": args["time1"],
                             },
                           );
+                          print(response.body);
                           Navigator.popUntil(
                               context, ModalRoute.withName('/psycs-profile'));
                           Navigator.of(context)
