@@ -38,7 +38,7 @@ class CompletedReservations extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Spec(
-                    iconPath: 'assets/psyc_profile/hasta.svg',
+                    iconPath: 'assets/home/Union.svg',
                     specTitle: 'Tarih',
                     stats: args["date"],
                   ),

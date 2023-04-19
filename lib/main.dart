@@ -10,6 +10,7 @@ import 'package:logos/screens/forgot_pass/otpScreenView.dart';
 import 'package:logos/screens/forgot_pass/successScreenView.dart';
 import 'package:logos/screens/home/favorites_page.dart';
 import 'package:logos/screens/home/new_home.dart';
+import 'package:logos/screens/home/notification_screen.dart';
 import 'package:logos/screens/login/loginScreenView.dart';
 import 'package:logos/screens/onboard/onboardScreenView.dart';
 import 'package:logos/screens/profile/edit_profile_page.dart';
@@ -80,6 +81,7 @@ class MyApp extends StatelessWidget {
             MyReservationsPage.routeName: (ctx) => const MyReservationsPage(),
             CompletedReservations.routeName: (ctx) =>
                 const CompletedReservations(),
+            NotificationScreen.routeName: (ctx) => const NotificationScreen(),
           },
         );
       }),

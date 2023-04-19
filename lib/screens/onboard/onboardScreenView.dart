@@ -33,8 +33,6 @@ class _OnboardViewState extends State<OnboardScreenView> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    //print(height);
-    //print(width);
 
     return Scaffold(
       body: Container(
@@ -182,7 +180,7 @@ class Logo extends StatelessWidget {
       width: width * 0.315,
       height: height * 0.064,
       child: Image.asset(
-        "assets/onboard/logo.png",
+        "assets/onboard/newlogoBeyaz.png",
       ),
     );
   }

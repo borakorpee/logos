@@ -13,6 +13,7 @@ import 'package:logos/screens/home/new_home.dart';
 import 'package:http/http.dart' as http;
 import 'package:logos/screens/reservation/completed_reservations.dart';
 import 'package:provider/provider.dart';
+import '../../models/reservations_model.dart';
 import '../profile/profile_page.dart';
 
 class MyReservationsPage extends StatefulWidget {
@@ -30,6 +31,7 @@ class _MyReservationsPageState extends State<MyReservationsPage>
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+
     super.initState();
   }
 
@@ -42,6 +44,9 @@ class _MyReservationsPageState extends State<MyReservationsPage>
   @override
   Widget build(BuildContext context) {
     final client = Provider.of<ClientProvider>(context).get_client;
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    args["gorus"] ? _tabController.index = 1 : _tabController.index = 0;
     return Scaffold(
         drawer: const CustomDrawer(),
         body: LayoutBuilder(
@@ -319,7 +324,7 @@ class _MyReservationsPageState extends State<MyReservationsPage>
 
   Future<List<Reservation>> getActiveReservations(
       String? clientId, String? cltoken) async {
-    beforeResModel before_res = beforeResModel(
+    ReservationsModel before_res = ReservationsModel(
       status: null,
       message: '',
       reservation: [],
@@ -329,13 +334,13 @@ class _MyReservationsPageState extends State<MyReservationsPage>
         headers: {
           "x-access-token": cltoken.toString(),
         });
-    before_res = beforeResModel.fromJson(jsonDecode(response.body));
+    before_res = ReservationsModel.fromJson(jsonDecode(response.body));
     return before_res.reservation!;
   }
 
   Future<List<Reservation>> getInactiveReservations(
       String? clientId, String? cltoken) async {
-    beforeResModel before_res = beforeResModel(
+    ReservationsModel before_res = ReservationsModel(
       status: null,
       message: '',
       reservation: [],
@@ -346,7 +351,7 @@ class _MyReservationsPageState extends State<MyReservationsPage>
           "x-access-token": cltoken.toString(),
         });
 
-    before_res = beforeResModel.fromJson(jsonDecode(response.body));
+    before_res = ReservationsModel.fromJson(jsonDecode(response.body));
     return before_res.reservation!;
   }
 }
@@ -482,90 +487,5 @@ class InactiveReservations extends StatelessWidget {
             ],
           );
         });
-  }
-}
-
-class beforeResModel {
-  bool? status;
-  String? message;
-  List<Reservation>? reservation;
-
-  beforeResModel({this.status, this.message, this.reservation});
-
-  beforeResModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    if (json['reservation'] != null) {
-      reservation = <Reservation>[];
-      json['reservation'].forEach((v) {
-        reservation!.add(new Reservation.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.reservation != null) {
-      data['reservation'] = this.reservation!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Reservation {
-  String? sId;
-  String? day;
-  String? time;
-  PsycId? psycId;
-
-  Reservation({this.sId, this.day, this.time, this.psycId});
-
-  Reservation.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    day = json['day'];
-    time = json['time'];
-    psycId =
-        json['psyc_id'] != null ? new PsycId.fromJson(json['psyc_id']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['day'] = this.day;
-    data['time'] = this.time;
-    if (this.psycId != null) {
-      data['psyc_id'] = this.psycId!.toJson();
-    }
-    return data;
-  }
-}
-
-class PsycId {
-  String? sId;
-  String? unvan;
-  String? name;
-  String? surName;
-  List<String>? tag;
-
-  PsycId({this.sId, this.unvan, this.name, this.surName, this.tag});
-
-  PsycId.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    unvan = json['unvan'];
-    name = json['name'];
-    surName = json['surName'];
-    tag = json['tag'].cast<String>();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['unvan'] = this.unvan;
-    data['name'] = this.name;
-    data['surName'] = this.surName;
-    data['tag'] = this.tag;
-    return data;
   }
 }

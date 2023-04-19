@@ -30,22 +30,56 @@ class NewHomePage extends StatelessWidget {
             SizedBox(height: 15.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                RouteButtons(
+              children: [
+                const RouteButtons(
                   buttonIconPath: 'assets/home/asd.svg',
                   buttonText: 'Psikologlar',
                   buttonRouteName: '/psyc_search',
                 ),
-                RouteButtons(
+                const RouteButtons(
                   buttonIconPath: 'assets/home/svg2.svg',
                   buttonText: 'Randevularım',
                   buttonRouteName: '/my_reservations',
                 ),
-                RouteButtons(
-                  buttonIconPath: 'assets/home/svg3.svg',
-                  buttonText: 'Görüş',
-                  buttonRouteName: '/my_reservations',
-                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed('/my_reservations', arguments: {
+                      "gorus": true,
+                    });
+                  },
+                  child: Container(
+                    height: 35.h,
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      children: [
+                        FittedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 15)
+                                .r,
+                            child: Row(
+                              children: [
+                                SvgPicture.asset('assets/home/svg3.svg'),
+                                SizedBox(width: 5.w),
+                                Text(
+                                  'Görüş',
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.3),
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
             Column(
@@ -236,7 +270,9 @@ class RouteButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(buttonRouteName);
+        Navigator.of(context).pushNamed(buttonRouteName, arguments: {
+          "gorus": false,
+        });
       },
       child: Container(
         height: 35.h,
@@ -544,7 +580,7 @@ class CustomDrawer extends StatelessWidget {
                     const DrawerRow(
                       drawerIconPath: 'assets/drawer/bildirimler.png',
                       drawerTitle: 'Bildirimler',
-                      route: '/profile',
+                      route: '/notification-screen',
                     ),
                     const DrawerRow(
                       drawerIconPath: 'assets/drawer/profil.png',
@@ -557,8 +593,8 @@ class CustomDrawer extends StatelessWidget {
                       route: '/profile',
                     ),
                     const DrawerRow(
-                      drawerIconPath: 'assets/drawer/ayarlar.png',
-                      drawerTitle: 'Ayarlar',
+                      drawerIconPath: 'assets/drawer/exit.png',
+                      drawerTitle: 'Çıkış Yap',
                       route: '/profile',
                     ),
                     const Spacer(),

@@ -175,8 +175,9 @@ class ProceedCheckoutButton extends StatelessWidget {
                           print(response.body);
                           Navigator.popUntil(
                               context, ModalRoute.withName('/psycs-profile'));
-                          Navigator.of(context)
-                              .pushNamed(MyReservationsPage.routeName);
+                          Navigator.of(context).pushNamed(
+                              MyReservationsPage.routeName,
+                              arguments: {"gorus": false});
                         },
                         child: Container(
                           width: 225.w,
