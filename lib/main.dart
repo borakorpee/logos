@@ -16,6 +16,8 @@ import 'package:logos/screens/onboard/onboardScreenView.dart';
 import 'package:logos/screens/profile/edit_profile_page.dart';
 import 'package:logos/screens/profile/profile_page.dart';
 import 'package:logos/screens/psyc_profile/all_pyscs.dart';
+import 'package:logos/screens/psyc_profile/connecting.dart';
+import 'package:logos/screens/psyc_profile/end_call.dart';
 import 'package:logos/screens/psyc_profile/psycs_profileScreenView.dart';
 import 'package:logos/screens/psyc_profile/vide_call.dart';
 import 'package:logos/screens/register/kvkkScreenView.dart';
@@ -82,6 +84,8 @@ class MyApp extends StatelessWidget {
             CompletedReservations.routeName: (ctx) =>
                 const CompletedReservations(),
             NotificationScreen.routeName: (ctx) => const NotificationScreen(),
+            ConnectingToPsyc.routeName: (ctx) => const ConnectingToPsyc(),
+            AfterCallScreen.routeName: (ctx) => const AfterCallScreen(),
           },
         );
       }),

@@ -224,22 +224,138 @@ class _MyReservationsPageState extends State<MyReservationsPage>
                                                       const Spacer(),
                                                       GestureDetector(
                                                         onTap: () async {
-                                                          String resId =
-                                                              snapshot
-                                                                  .data[index]
-                                                                  .sId;
-                                                          var response =
-                                                              await http.delete(
-                                                                  Uri.parse(
-                                                                      "$root/reservation/delete/${resId}"),
-                                                                  headers: {
-                                                                "x-access-token":
-                                                                    client.token
-                                                                        .toString()
-                                                              });
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return Align(
+                                                                alignment: Alignment
+                                                                    .bottomCenter,
+                                                                child:
+                                                                    IntrinsicHeight(
+                                                                  child:
+                                                                      Container(
+                                                                    width:
+                                                                        390.w,
+                                                                    height:
+                                                                        300.h,
+                                                                    decoration: BoxDecoration(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10)),
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      children: [
+                                                                        SizedBox(
+                                                                            height:
+                                                                                40.h),
+                                                                        SvgPicture.asset(
+                                                                            "assets/checkout/Unionalert.svg"),
+                                                                        SizedBox(
+                                                                            height:
+                                                                                15.h),
+                                                                        Text(
+                                                                          "Randevuyu iptal etmek\n istediğinize emin misiniz?",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.black.withOpacity(0.65),
+                                                                            fontSize:
+                                                                                16.sp,
+                                                                            decoration:
+                                                                                TextDecoration.none,
+                                                                            fontWeight:
+                                                                                FontWeight.w400,
+                                                                          ),
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                        ),
+                                                                        SizedBox(
+                                                                            height:
+                                                                                17.h),
+                                                                        SizedBox(
+                                                                            height:
+                                                                                15.h),
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceEvenly,
+                                                                          children: [
+                                                                            GestureDetector(
+                                                                              onTap: () {
+                                                                                Navigator.of(context).pop();
+                                                                              },
+                                                                              child: Container(
+                                                                                width: 155.w,
+                                                                                height: 45.h,
+                                                                                decoration: BoxDecoration(
+                                                                                  color: const Color(0xffA950C9).withOpacity(0.10),
+                                                                                  borderRadius: BorderRadius.circular(10),
+                                                                                ),
+                                                                                child: Center(
+                                                                                  child: Text(
+                                                                                    "Vazgeçtim",
+                                                                                    style: TextStyle(
+                                                                                      decoration: TextDecoration.none,
+                                                                                      color: const Color(0xff6B337F),
+                                                                                      fontSize: 15.sp,
+                                                                                      fontWeight: FontWeight.w500,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            GestureDetector(
+                                                                              onTap: () async {
+                                                                                String resId = snapshot.data[index].sId;
+                                                                                var response = await http.delete(Uri.parse("$root/reservation/delete/${resId}"), headers: {
+                                                                                  "x-access-token": client.token.toString()
+                                                                                });
+                                                                                Navigator.of(context).pop();
 
-                                                          print(response.body);
-                                                          setState(() {});
+                                                                                showDialog(
+                                                                                    context: context,
+                                                                                    builder: (BuildContext context) {
+                                                                                      return const CancelResSucces();
+                                                                                    });
+
+                                                                                print(response.body);
+
+                                                                                setState(() {});
+                                                                              },
+                                                                              child: Container(
+                                                                                width: 155.w,
+                                                                                height: 45.h,
+                                                                                decoration: BoxDecoration(
+                                                                                  color: const Color(0xffA950C9),
+                                                                                  borderRadius: BorderRadius.circular(10),
+                                                                                ),
+                                                                                child: Center(
+                                                                                  child: Text(
+                                                                                    "İptal Et",
+                                                                                    style: TextStyle(
+                                                                                      decoration: TextDecoration.none,
+                                                                                      color: Colors.white,
+                                                                                      fontSize: 15.sp,
+                                                                                      fontWeight: FontWeight.w500,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          );
                                                         },
                                                         child: Column(
                                                           children: [
@@ -353,6 +469,71 @@ class _MyReservationsPageState extends State<MyReservationsPage>
 
     before_res = ReservationsModel.fromJson(jsonDecode(response.body));
     return before_res.reservation!;
+  }
+}
+
+class CancelResSucces extends StatelessWidget {
+  const CancelResSucces({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: IntrinsicHeight(
+        child: Container(
+          width: 390.w,
+          height: 300.h,
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 40.h),
+              SvgPicture.asset("assets/checkout/done.svg"),
+              SizedBox(height: 15.h),
+              Text(
+                "Randevu başarılı bir şekilde\niptal edildi.",
+                style: TextStyle(
+                  color: Colors.black.withOpacity(0.65),
+                  fontSize: 16.sp,
+                  decoration: TextDecoration.none,
+                  fontWeight: FontWeight.w400,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 17.h),
+              SizedBox(height: 15.h),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                  width: 225.w,
+                  height: 45.h,
+                  decoration: BoxDecoration(
+                    color: const Color(0xffA950C9),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Tamam",
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        color: Colors.white,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

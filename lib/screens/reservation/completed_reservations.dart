@@ -28,7 +28,9 @@ class CompletedReservations extends StatelessWidget {
               child: const CustomAppbar(appBarTitle: "Randevu Detayları"),
             ),
             SizedBox(height: 25.h),
-            const PsycPic(),
+            PsycPic(
+              provider: provider,
+            ),
             SizedBox(height: 14.h),
             PsycBio(provider: provider),
             SizedBox(height: 14.h),

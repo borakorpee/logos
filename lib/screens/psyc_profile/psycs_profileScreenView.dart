@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logos/models/all_psyc_model.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
+import 'package:logos/screens/psyc_profile/connecting.dart';
 import 'package:logos/screens/psyc_profile/vide_call.dart';
 import 'package:logos/screens/reservation/calendar.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +41,7 @@ class _PsycsScreenViewState extends State<PsycsScreenView>
       children: [
         const PsycAppbar(),
         SizedBox(height: 25.h),
-        const PsycPic(),
+        PsycPic(provider: provider),
         SizedBox(height: 14.h),
         PsycBio(provider: provider),
         SizedBox(height: 14.h),
@@ -314,15 +315,20 @@ class PsycBio extends StatelessWidget {
 }
 
 class PsycPic extends StatelessWidget {
+  final Psychologists provider;
+
   const PsycPic({
     Key? key,
+    required this.provider,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        print("asdasdad");
+        Navigator.of(context).pushNamed(ConnectingToPsyc.routeName, arguments: {
+          "provider": provider,
+        });
       },
       child: Container(
         width: 135.w,

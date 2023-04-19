@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logos/screens/psyc_profile/constant.dart';
+import 'package:logos/screens/psyc_profile/end_call.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 
@@ -13,6 +15,8 @@ class VideCall extends StatefulWidget {
 }
 
 class _VideCallState extends State<VideCall> {
+  DateTime? startTime;
+
   String channelName = "wdj";
   String token = AGORA_token;
 
@@ -97,6 +101,8 @@ class _VideCallState extends State<VideCall> {
   void initState() {
     super.initState();
     // Set up an instance of Agora engine
+    startTime = DateTime.now();
+
     setupVideoSDKEngine();
   }
 
@@ -120,6 +126,7 @@ class _VideCallState extends State<VideCall> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             children: [
               // Container for the local video
+              Text("start time ${startTime.toString()}"),
               Container(
                 height: 240,
                 decoration: BoxDecoration(border: Border.all()),
@@ -151,6 +158,25 @@ class _VideCallState extends State<VideCall> {
                 ],
               ),
               // Button Row ends
+              GestureDetector(
+                onTap: () {
+                  DateTime endTime = DateTime.now();
+
+                  Navigator.of(context)
+                      .pushNamed(AfterCallScreen.routeName, arguments: {
+                    "starttime": startTime,
+                    "endtime": endTime,
+                  });
+                },
+                child: Container(
+                  width: 100.w,
+                  height: 50.h,
+                  color: Colors.red,
+                  child: const Center(
+                    child: Text("bitir"),
+                  ),
+                ),
+              )
             ],
           )),
     );
