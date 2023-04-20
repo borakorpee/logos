@@ -381,7 +381,9 @@ class _TimeButtonState extends State<TimeButton> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          widget.timeList!.contains(widget.time1)
+          widget.timeList!.contains(widget.time1) ||
+                  date1formatted.isAtSameMomentAs(date2formatted) &&
+                      currentTime > saat1
               ? null
               : Navigator.of(context)
                   .pushNamed(CheckoutScreen.routeName, arguments: {

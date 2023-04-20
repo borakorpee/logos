@@ -1,5 +1,3 @@
-// ignore_for_file: camel_case_types, unnecessary_new, prefer_collection_literals
-
 class All_Psyc_Model {
   bool? status;
   String? message;
@@ -20,10 +18,11 @@ class All_Psyc_Model {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = status;
-    data['message'] = message;
-    if (psychologists != null) {
-      data['psychologists'] = psychologists!.map((v) => v.toJson()).toList();
+    data['status'] = this.status;
+    data['message'] = this.message;
+    if (this.psychologists != null) {
+      data['psychologists'] =
+          this.psychologists!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -40,6 +39,10 @@ class Psychologists {
   String? about;
   String? createAt;
   int? iV;
+  List<int>? star;
+  String? updateAt;
+  List<num>? starAvg;
+  String? tecrube;
 
   Psychologists(
       {this.sId,
@@ -51,7 +54,11 @@ class Psychologists {
       this.unvan,
       this.about,
       this.createAt,
-      this.iV});
+      this.iV,
+      this.star,
+      this.updateAt,
+      this.starAvg,
+      this.tecrube});
 
   Psychologists.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -64,20 +71,28 @@ class Psychologists {
     about = json['about'];
     createAt = json['createAt'];
     iV = json['__v'];
+    star = json['star'].cast<int>();
+    updateAt = json['updateAt'];
+    starAvg = json['starAvg'].cast<num>();
+    tecrube = json['tecrube'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = sId;
-    data['name'] = name;
-    data['surName'] = surName;
-    data['pass'] = pass;
-    data['eMail'] = eMail;
-    data['tag'] = tag;
-    data['unvan'] = unvan;
-    data['about'] = about;
-    data['createAt'] = createAt;
-    data['__v'] = iV;
+    data['_id'] = this.sId;
+    data['name'] = this.name;
+    data['surName'] = this.surName;
+    data['pass'] = this.pass;
+    data['eMail'] = this.eMail;
+    data['tag'] = this.tag;
+    data['unvan'] = this.unvan;
+    data['about'] = this.about;
+    data['createAt'] = this.createAt;
+    data['__v'] = this.iV;
+    data['star'] = this.star;
+    data['updateAt'] = this.updateAt;
+    data['starAvg'] = this.starAvg.toString();
+    data['tecrube'] = this.tecrube;
     return data;
   }
 }

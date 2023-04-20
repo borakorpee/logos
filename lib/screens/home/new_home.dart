@@ -168,11 +168,11 @@ class NewHomePage extends StatelessWidget {
                                               children: [
                                                 const StarIcon(),
                                                 Text(
-                                                  "  4.6 (1620 Oylama)",
+                                                  " ${psyc[index].starAvg![0].toString()} (${psyc[index].star!.length} Oylama)",
                                                   style: TextStyle(
                                                     color: Colors.black
                                                         .withOpacity(0.5),
-                                                    fontSize: 6.sp,
+                                                    fontSize: 8.sp,
                                                   ),
                                                 ),
                                                 const Spacer(),

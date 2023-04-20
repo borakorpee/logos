@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logos/models/all_psyc_model.dart';
+import 'package:logos/screens/psyc_profile/after_call_comment.dart';
 
 class AfterCallScreen extends StatelessWidget {
   static const routeName = "/after_call";
@@ -11,6 +13,7 @@ class AfterCallScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final Psychologists? psyc = args["provider"];
     DateTime start = args["starttime"];
     DateTime end = args["endtime"];
     Duration difference = end.difference(start);
@@ -56,39 +59,53 @@ class AfterCallScreen extends StatelessWidget {
             Spacer(),
             Column(
               children: [
-                Container(
-                  width: 350.w,
-                  height: 60.h,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffA950C9).withOpacity(0.10),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Değerlendirme Ekleyin",
-                      style: TextStyle(
-                        color: const Color(0xffA950C9),
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w500,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).popAndPushNamed(
+                        AfterCallComment.routeName,
+                        arguments: {
+                          "provider": psyc,
+                        });
+                  },
+                  child: Container(
+                    width: 350.w,
+                    height: 60.h,
+                    decoration: BoxDecoration(
+                      color: const Color(0xffA950C9).withOpacity(0.10),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Değerlendirme Ekleyin",
+                        style: TextStyle(
+                          color: const Color(0xffA950C9),
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 15.h),
-                Container(
-                  width: 350.w,
-                  height: 60.h,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffA950C9),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Anasayfa",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w500,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    width: 350.w,
+                    height: 60.h,
+                    decoration: BoxDecoration(
+                      color: const Color(0xffA950C9),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Anasayfa",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),

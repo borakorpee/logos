@@ -11,7 +11,10 @@ class ReservationsModel {
     if (json['reservation'] != null) {
       reservation = <Reservation>[];
       json['reservation'].forEach((v) {
-        reservation!.add(new Reservation.fromJson(v));
+        if (v != null) {
+          reservation!.add(new Reservation.fromJson(v));
+        }
+        //reservation!.add(new Reservation.fromJson(v));
       });
     }
   }

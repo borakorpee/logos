@@ -20,10 +20,12 @@ class _ConnectingToPsycState extends State<ConnectingToPsyc> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => VideCall()),
-      );
+      final args = ModalRoute.of(context)?.settings.arguments
+          as Map<String, Psychologists>;
+      ;
+      Navigator.pushReplacementNamed(context, VideCall.routeName, arguments: {
+        "provider": args["provider"],
+      });
     });
   }
 
