@@ -1,12 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logos/models/all_psyc_model.dart';
+import 'package:logos/models/top_psyc_model.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
+import 'package:logos/providers/client_provider.dart';
+import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/home/favorites_page.dart';
 import 'package:logos/screens/profile/profile_page.dart';
 import 'package:provider/provider.dart';
-
+import 'package:http/http.dart' as http;
 import '../psyc_profile/psycs_profileScreenView.dart';
 
 class NewHomePage extends StatelessWidget {
@@ -14,6 +20,8 @@ class NewHomePage extends StatelessWidget {
   const NewHomePage({super.key});
   @override
   Widget build(BuildContext context) {
+    final client = Provider.of<ClientProvider>(context).get_client;
+
     final psyc = Provider.of<All_Psychologists_Provider>(context).psyc_list!;
     return Scaffold(
       drawerEnableOpenDragGesture: false,
@@ -28,60 +36,7 @@ class NewHomePage extends StatelessWidget {
             SizedBox(height: 15.h),
             const HorizontalList(),
             SizedBox(height: 15.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const RouteButtons(
-                  buttonIconPath: 'assets/home/asd.svg',
-                  buttonText: 'Psikologlar',
-                  buttonRouteName: '/psyc_search',
-                ),
-                const RouteButtons(
-                  buttonIconPath: 'assets/home/svg2.svg',
-                  buttonText: 'Randevularım',
-                  buttonRouteName: '/my_reservations',
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed('/my_reservations', arguments: {
-                      "gorus": true,
-                    });
-                  },
-                  child: Container(
-                    height: 35.h,
-                    decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.05),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      children: [
-                        FittedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 15)
-                                .r,
-                            child: Row(
-                              children: [
-                                SvgPicture.asset('assets/home/svg3.svg'),
-                                SizedBox(width: 5.w),
-                                Text(
-                                  'Görüş',
-                                  style: TextStyle(
-                                    color: Colors.black.withOpacity(0.3),
-                                    fontSize: 11.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
+            const RouteRow(),
             Column(
               children: [
                 Padding(
@@ -103,153 +58,247 @@ class NewHomePage extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: 220.h,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 4,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 35, top: 5).r,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(
-                                PsycsScreenView.routeName,
-                                arguments: {"id": psyc[index].sId});
-                          },
-                          child: Stack(
-                            children: [
-                              Container(
-                                width: 170.w,
-                                height: 210.h,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.15),
-                                      blurRadius: 15,
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
+                  child: FutureBuilder(
+                    future: getTopPsys(client.token.toString()),
+                    initialData: [],
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else {
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 4,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 35, top: 5).r,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      PsycsScreenView.routeName,
+                                      arguments: {
+                                        "id": snapshot.data[index].sId
+                                      });
+                                },
+                                child: Stack(
                                   children: [
-                                    SizedBox(
+                                    Container(
                                       width: 170.w,
-                                      height: 110.h,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                                left: 15, right: 15)
-                                            .r,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "${psyc[index].unvan} ${psyc[index].name} ${psyc[index].surName}",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12.sp,
-                                                color: Colors.black
-                                                    .withOpacity(0.75),
+                                      height: 210.h,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.15),
+                                            blurRadius: 15,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            width: 170.w,
+                                            height: 110.h,
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                      left: 15, right: 15)
+                                                  .r,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "${snapshot.data[index].unvan} ${snapshot.data[index].name} ${snapshot.data[index].surName}",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 12.sp,
+                                                      color: Colors.black
+                                                          .withOpacity(0.75),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    snapshot
+                                                        .data[index].tag![0],
+                                                    style: TextStyle(
+                                                        color: Colors.black
+                                                            .withOpacity(0.35),
+                                                        fontSize: 7.sp),
+                                                  ),
+                                                  SizedBox(height: 7.h),
+                                                  Row(
+                                                    children: [
+                                                      const StarIcon(),
+                                                      Text(
+                                                        " ${snapshot.data[index].starAvg![0].toString()} (${snapshot.data[index].star!.length} Oylama)",
+                                                        style: TextStyle(
+                                                          color: Colors.black
+                                                              .withOpacity(0.5),
+                                                          fontSize: 8.sp,
+                                                        ),
+                                                      ),
+                                                      const Spacer(),
+                                                      SizedBox(
+                                                        width: 10.w,
+                                                        height: 10.h,
+                                                        child: SvgPicture.asset(
+                                                            "assets/psyc_profile/tecrube.svg"),
+                                                      ),
+                                                      Text(
+                                                        "  5+ Tecrübe",
+                                                        style: TextStyle(
+                                                          color: Colors.black
+                                                              .withOpacity(0.5),
+                                                          fontSize: 6.sp,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 7.h),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "249.90 ₺",
+                                                        style: TextStyle(
+                                                          color: Colors.black
+                                                              .withOpacity(
+                                                                  0.75),
+                                                          fontSize: 12.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 5.w),
+                                                      Text(
+                                                        "Seans başı",
+                                                        style: TextStyle(
+                                                          color: Colors.black
+                                                              .withOpacity(0.5),
+                                                          fontSize: 6.sp,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            Text(
-                                              psyc[index].tag![0],
-                                              style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.35),
-                                                  fontSize: 7.sp),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      child: Container(
+                                        width: 170.w,
+                                        height: 110.h,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                              "assets/home/psyc_pic${index + 1}.png",
                                             ),
-                                            SizedBox(height: 7.h),
-                                            Row(
-                                              children: [
-                                                const StarIcon(),
-                                                Text(
-                                                  " ${psyc[index].starAvg![0].toString()} (${psyc[index].star!.length} Oylama)",
-                                                  style: TextStyle(
-                                                    color: Colors.black
-                                                        .withOpacity(0.5),
-                                                    fontSize: 8.sp,
-                                                  ),
-                                                ),
-                                                const Spacer(),
-                                                SizedBox(
-                                                  width: 10.w,
-                                                  height: 10.h,
-                                                  child: SvgPicture.asset(
-                                                      "assets/psyc_profile/tecrube.svg"),
-                                                ),
-                                                Text(
-                                                  "  5+ Tecrübe",
-                                                  style: TextStyle(
-                                                    color: Colors.black
-                                                        .withOpacity(0.5),
-                                                    fontSize: 6.sp,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 7.h),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  "249.90 ₺",
-                                                  style: TextStyle(
-                                                    color: Colors.black
-                                                        .withOpacity(0.75),
-                                                    fontSize: 12.sp,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                SizedBox(width: 5.w),
-                                                Text(
-                                                  "Seans başı",
-                                                  style: TextStyle(
-                                                    color: Colors.black
-                                                        .withOpacity(0.5),
-                                                    fontSize: 6.sp,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ],
+                                            fit: BoxFit.fill,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              Positioned(
-                                top: 0,
-                                child: Container(
-                                  width: 170.w,
-                                  height: 110.h,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        "assets/home/psyc_pic${index + 1}.png",
-                                      ),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
+                            );
+                          },
+                        );
+                      }
                     },
                   ),
-                )
+                ),
               ],
             )
           ],
         ),
       ),
+    );
+  }
+
+  Future<List<Result>> getTopPsys(String clinetToken) async {
+    top_psyc_model topPsycs = top_psyc_model(status: null, result: []);
+    var response = await http.get(
+      Uri.parse("$root/psyc/siraStarAvg"),
+      headers: {
+        "x-access-token": clinetToken,
+      },
+    );
+    topPsycs = top_psyc_model.fromJson(jsonDecode(response.body));
+    return topPsycs.result!;
+  }
+}
+
+class RouteRow extends StatelessWidget {
+  const RouteRow({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        const RouteButtons(
+          buttonIconPath: 'assets/home/asd.svg',
+          buttonText: 'Psikologlar',
+          buttonRouteName: '/psyc_search',
+        ),
+        const RouteButtons(
+          buttonIconPath: 'assets/home/svg2.svg',
+          buttonText: 'Randevularım',
+          buttonRouteName: '/my_reservations',
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed('/my_reservations', arguments: {
+              "gorus": true,
+            });
+          },
+          child: Container(
+            height: 35.h,
+            decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(10)),
+            child: Row(
+              children: [
+                FittedBox(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 10, horizontal: 15)
+                            .r,
+                    child: Row(
+                      children: [
+                        SvgPicture.asset('assets/home/svg3.svg'),
+                        SizedBox(width: 5.w),
+                        Text(
+                          'Görüş',
+                          style: TextStyle(
+                            color: Colors.black.withOpacity(0.3),
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
     );
   }
 }

@@ -27,17 +27,13 @@ class _ActiveReservationsState extends State<ActiveReservations> {
   @override
   void initState() {
     super.initState();
-    // Her dakika ekranı yenilemek için Timer oluşturuluyor
     _timer = Timer.periodic(Duration(seconds: 20), (timer) {
-      setState(() {
-        // Yenileme işlemleri burada yapılabilir
-      });
+      setState(() {});
     });
   }
 
   @override
   void dispose() {
-    // Timer'ı iptal etmek için dispose metodunda cancel() metodunu çağırın
     _timer.cancel();
     super.dispose();
   }
@@ -118,11 +114,11 @@ class _ActiveReservationsState extends State<ActiveReservations> {
                   isToday
                       ? hours == 0
                           ? "Görüşmeniz $minutes dakika sonra başlayacak"
-                          : "Görüşmeniz $hours $minutes dakika sonra başlayacak"
+                          : "Görüşmeniz $hours saat $minutes dakika sonra başlayacak"
                       : "Görüşme saatinde başlayacak",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    fontSize: 15.sp,
+                    fontSize: 14.sp,
                     color: Colors.white,
                   ),
                 ),
