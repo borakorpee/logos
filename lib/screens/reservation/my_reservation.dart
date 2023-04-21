@@ -11,6 +11,7 @@ import 'package:logos/providers/client_provider.dart';
 import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/home/new_home.dart';
 import 'package:http/http.dart' as http;
+import 'package:logos/screens/reservation/active_reservations.dart';
 import 'package:logos/screens/reservation/completed_reservations.dart';
 import 'package:provider/provider.dart';
 import '../../models/reservations_model.dart';
@@ -118,285 +119,303 @@ class _MyReservationsPageState extends State<MyReservationsPage>
 
                                             return Column(
                                               children: [
-                                                Container(
-                                                  child: Row(
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            Alignment.topCenter,
-                                                        child: Container(
-                                                          width: 70.w,
-                                                          height: 70.h,
-                                                          decoration:
-                                                              const BoxDecoration(
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            image: DecorationImage(
-                                                                image: AssetImage(
-                                                                    "assets/home/dummypp.png"),
-                                                                fit: BoxFit
-                                                                    .contain),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.of(context)
+                                                        .pushNamed(
+                                                      ActiveReservations
+                                                          .routeName,
+                                                      arguments: {
+                                                        "id": snapshot
+                                                            .data[index]
+                                                            .psycId
+                                                            .sId,
+                                                        "date": snapshot
+                                                            .data[index].day,
+                                                        "time": snapshot
+                                                            .data[index].time,
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    child: Row(
+                                                      children: [
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .topCenter,
+                                                          child: Container(
+                                                            width: 70.w,
+                                                            height: 70.h,
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              image: DecorationImage(
+                                                                  image: AssetImage(
+                                                                      "assets/home/dummypp.png"),
+                                                                  fit: BoxFit
+                                                                      .contain),
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      SizedBox(width: 20.w),
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            "${snapshot.data[index].psycId.unvan} ${snapshot.data[index].psycId.name} ${snapshot.data[index].psycId.surName}",
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      0.75),
-                                                            ),
-                                                          ),
-                                                          SizedBox(height: 2.h),
-                                                          Text(
-                                                            snapshot.data[index]
-                                                                .psycId.tag![0],
-                                                            style: TextStyle(
-                                                              fontSize: 10.sp,
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      0.35),
-                                                            ),
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              SvgPicture.asset(
-                                                                  "assets/checkout/Union.svg"),
-                                                              SizedBox(
-                                                                  width: 5.w),
-                                                              Text(
-                                                                formattedDate,
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            0.35),
-                                                                    fontSize:
-                                                                        12.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600),
-                                                              ),
-                                                              SizedBox(
-                                                                  width: 5.w),
-                                                              Text(
-                                                                "Saat: ",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          0.35),
-                                                                  fontSize:
-                                                                      12.sp,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                snapshot
-                                                                    .data[index]
-                                                                    .time,
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            0.35),
-                                                                    fontSize:
-                                                                        12.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600),
-                                                              ),
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                      const Spacer(),
-                                                      GestureDetector(
-                                                        onTap: () async {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return Align(
-                                                                alignment: Alignment
-                                                                    .bottomCenter,
-                                                                child:
-                                                                    IntrinsicHeight(
-                                                                  child:
-                                                                      Container(
-                                                                    width:
-                                                                        390.w,
-                                                                    height:
-                                                                        300.h,
-                                                                    decoration: BoxDecoration(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(10)),
-                                                                    child:
-                                                                        Column(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .min,
-                                                                      children: [
-                                                                        SizedBox(
-                                                                            height:
-                                                                                40.h),
-                                                                        SvgPicture.asset(
-                                                                            "assets/checkout/Unionalert.svg"),
-                                                                        SizedBox(
-                                                                            height:
-                                                                                15.h),
-                                                                        Text(
-                                                                          "Randevuyu iptal etmek\n istediğinize emin misiniz?",
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Colors.black.withOpacity(0.65),
-                                                                            fontSize:
-                                                                                16.sp,
-                                                                            decoration:
-                                                                                TextDecoration.none,
-                                                                            fontWeight:
-                                                                                FontWeight.w400,
-                                                                          ),
-                                                                          textAlign:
-                                                                              TextAlign.center,
-                                                                        ),
-                                                                        SizedBox(
-                                                                            height:
-                                                                                17.h),
-                                                                        SizedBox(
-                                                                            height:
-                                                                                15.h),
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceEvenly,
-                                                                          children: [
-                                                                            GestureDetector(
-                                                                              onTap: () {
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              child: Container(
-                                                                                width: 155.w,
-                                                                                height: 45.h,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: const Color(0xffA950C9).withOpacity(0.10),
-                                                                                  borderRadius: BorderRadius.circular(10),
-                                                                                ),
-                                                                                child: Center(
-                                                                                  child: Text(
-                                                                                    "Vazgeçtim",
-                                                                                    style: TextStyle(
-                                                                                      decoration: TextDecoration.none,
-                                                                                      color: const Color(0xff6B337F),
-                                                                                      fontSize: 15.sp,
-                                                                                      fontWeight: FontWeight.w500,
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                            GestureDetector(
-                                                                              onTap: () async {
-                                                                                String resId = snapshot.data[index].sId;
-                                                                                var response = await http.delete(Uri.parse("$root/reservation/delete/${resId}"), headers: {
-                                                                                  "x-access-token": client.token.toString()
-                                                                                });
-                                                                                Navigator.of(context).pop();
-
-                                                                                showDialog(
-                                                                                    context: context,
-                                                                                    builder: (BuildContext context) {
-                                                                                      return const CancelResSucces();
-                                                                                    });
-
-                                                                                print(response.body);
-
-                                                                                setState(() {});
-                                                                              },
-                                                                              child: Container(
-                                                                                width: 155.w,
-                                                                                height: 45.h,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: const Color(0xffA950C9),
-                                                                                  borderRadius: BorderRadius.circular(10),
-                                                                                ),
-                                                                                child: Center(
-                                                                                  child: Text(
-                                                                                    "İptal Et",
-                                                                                    style: TextStyle(
-                                                                                      decoration: TextDecoration.none,
-                                                                                      color: Colors.white,
-                                                                                      fontSize: 15.sp,
-                                                                                      fontWeight: FontWeight.w500,
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },
-                                                          );
-                                                        },
-                                                        child: Column(
+                                                        SizedBox(width: 20.w),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: [
-                                                            Container(
-                                                              width: 40.w,
-                                                              height: 40.h,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: const Color(
-                                                                        0xffF0735A)
-                                                                    .withOpacity(
-                                                                        0.10),
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                              ),
-                                                              child: SvgPicture
-                                                                  .asset(
-                                                                "assets/checkout/deleteRes.svg",
-                                                                width: 15.w,
-                                                                height: 15.h,
-                                                                fit: BoxFit
-                                                                    .scaleDown,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                                height: 5.h),
                                                             Text(
-                                                              "İptal Et",
+                                                              "${snapshot.data[index].psycId.unvan} ${snapshot.data[index].psycId.name} ${snapshot.data[index].psycId.surName}",
                                                               style: TextStyle(
-                                                                color: const Color(
-                                                                    0xffF0735A),
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500,
-                                                                fontSize: 8.sp,
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        0.75),
                                                               ),
+                                                            ),
+                                                            SizedBox(
+                                                                height: 2.h),
+                                                            Text(
+                                                              snapshot
+                                                                  .data[index]
+                                                                  .psycId
+                                                                  .tag![0],
+                                                              style: TextStyle(
+                                                                fontSize: 10.sp,
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        0.35),
+                                                              ),
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    "assets/checkout/Union.svg"),
+                                                                SizedBox(
+                                                                    width: 5.w),
+                                                                Text(
+                                                                  formattedDate,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                              0.35),
+                                                                      fontSize:
+                                                                          12.sp,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600),
+                                                                ),
+                                                                SizedBox(
+                                                                    width: 5.w),
+                                                                Text(
+                                                                  "Saat: ",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                            0.35),
+                                                                    fontSize:
+                                                                        12.sp,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  snapshot
+                                                                      .data[
+                                                                          index]
+                                                                      .time,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                              0.35),
+                                                                      fontSize:
+                                                                          12.sp,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600),
+                                                                ),
+                                                              ],
                                                             )
                                                           ],
                                                         ),
-                                                      ),
-                                                    ],
+                                                        const Spacer(),
+                                                        GestureDetector(
+                                                          onTap: () async {
+                                                            showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .bottomCenter,
+                                                                  child:
+                                                                      IntrinsicHeight(
+                                                                    child:
+                                                                        Container(
+                                                                      width:
+                                                                          390.w,
+                                                                      height:
+                                                                          300.h,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(10)),
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.min,
+                                                                        children: [
+                                                                          SizedBox(
+                                                                              height: 40.h),
+                                                                          SvgPicture.asset(
+                                                                              "assets/checkout/Unionalert.svg"),
+                                                                          SizedBox(
+                                                                              height: 15.h),
+                                                                          Text(
+                                                                            "Randevuyu iptal etmek\n istediğinize emin misiniz?",
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: Colors.black.withOpacity(0.65),
+                                                                              fontSize: 16.sp,
+                                                                              decoration: TextDecoration.none,
+                                                                              fontWeight: FontWeight.w400,
+                                                                            ),
+                                                                            textAlign:
+                                                                                TextAlign.center,
+                                                                          ),
+                                                                          SizedBox(
+                                                                              height: 17.h),
+                                                                          SizedBox(
+                                                                              height: 15.h),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceEvenly,
+                                                                            children: [
+                                                                              GestureDetector(
+                                                                                onTap: () {
+                                                                                  Navigator.of(context).pop();
+                                                                                },
+                                                                                child: Container(
+                                                                                  width: 155.w,
+                                                                                  height: 45.h,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: const Color(0xffA950C9).withOpacity(0.10),
+                                                                                    borderRadius: BorderRadius.circular(10),
+                                                                                  ),
+                                                                                  child: Center(
+                                                                                    child: Text(
+                                                                                      "Vazgeçtim",
+                                                                                      style: TextStyle(
+                                                                                        decoration: TextDecoration.none,
+                                                                                        color: const Color(0xff6B337F),
+                                                                                        fontSize: 15.sp,
+                                                                                        fontWeight: FontWeight.w500,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              GestureDetector(
+                                                                                onTap: () async {
+                                                                                  String resId = snapshot.data[index].sId;
+                                                                                  var response = await http.delete(Uri.parse("$root/reservation/delete/${resId}"), headers: {
+                                                                                    "x-access-token": client.token.toString()
+                                                                                  });
+                                                                                  Navigator.of(context).pop();
+
+                                                                                  showDialog(
+                                                                                      context: context,
+                                                                                      builder: (BuildContext context) {
+                                                                                        return const CancelResSucces();
+                                                                                      });
+
+                                                                                  print(response.body);
+
+                                                                                  setState(() {});
+                                                                                },
+                                                                                child: Container(
+                                                                                  width: 155.w,
+                                                                                  height: 45.h,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: const Color(0xffA950C9),
+                                                                                    borderRadius: BorderRadius.circular(10),
+                                                                                  ),
+                                                                                  child: Center(
+                                                                                    child: Text(
+                                                                                      "İptal Et",
+                                                                                      style: TextStyle(
+                                                                                        decoration: TextDecoration.none,
+                                                                                        color: Colors.white,
+                                                                                        fontSize: 15.sp,
+                                                                                        fontWeight: FontWeight.w500,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
+                                                            );
+                                                          },
+                                                          child: Column(
+                                                            children: [
+                                                              Container(
+                                                                width: 40.w,
+                                                                height: 40.h,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: const Color(
+                                                                          0xffF0735A)
+                                                                      .withOpacity(
+                                                                          0.10),
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                ),
+                                                                child:
+                                                                    SvgPicture
+                                                                        .asset(
+                                                                  "assets/checkout/deleteRes.svg",
+                                                                  width: 15.w,
+                                                                  height: 15.h,
+                                                                  fit: BoxFit
+                                                                      .scaleDown,
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                  height: 5.h),
+                                                              Text(
+                                                                "İptal Et",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: const Color(
+                                                                      0xffF0735A),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize:
+                                                                      8.sp,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                                 const Divider(

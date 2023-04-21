@@ -25,6 +25,7 @@ import 'package:logos/screens/register/kvkkScreenView.dart';
 import 'package:logos/screens/register/registerScreen2View.dart';
 import 'package:logos/screens/register/registerScreenView.dart';
 import 'package:logos/screens/register/registerSuccessScreenView.dart';
+import 'package:logos/screens/reservation/active_reservations.dart';
 import 'package:logos/screens/reservation/calendar.dart';
 import 'package:logos/screens/reservation/checkout.dart';
 import 'package:logos/screens/reservation/completed_reservations.dart';
@@ -88,6 +89,7 @@ class MyApp extends StatelessWidget {
             ConnectingToPsyc.routeName: (ctx) => const ConnectingToPsyc(),
             AfterCallScreen.routeName: (ctx) => const AfterCallScreen(),
             AfterCallComment.routeName: (ctx) => const AfterCallComment(),
+            ActiveReservations.routeName: (ctx) => const ActiveReservations(),
           },
         );
       }),

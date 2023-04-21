@@ -45,7 +45,9 @@ class _PsycsScreenViewState extends State<PsycsScreenView>
         SizedBox(height: 14.h),
         PsycBio(provider: provider),
         SizedBox(height: 14.h),
-        const BioRow(),
+        BioRow(
+          psyc: provider,
+        ),
         SizedBox(height: 24.h),
         AboutSection(tabController: _tabController),
         SizedBox(height: 30.h),
@@ -192,8 +194,10 @@ class _AboutSectionState extends State<AboutSection> {
 }
 
 class BioRow extends StatelessWidget {
+  final Psychologists? psyc;
   const BioRow({
     Key? key,
+    @required this.psyc,
   }) : super(key: key);
 
   @override
@@ -202,8 +206,8 @@ class BioRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 45).r,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: const [
-          Spec(
+        children: [
+          const Spec(
             iconPath: 'assets/psyc_profile/hasta.svg',
             specTitle: 'Hasta',
             stats: '2.56K',
@@ -212,10 +216,10 @@ class BioRow extends StatelessWidget {
           Spec(
             iconPath: 'assets/psyc_profile/inceleme.svg',
             specTitle: 'İnceleme',
-            stats: '5.85K',
+            stats: psyc!.star!.length.toString(),
           ),
           Spacer(),
-          Spec(
+          const Spec(
             iconPath: 'assets/psyc_profile/tecrube.svg',
             specTitle: 'Tecrübe',
             stats: '8 Sene',
