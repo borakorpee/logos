@@ -11,12 +11,22 @@ import 'package:provider/provider.dart';
 import '../../models/all_psyc_model.dart';
 import '../profile/profile_page.dart';
 
-class AfterCallComment extends StatelessWidget {
+class AfterCallComment extends StatefulWidget {
   static const routeName = "/after-call-comment";
   const AfterCallComment({super.key});
 
   @override
+  State<AfterCallComment> createState() => _AfterCallCommentState();
+}
+
+class _AfterCallCommentState extends State<AfterCallComment> {
+  final TextEditingController controller = TextEditingController();
+  final GlobalKey _textFieldKey = GlobalKey();
+  double? psycRating;
+
+  @override
   Widget build(BuildContext context) {
+    print("asdas");
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final args = ModalRoute.of(context)?.settings.arguments
@@ -25,8 +35,6 @@ class AfterCallComment extends StatelessWidget {
     final fav = Provider.of<ClientProvider>(context);
     Psychologists? psyc = args["provider"];
     final clientt = Provider.of<ClientProvider>(context).get_client;
-    double psycRating = 3;
-    final TextEditingController controller = TextEditingController();
     return Scaffold(
       drawer: const CustomDrawer(),
       body: SingleChildScrollView(
@@ -99,6 +107,7 @@ class AfterCallComment extends StatelessWidget {
                   ),
                   onRatingUpdate: (rating) {
                     psycRating = rating;
+                    print(psycRating);
                   },
                 ),
                 Padding(
@@ -137,6 +146,7 @@ class AfterCallComment extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 10).r,
                           child: TextField(
+                            key: _textFieldKey,
                             expands: true,
                             textAlignVertical: TextAlignVertical.top,
                             controller: controller,
@@ -159,6 +169,7 @@ class AfterCallComment extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     print(psycRating);
+                    print(controller.text);
                     var commentResponse = await http.post(
                       Uri.parse("$root/comment/add"),
                       headers: {
@@ -177,7 +188,10 @@ class AfterCallComment extends StatelessWidget {
                       },
                       body: {
                         "psyc": psyc.sId,
-                        "star": psycRating.toString(),
+                        "star": psycRating == null
+                            ? 3.toString()
+                            : psycRating.toString()
+                          ..toString(),
                       },
                     );
                     Navigator.of(context).pop();

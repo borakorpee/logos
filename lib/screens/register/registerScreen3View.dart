@@ -1,7 +1,11 @@
 // ignore_for_file: file_names, non_constant_identifier_names, depend_on_referenced_packages
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:logos/screens/register/registerScreen2View.dart';
 import '../../components/customBackButton.dart';
@@ -18,6 +22,15 @@ class RegisterScreen3 extends StatefulWidget {
 
 class _RegisterScreen3State extends State<RegisterScreen3> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  File? _image;
+
+  Future<void> _getImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(pickedFile!.path);
+    });
+  }
 
   bool isJob_error = false;
   bool isDate_error = false;
@@ -319,6 +332,34 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                             },
                           ),
                         ),
+                        SizedBox(height: 10.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              onPressed: _getImage,
+                              icon: Icon(Icons.camera),
+                            ),
+                            Container(
+                              width: 100.w,
+                              height: 100.h,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.transparent,
+                              ),
+                              child: ClipOval(
+                                child: _image != null
+                                    ? Image.file(
+                                        _image!,
+                                        fit: BoxFit.cover,
+                                        width: 150.w,
+                                        height: 150.h,
+                                      )
+                                    : Container(),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -344,6 +385,7 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                                     'job': job_controller.text,
                                     'city': city_controller.text,
                                     'county': county_controller.text,
+                                    'image': _image,
                                   });
                             }
                           },

@@ -57,6 +57,9 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: ((context, child) {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+        ]);
         return MaterialApp(
           theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
           debugShowCheckedModeBanner: false,

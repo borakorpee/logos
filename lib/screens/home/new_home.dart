@@ -13,6 +13,7 @@ import 'package:logos/screens/home/favorites_page.dart';
 import 'package:logos/screens/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import '../../models/online_psycs_model.dart';
 import '../psyc_profile/psycs_profileScreenView.dart';
 
 class NewHomePage extends StatelessWidget {
@@ -26,203 +27,257 @@ class NewHomePage extends StatelessWidget {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       drawer: const CustomDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 75).r,
-        child: Column(
-          children: [
-            const HomeAppbar(),
-            SizedBox(height: 15.h),
-            const SearchBar(),
-            SizedBox(height: 15.h),
-            const HorizontalList(),
-            SizedBox(height: 15.h),
-            const RouteRow(),
-            Column(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 35)
-                          .r,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "En İyi Psikologlar",
-                      style: TextStyle(
-                        color: Colors.black.withOpacity(0.75),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15.sp,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 75).r,
+            child: Container(
+              child: Column(
+                children: [
+                  const HomeAppbar(),
+                  SizedBox(height: 15.h),
+                  const SearchBar(),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 15).r,
+                    child: const HorizontalList(),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 15).r,
+                    child: const RouteRow(),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: TopPsycs(func: getTopPsys(client.token.toString())),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 20, horizontal: 35)
+                            .r,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Müsait Psikologlar",
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.75),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15.sp,
+                        ),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 220.h,
-                  child: FutureBuilder(
-                    future: getTopPsys(client.token.toString()),
-                    initialData: [],
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else {
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 4,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 35, top: 5).r,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(
-                                      PsycsScreenView.routeName,
-                                      arguments: {
-                                        "id": snapshot.data[index].sId
-                                      });
-                                },
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      width: 170.w,
-                                      height: 210.h,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black.withOpacity(0.15),
-                                            blurRadius: 15,
+                FutureBuilder(
+                  future: getOnlinePsycs(client.token.toString()),
+                  initialData: const [],
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                    left: 36, right: 36, bottom: 15)
+                                .r,
+                            child: Container(
+                              width: 356.w,
+                              height: 175.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.15),
+                                      blurRadius: 15,
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Stack(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Container(
+                                          width: 175.w,
+                                          height: 145.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(10)),
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  "http://34.65.228.18:3001/uploads/${snapshot.data[index].image}"),
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ],
+                                        ),
                                       ),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            width: 170.w,
-                                            height: 110.h,
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                      left: 15, right: 15)
-                                                  .r,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "${snapshot.data[index].unvan} ${snapshot.data[index].name} ${snapshot.data[index].surName}",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 12.sp,
-                                                      color: Colors.black
-                                                          .withOpacity(0.75),
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    snapshot
-                                                        .data[index].tag![0],
-                                                    style: TextStyle(
-                                                        color: Colors.black
-                                                            .withOpacity(0.35),
-                                                        fontSize: 7.sp),
-                                                  ),
-                                                  SizedBox(height: 7.h),
-                                                  Row(
-                                                    children: [
-                                                      const StarIcon(),
-                                                      Text(
-                                                        " ${snapshot.data[index].starAvg![0].toString()} (${snapshot.data[index].star!.length} Oylama)",
-                                                        style: TextStyle(
-                                                          color: Colors.black
-                                                              .withOpacity(0.5),
-                                                          fontSize: 8.sp,
-                                                        ),
-                                                      ),
-                                                      const Spacer(),
-                                                      SizedBox(
-                                                        width: 10.w,
-                                                        height: 10.h,
-                                                        child: SvgPicture.asset(
-                                                            "assets/psyc_profile/tecrube.svg"),
-                                                      ),
-                                                      Text(
-                                                        "  5+ Tecrübe",
-                                                        style: TextStyle(
-                                                          color: Colors.black
-                                                              .withOpacity(0.5),
-                                                          fontSize: 6.sp,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(height: 7.h),
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        "249.90 ₺",
-                                                        style: TextStyle(
-                                                          color: Colors.black
-                                                              .withOpacity(
-                                                                  0.75),
-                                                          fontSize: 12.sp,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                      SizedBox(width: 5.w),
-                                                      Text(
-                                                        "Seans başı",
-                                                        style: TextStyle(
-                                                          color: Colors.black
-                                                              .withOpacity(0.5),
-                                                          fontSize: 6.sp,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ],
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                                top: 25, left: 15)
+                                            .r,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${snapshot.data[index].unvan} ${snapshot.data[index].name} ${snapshot.data[index].surName}",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12.sp,
+                                                color: Colors.black
+                                                    .withOpacity(0.75),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: 0,
-                                      child: Container(
-                                        width: 170.w,
-                                        height: 110.h,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                            image: AssetImage(
-                                              "assets/home/psyc_pic${index + 1}.png",
+                                            Text(
+                                              snapshot.data[index].tag![0],
+                                              style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.35),
+                                                  fontSize: 7.sp),
                                             ),
-                                            fit: BoxFit.fill,
+                                            SizedBox(height: 5.h),
+                                            Row(
+                                              children: [
+                                                const StarIcon(),
+                                                Text(
+                                                  " ${snapshot.data[index].starAvg![0].toString()} (${snapshot.data[index].star!.length} Oylama)",
+                                                  style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    fontSize: 8.sp,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 5.h),
+                                            Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: 10.w,
+                                                  height: 10.h,
+                                                  child: SvgPicture.asset(
+                                                      "assets/psyc_profile/tecrube.svg"),
+                                                ),
+                                                Text(
+                                                  "  5+ Tecrübe",
+                                                  style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    fontSize: 8.sp,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 5.h),
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  "249.90 ₺",
+                                                  style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.75),
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                SizedBox(width: 5.w),
+                                                Text(
+                                                  "Seans başı",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    fontSize: 7.sp,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Positioned(
+                                    left: 10.w,
+                                    bottom: 55.h,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xff53C797),
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: FittedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 2, horizontal: 10),
+                                          child: Text(
+                                            "Müsait",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 7.sp,
+                                                fontWeight: FontWeight.w500),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    left: 0,
+                                    bottom: 0,
+                                    child: Container(
+                                      height: 35.h,
+                                      decoration: const BoxDecoration(
+                                        color: Color(0xffA950C9),
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(10),
+                                          bottomRight: Radius.circular(10),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "RANDEVU AL",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(width: 10.w),
+                                          SvgPicture.asset(
+                                              "assets/home/goto.svg"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            );
-                          },
-                        );
-                      }
-                    },
-                  ),
+                            ),
+                          );
+                        },
+                        childCount: snapshot.data.length,
+                      ),
+                    );
+                  },
                 ),
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -237,6 +292,208 @@ class NewHomePage extends StatelessWidget {
     );
     topPsycs = top_psyc_model.fromJson(jsonDecode(response.body));
     return topPsycs.result!;
+  }
+
+  Future<List<Psychologist>> getOnlinePsycs(String clinetToken) async {
+    Online_Psycs_Model online_psycs = Online_Psycs_Model(
+      status: null,
+      message: "",
+      psychologist: [],
+    );
+
+    var response = await http.get(
+      Uri.parse("$root/psyc/active/find"),
+      headers: {
+        "x-access-token": clinetToken,
+      },
+    );
+    online_psycs = Online_Psycs_Model.fromJson(jsonDecode(response.body));
+    return online_psycs.psychologist!;
+  }
+}
+
+class TopPsycs extends StatelessWidget {
+  final Future<List<Result>> func;
+  const TopPsycs({
+    Key? key,
+    required this.func,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 35).r,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "En İyi Psikologlar",
+              style: TextStyle(
+                color: Colors.black.withOpacity(0.75),
+                fontWeight: FontWeight.w500,
+                fontSize: 15.sp,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: double.infinity,
+          height: 220.h,
+          child: FutureBuilder(
+            future: func,
+            initialData: const [],
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 4,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 35, top: 5).r,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                              PsycsScreenView.routeName,
+                              arguments: {"id": snapshot.data[index].sId});
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 210.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.15),
+                                    blurRadius: 15,
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    width: 170.w,
+                                    height: 110.h,
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                              left: 15, right: 15)
+                                          .r,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${snapshot.data[index].unvan} ${snapshot.data[index].name} ${snapshot.data[index].surName}",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12.sp,
+                                              color: Colors.black
+                                                  .withOpacity(0.75),
+                                            ),
+                                          ),
+                                          Text(
+                                            snapshot.data[index].tag![0],
+                                            style: TextStyle(
+                                                color: Colors.black
+                                                    .withOpacity(0.35),
+                                                fontSize: 7.sp),
+                                          ),
+                                          SizedBox(height: 7.h),
+                                          Row(
+                                            children: [
+                                              const StarIcon(),
+                                              Text(
+                                                " ${snapshot.data[index].starAvg![0].toString()} (${snapshot.data[index].star!.length} Oylama)",
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  fontSize: 8.sp,
+                                                ),
+                                              ),
+                                              const Spacer(),
+                                              SizedBox(
+                                                width: 10.w,
+                                                height: 10.h,
+                                                child: SvgPicture.asset(
+                                                    "assets/psyc_profile/tecrube.svg"),
+                                              ),
+                                              Text(
+                                                "  5+ Tecrübe",
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  fontSize: 6.sp,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 7.h),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "249.90 ₺",
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.75),
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              SizedBox(width: 5.w),
+                                              Text(
+                                                "Seans başı",
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  fontSize: 6.sp,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              top: 0,
+                              child: Container(
+                                width: 170.w,
+                                height: 110.h,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      "assets/home/psyc_pic${index + 1}.png",
+                                    ),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        ),
+      ],
+    );
   }
 }
 

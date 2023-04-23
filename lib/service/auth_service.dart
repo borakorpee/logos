@@ -28,7 +28,7 @@ class AuthService {
 
   static Future registerClient(
       Map<String, dynamic> args, String pass, String mail) async {
-    var response = await http.post(Uri.parse('$root/client/add'), body: {
+    /* var response = await http.post(Uri.parse('$root/client/add'), body: {
       'name': args["name"],
       'surname': args["surname"],
       'pass': pass,
@@ -39,7 +39,25 @@ class AuthService {
       'job': args["job"],
       'sex': args["sex"],
     });
-    return jsonDecode(response.body);
+    return jsonDecode(response.body);*/
+    var formData = http.MultipartRequest('POST', Uri.parse('$root/client/add'));
+    formData.fields.addAll({
+      'name': args["name"],
+      'surname': args["surname"],
+      'pass': pass,
+      'email': mail,
+      'birth': args["birth"],
+      'city': args["city"],
+      'county': args["county"],
+      'job': args["job"],
+      'sex': args["sex"],
+    });
+    var stream = http.ByteStream(args["image"].openRead());
+    var length = await args["image"].length();
+    final multipartFile = http.MultipartFile('image', stream, length,
+        filename: args["image"].path.split('/').last);
+    formData.files.add(multipartFile);
+    var response = await formData.send();
   }
 
   static Future login(String mail, String pass, BuildContext context) async {

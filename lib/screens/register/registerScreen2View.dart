@@ -82,6 +82,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
             Column(
               children: <Widget>[
                 CustomBackButton(context),
+                Text(args["image"].toString()),
                 Padding(
                   padding: EdgeInsets.only(
                       left: width * 0.110, right: width * 0.110),
@@ -258,10 +259,8 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                                       AuthService.registerClient(
                                               args, password1.text, mail.text)
                                           .then((data) {
-                                        if (data["status"] == true) {
-                                          Navigator.of(context).pushNamed(
-                                              RegisterSuccess.routeName);
-                                        }
+                                        Navigator.of(context).pushNamed(
+                                            RegisterSuccess.routeName);
                                       });
                                     }
                                   });
