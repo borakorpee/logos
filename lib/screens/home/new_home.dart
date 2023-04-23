@@ -13,6 +13,7 @@ import 'package:logos/screens/home/favorites_page.dart';
 import 'package:logos/screens/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:ripple_wave/ripple_wave.dart';
 import '../../models/online_psycs_model.dart';
 import '../psyc_profile/psycs_profileScreenView.dart';
 
@@ -25,6 +26,23 @@ class NewHomePage extends StatelessWidget {
 
     final psyc = Provider.of<All_Psychologists_Provider>(context).psyc_list!;
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      floatingActionButton: Container(
+        width: 110.w,
+        height: 110.h,
+        child: RippleWave(
+          repeat: true,
+          color: const Color(0xff8C10B8),
+          childTween: Tween(begin: 1, end: 1),
+          child: SizedBox(
+              width: 40.w,
+              height: 40.h,
+              child: SvgPicture.asset(
+                "assets/home/logbot.svg",
+              )),
+        ),
+      ),
       drawerEnableOpenDragGesture: false,
       drawer: const CustomDrawer(),
       body: Column(
@@ -151,7 +169,7 @@ class NewHomePage extends StatelessWidget {
                                               children: [
                                                 const StarIcon(),
                                                 Text(
-                                                  " ${snapshot.data[index].starAvg![0].toString()} (${snapshot.data[index].star!.length} Oylama)",
+                                                  " ${snapshot.data[index].starAvg.length == 0 ? "0" : snapshot.data[index].starAvg[0]} (${snapshot.data[index].star!.length} Oylama)",
                                                   style: TextStyle(
                                                     color: Colors.black
                                                         .withOpacity(0.5),
@@ -308,6 +326,7 @@ class NewHomePage extends StatelessWidget {
       },
     );
     online_psycs = Online_Psycs_Model.fromJson(jsonDecode(response.body));
+
     return online_psycs.psychologist!;
   }
 }
@@ -412,7 +431,7 @@ class TopPsycs extends StatelessWidget {
                                             children: [
                                               const StarIcon(),
                                               Text(
-                                                " ${snapshot.data[index].starAvg![0].toString()} (${snapshot.data[index].star!.length} Oylama)",
+                                                " ${snapshot.data[index].starAvg[0].toString()} (${snapshot.data[index].star!.length} Oylama)",
                                                 style: TextStyle(
                                                   color: Colors.black
                                                       .withOpacity(0.5),
