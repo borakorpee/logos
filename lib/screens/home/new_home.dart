@@ -134,7 +134,7 @@ class NewHomePage extends StatelessWidget {
                                                         Radius.circular(10)),
                                             image: DecorationImage(
                                               image: NetworkImage(
-                                                  "http://34.65.228.18:3001/uploads/${snapshot.data[index].image}"),
+                                                  "$imgroot/uploads/${snapshot.data[index].image}"),
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -493,8 +493,8 @@ class TopPsycs extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
-                                    image: AssetImage(
-                                      "assets/home/psyc_pic${index + 1}.png",
+                                    image: NetworkImage(
+                                      "$imgroot/uploads/${snapshot.data[index].image}",
                                     ),
                                     fit: BoxFit.fill,
                                   ),

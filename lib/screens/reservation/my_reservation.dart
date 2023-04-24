@@ -469,6 +469,7 @@ class _MyReservationsPageState extends State<MyReservationsPage>
         headers: {
           "x-access-token": cltoken.toString(),
         });
+
     before_res = ReservationsModel.fromJson(jsonDecode(response.body));
     return before_res.reservation!;
   }
@@ -485,7 +486,6 @@ class _MyReservationsPageState extends State<MyReservationsPage>
         headers: {
           "x-access-token": cltoken.toString(),
         });
-    print(response.body);
     before_res = ReservationsModel.fromJson(jsonDecode(response.body));
     return before_res.reservation!;
   }

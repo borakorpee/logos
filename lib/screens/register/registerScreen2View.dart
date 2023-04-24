@@ -82,7 +82,6 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
             Column(
               children: <Widget>[
                 CustomBackButton(context),
-                Text(args["image"].toString()),
                 Padding(
                   padding: EdgeInsets.only(
                       left: width * 0.110, right: width * 0.110),

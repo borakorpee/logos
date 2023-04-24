@@ -203,20 +203,6 @@ class _CustomCalendarState extends State<CustomCalendar> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(daySpecificTimeList.toString()),
-                              Text(
-                                day ??
-                                    DateFormat('dd.MM.yyyy')
-                                        .format(DateTime.now())
-                                        .toString(),
-                              ),
-                              SizedBox(width: 5.w),
-                              Text(saat),
-                            ],
-                          ),
-                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               TimeButton(

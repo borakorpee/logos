@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/models/all_psyc_model.dart';
+import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/psyc_profile/vide_call.dart';
 
 class ConnectingToPsyc extends StatefulWidget {
@@ -36,10 +37,9 @@ class _ConnectingToPsycState extends State<ConnectingToPsyc> {
     Psychologists? psyc = args["provider"];
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(
-                "https://www.mecgale.com/wp-content/uploads/2017/08/dummy-profile.png"),
+            image: NetworkImage("$imgroot/uploads/${psyc!.image}"),
             fit: BoxFit.cover,
           ),
         ),
@@ -58,12 +58,12 @@ class _ConnectingToPsycState extends State<ConnectingToPsyc> {
                           Container(
                             width: 66.w,
                             height: 66.h,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.red,
+                              color: Colors.transparent,
                               image: DecorationImage(
                                 image: NetworkImage(
-                                    "https://www.mecgale.com/wp-content/uploads/2017/08/dummy-profile.png"),
+                                    "$imgroot/uploads/${psyc.image}"),
                               ),
                             ),
                           ),
@@ -75,7 +75,7 @@ class _ConnectingToPsycState extends State<ConnectingToPsyc> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${psyc!.unvan} ${psyc.name} ${psyc.surName}",
+                                "${psyc.unvan} ${psyc.name} ${psyc.surName}",
                                 style: GoogleFonts.montserrat(
                                   fontSize: 25.sp,
                                   color: Colors.white,

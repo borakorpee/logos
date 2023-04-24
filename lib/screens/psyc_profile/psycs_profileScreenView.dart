@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logos/models/all_psyc_model.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
+import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/psyc_profile/connecting.dart';
 import 'package:logos/screens/psyc_profile/vide_call.dart';
 import 'package:logos/screens/reservation/calendar.dart';
@@ -337,12 +338,12 @@ class PsycPic extends StatelessWidget {
       child: Container(
         width: 135.w,
         height: 135.h,
-        decoration: const BoxDecoration(
-          color: Colors.red,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
           shape: BoxShape.circle,
           image: DecorationImage(
-            image: NetworkImage(
-                "https://www.mecgale.com/wp-content/uploads/2017/08/dummy-profile.png"),
+            image: NetworkImage("$imgroot/uploads/${provider.image}"),
+            fit: BoxFit.contain,
           ),
         ),
       ),

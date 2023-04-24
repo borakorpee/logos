@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logos/models/all_psyc_model.dart';
+import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/psyc_profile/after_call_comment.dart';
 
 class AfterCallScreen extends StatelessWidget {
@@ -32,11 +33,11 @@ class AfterCallScreen extends StatelessWidget {
                 Container(
                   width: 200.w,
                   height: 200.h,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: NetworkImage(
-                              "https://www.mecgale.com/wp-content/uploads/2017/08/dummy-profile.png"))),
+                          image:
+                              NetworkImage("$imgroot/uploads/${psyc!.image}"))),
                 ),
                 SizedBox(height: 15.h),
                 Text(

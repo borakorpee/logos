@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'package:agora_uikit/agora_uikit.dart';
+import 'package:agora_uikit/controllers/rtc_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logos/screens/psyc_profile/constant.dart';
 import 'package:logos/screens/psyc_profile/end_call.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-
+import 'package:speech_to_text/speech_to_text.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
 import '../../models/all_psyc_model.dart';
 
 class VideCall extends StatefulWidget {
@@ -22,6 +25,7 @@ class _VideCallState extends State<VideCall> {
   double _left = 0;
   DateTime? startTime;
   String channelName = "wdj";
+
   final AgoraClient client = AgoraClient(
     agoraConnectionData: AgoraConnectionData(
       appId: AGORA_appId,
@@ -35,7 +39,9 @@ class _VideCallState extends State<VideCall> {
   void initState() {
     super.initState();
     // Set up an instance of Agora engine
-    setupVideoSDKEngine();
+    setupVideoSDKEngine().then((value) {
+      join();
+    });
     startTime = DateTime.now();
   }
 
@@ -51,14 +57,7 @@ class _VideCallState extends State<VideCall> {
   bool _isJoined = false; // Indicates if the local user has joined the channel
   late RtcEngine agoraEngine; // Agora engine instance
 
-  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
-      GlobalKey<ScaffoldMessengerState>(); // Global key to access the scaffold
-
-  showMessage(String message) {
-    scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
-      content: Text(message),
-    ));
-  }
+  bool mutemic = false;
 
 // Build UI
   @override
@@ -67,21 +66,7 @@ class _VideCallState extends State<VideCall> {
         as Map<String, Psychologists?>;
     final Psychologists? psyc = args["provider"];
     return MaterialApp(
-      scaffoldMessengerKey: scaffoldMessengerKey,
       home: Scaffold(
-        appBar: AppBar(
-          title: Text(psyc!.name.toString() + psyc.surName.toString()),
-          actions: [
-            ElevatedButton(
-              onPressed: _isJoined ? null : () => {join()},
-              child: const Text("Join"),
-            ),
-            ElevatedButton(
-              onPressed: _isJoined ? () => {leave(psyc)} : null,
-              child: const Text("Leave"),
-            ),
-          ],
-        ),
         body: Stack(
           children: [
             Container(
@@ -100,18 +85,170 @@ class _VideCallState extends State<VideCall> {
                   });
                 },
                 child: Container(
-                  width: 150.w,
-                  height: 150.h,
+                  clipBehavior: Clip.hardEdge,
+                  width: 140.w,
+                  height: 205.h,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
                   child: _localPreview(),
                 ),
               ),
             ),
-            AgoraVideoButtons(
-              disableVideoButtonChild: ElevatedButton(
-                onPressed: _isJoined ? () => {leave(psyc)} : null,
-                child: const Text("Leave"),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: const Color(0xff1E1E1E).withOpacity(0.5),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    )),
+                width: double.infinity,
+                height: 185.h,
+                child: AgoraVideoButtons(
+                  buttonAlignment: Alignment.bottomCenter,
+                  disableVideoButtonChild: GestureDetector(
+                    onTap: () {
+                      toggleCamera(
+                        sessionController: client.sessionController,
+                      );
+                      setState(() {});
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 58.w,
+                          height: 58.h,
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.16),
+                              shape: BoxShape.circle),
+                          child: SizedBox(
+                              width: 20.w,
+                              height: 20.h,
+                              child: client.sessionController.value
+                                      .isLocalVideoDisabled
+                                  ? SvgPicture.asset(
+                                      "assets/videocall/closecam.svg",
+                                      fit: BoxFit.scaleDown,
+                                    )
+                                  : SvgPicture.asset(
+                                      "assets/videocall/opencam.svg",
+                                      fit: BoxFit.scaleDown,
+                                    )),
+                        ),
+                        Text(
+                          "Kamerayı Kapat",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                  ),
+                  muteButtonChild: GestureDetector(
+                    onTap: () {
+                      toggleMute(
+                        sessionController: client.sessionController,
+                      );
+                      setState(() {});
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 58.w,
+                          height: 58.h,
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.16),
+                              shape: BoxShape.circle),
+                          child: SizedBox(
+                              width: 20.w,
+                              height: 20.h,
+                              child: client
+                                      .sessionController.value.isLocalUserMuted
+                                  ? SvgPicture.asset(
+                                      "assets/videocall/mutemic.svg",
+                                      fit: BoxFit.scaleDown,
+                                    )
+                                  : SvgPicture.asset(
+                                      "assets/videocall/unmute.svg",
+                                      fit: BoxFit.scaleDown,
+                                    )),
+                        ),
+                        Text(
+                          "Sesi Kapat",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                  ),
+                  switchCameraButtonChild: GestureDetector(
+                    onTap: () {
+                      switchCamera(sessionController: client.sessionController);
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 58.w,
+                          height: 58.h,
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.16),
+                              shape: BoxShape.circle),
+                          child: SizedBox(
+                            width: 20.w,
+                            height: 20.h,
+                            child: SvgPicture.asset(
+                              "assets/videocall/switch_Cam.svg",
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "Kamerayı Çevir",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                  ),
+                  disconnectButtonChild: GestureDetector(
+                    onTap: () {
+                      leave(psyc);
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 58.w,
+                          height: 58.h,
+                          decoration: const BoxDecoration(
+                              color: Color(0xffEB5545), shape: BoxShape.circle),
+                          child: SizedBox(
+                            width: 20.w,
+                            height: 20.h,
+                            child: SvgPicture.asset(
+                              "assets/videocall/Vector.svg",
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "Kapat",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                  ),
+                  client: client,
+                ),
               ),
-              client: client,
             ),
           ],
         ),
@@ -132,7 +269,6 @@ class _VideCallState extends State<VideCall> {
       "endtime": endTime,
       "provider": psyc,
     });
-    super.dispose();
 
     await agoraEngine.leaveChannel();
     agoraEngine.release();
@@ -208,21 +344,17 @@ class _VideCallState extends State<VideCall> {
     agoraEngine.registerEventHandler(
       RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-          showMessage(
-              "Local user uid:${connection.localUid} joined the channel");
           setState(() {
             _isJoined = true;
           });
         },
         onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-          showMessage("Remote user uid:$remoteUid joined the channel");
           setState(() {
             _remoteUid = remoteUid;
           });
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
             UserOfflineReasonType reason) {
-          showMessage("Remote user uid:$remoteUid left the channel");
           setState(() {
             _remoteUid = null;
           });
@@ -231,71 +363,3 @@ class _VideCallState extends State<VideCall> {
     );
   }
 }
-
-
-/*ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-          children: [
-            // Container for the local video
-            Container(
-              height: 240,
-              decoration: BoxDecoration(border: Border.all()),
-              child: Center(child: _localPreview()),
-            ),
-
-            const SizedBox(height: 10),
-            //Container for the Remote video
-            Container(
-              height: 240,
-              decoration: BoxDecoration(border: Border.all()),
-              child: Center(child: _remoteVideo()),
-            ),
-            // Button Row
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _isJoined ? null : () => {join()},
-                    child: const Text("Join"),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _isJoined ? () => {leave()} : null,
-                    child: const Text("Leave"),
-                  ),
-                ),
-              ],
-            ),
-            // Button Row ends
-
-            GestureDetector(
-              onTap: () async {
-                DateTime endTime = DateTime.now();
-
-                Navigator.of(context)
-                    .popAndPushNamed(AfterCallScreen.routeName, arguments: {
-                  "starttime": startTime,
-                  "endtime": endTime,
-                  "provider": psyc,
-                });
-                super.dispose();
-
-                await agoraEngine.leaveChannel();
-                agoraEngine.release();
-              },
-              child: Container(
-                width: 100.w,
-                height: 50.h,
-                color: Colors.red,
-                child: const Center(
-                  child: Text("bitir"),
-                ),
-              ),
-            )
-          ],
-        ),*/
-
-
-        

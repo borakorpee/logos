@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/home/new_home.dart';
 import 'package:logos/screens/profile/profile_page.dart';
 import 'package:logos/screens/psyc_profile/psycs_profileScreenView.dart';
@@ -77,10 +78,10 @@ class PsycRow extends StatelessWidget {
               child: Container(
                 width: 70.w,
                 height: 70.h,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                      image: AssetImage("assets/home/dummypp.png"),
+                      image: NetworkImage("$imgroot/uploads/${psyc.image}"),
                       fit: BoxFit.contain),
                 ),
               ),
@@ -114,7 +115,7 @@ class PsycRow extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      "4.6 (1526 Oylama)",
+                      "${psyc.starAvg!.length == 0 ? "0" : psyc.starAvg![0]} (${psyc.star!.length} Oylama)",
                       style: TextStyle(
                         fontSize: 8.sp,
                         color: Colors.black.withOpacity(0.5),

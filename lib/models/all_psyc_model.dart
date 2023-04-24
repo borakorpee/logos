@@ -35,14 +35,16 @@ class Psychologists {
   String? pass;
   String? eMail;
   List<String>? tag;
+  String? image;
   String? unvan;
-  String? about;
-  String? createAt;
-  int? iV;
-  List<int>? star;
-  String? updateAt;
-  List<num>? starAvg;
   String? tecrube;
+  List<int>? star;
+  List<int>? starAvg;
+  bool? active;
+  bool? accActive;
+  String? createAt;
+  String? updateAt;
+  int? iV;
 
   Psychologists(
       {this.sId,
@@ -51,14 +53,16 @@ class Psychologists {
       this.pass,
       this.eMail,
       this.tag,
+      this.image,
       this.unvan,
-      this.about,
-      this.createAt,
-      this.iV,
+      this.tecrube,
       this.star,
-      this.updateAt,
       this.starAvg,
-      this.tecrube});
+      this.active,
+      this.accActive,
+      this.createAt,
+      this.updateAt,
+      this.iV});
 
   Psychologists.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -67,14 +71,16 @@ class Psychologists {
     pass = json['pass'];
     eMail = json['eMail'];
     tag = json['tag'].cast<String>();
+    image = json['image'];
     unvan = json['unvan'];
-    about = json['about'];
-    createAt = json['createAt'];
-    iV = json['__v'];
-    star = json['star'].cast<int>();
-    updateAt = json['updateAt'];
-    starAvg = json['starAvg'].cast<num>();
     tecrube = json['tecrube'];
+    star = json['star'].cast<int>();
+    starAvg = json['starAvg'].cast<int>();
+    active = json['active'];
+    accActive = json['accActive'];
+    createAt = json['createAt'];
+    updateAt = json['updateAt'];
+    iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
@@ -85,14 +91,16 @@ class Psychologists {
     data['pass'] = this.pass;
     data['eMail'] = this.eMail;
     data['tag'] = this.tag;
+    data['image'] = this.image;
     data['unvan'] = this.unvan;
-    data['about'] = this.about;
-    data['createAt'] = this.createAt;
-    data['__v'] = this.iV;
-    data['star'] = this.star;
-    data['updateAt'] = this.updateAt;
-    data['starAvg'] = this.starAvg.toString();
     data['tecrube'] = this.tecrube;
+    data['star'] = this.star;
+    data['starAvg'] = this.starAvg;
+    data['active'] = this.active;
+    data['accActive'] = this.accActive;
+    data['createAt'] = this.createAt;
+    data['updateAt'] = this.updateAt;
+    data['__v'] = this.iV;
     return data;
   }
 }
