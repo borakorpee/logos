@@ -50,6 +50,7 @@ dependencies:
   ripple_wave: ^0.0.2
   intl: ^0.18.0
   speech_to_text: ^6.1.1
+  animated_text_kit: ^4.2.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

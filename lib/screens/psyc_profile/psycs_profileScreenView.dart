@@ -7,6 +7,7 @@ import 'package:logos/models/all_psyc_model.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/psyc_profile/connecting.dart';
+import 'package:logos/screens/psyc_profile/s.dart';
 import 'package:logos/screens/psyc_profile/vide_call.dart';
 import 'package:logos/screens/reservation/calendar.dart';
 import 'package:provider/provider.dart';
@@ -38,68 +39,78 @@ class _PsycsScreenViewState extends State<PsycsScreenView>
     final provider =
         Provider.of<All_Psychologists_Provider>(context).findById(args["id"]);
     return Scaffold(
-        body: Column(
-      children: [
-        const PsycAppbar(),
-        SizedBox(height: 25.h),
-        PsycPic(provider: provider),
-        SizedBox(height: 14.h),
-        PsycBio(provider: provider),
-        SizedBox(height: 14.h),
-        BioRow(
-          psyc: provider,
-        ),
-        SizedBox(height: 24.h),
-        AboutSection(tabController: _tabController),
-        SizedBox(height: 30.h),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context)
-                .pushNamed(ReservationCalendar.routeName, arguments: {
-              "id": provider.sId,
-            });
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 36).r,
-            child: Row(
-              children: [
-                Container(
-                  width: 273.w,
-                  height: 54.h,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffA950C9),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Randevu Ayarla",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13.sp,
+        body: SingleChildScrollView(
+      child: Column(
+        children: [
+          const PsycAppbar(),
+          SizedBox(height: 25.h),
+          PsycPic(provider: provider),
+          SizedBox(height: 14.h),
+          PsycBio(provider: provider),
+          SizedBox(height: 14.h),
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SpeechSampleApp()),
+                );
+              },
+              icon: Icon(Icons.abc)),
+          BioRow(
+            psyc: provider,
+          ),
+          SizedBox(height: 24.h),
+          AboutSection(tabController: _tabController),
+          SizedBox(height: 30.h),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .pushNamed(ReservationCalendar.routeName, arguments: {
+                "id": provider.sId,
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 36).r,
+              child: Row(
+                children: [
+                  Container(
+                    width: 273.w,
+                    height: 54.h,
+                    decoration: BoxDecoration(
+                      color: const Color(0xffA950C9),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Randevu Ayarla",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13.sp,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Spacer(),
-                Container(
-                  width: 70.w,
-                  height: 50.h,
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: SvgPicture.asset(
-                    "assets/psyc_profile/message.svg",
-                    width: 10.w,
-                    height: 10.h,
-                    fit: BoxFit.none,
+                  Spacer(),
+                  Container(
+                    width: 70.w,
+                    height: 50.h,
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: SvgPicture.asset(
+                      "assets/psyc_profile/message.svg",
+                      width: 10.w,
+                      height: 10.h,
+                      fit: BoxFit.none,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     ));
   }
 }

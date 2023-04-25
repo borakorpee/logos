@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/providers/client_provider.dart';
+import 'package:logos/screens/chatbot/chatbot.dart';
 import 'package:logos/screens/forgot_pass/forgotpassScreenView.dart';
 import 'package:logos/screens/forgot_pass/newpassScreenView.dart';
 import 'package:logos/screens/forgot_pass/otpScreenView.dart';
@@ -93,6 +94,7 @@ class MyApp extends StatelessWidget {
             AfterCallScreen.routeName: (ctx) => const AfterCallScreen(),
             AfterCallComment.routeName: (ctx) => const AfterCallComment(),
             ActiveReservations.routeName: (ctx) => const ActiveReservations(),
+            LogBotScreen.routeName: (ctx) => const LogBotScreen(),
           },
         );
       }),

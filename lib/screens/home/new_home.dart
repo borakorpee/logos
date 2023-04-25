@@ -8,6 +8,7 @@ import 'package:logos/models/all_psyc_model.dart';
 import 'package:logos/models/top_psyc_model.dart';
 import 'package:logos/providers/all_psyc_provider.dart';
 import 'package:logos/providers/client_provider.dart';
+import 'package:logos/screens/chatbot/chatbot.dart';
 import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/home/favorites_page.dart';
 import 'package:logos/screens/profile/profile_page.dart';
@@ -28,19 +29,24 @@ class NewHomePage extends StatelessWidget {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButton: Container(
-        width: 110.w,
-        height: 110.h,
-        child: RippleWave(
-          repeat: true,
-          color: const Color(0xff8C10B8),
-          childTween: Tween(begin: 1, end: 1),
-          child: SizedBox(
-              width: 40.w,
-              height: 40.h,
-              child: SvgPicture.asset(
-                "assets/home/logbot.svg",
-              )),
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed(LogBotScreen.routeName);
+        },
+        child: SizedBox(
+          width: 110.w,
+          height: 110.h,
+          child: RippleWave(
+            repeat: true,
+            color: const Color(0xff8C10B8),
+            childTween: Tween(begin: 1, end: 1),
+            child: SizedBox(
+                width: 40.w,
+                height: 40.h,
+                child: SvgPicture.asset(
+                  "assets/home/logbot.svg",
+                )),
+          ),
         ),
       ),
       drawerEnableOpenDragGesture: false,

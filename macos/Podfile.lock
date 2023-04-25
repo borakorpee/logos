@@ -32,12 +32,15 @@ PODS:
     - FlutterMacOS
   - path_provider_macos (0.0.1):
     - FlutterMacOS
+  - speech_to_text_macos (0.0.1):
+    - FlutterMacOS
 
 DEPENDENCIES:
   - agora_rtc_engine (from `Flutter/ephemeral/.symlinks/plugins/agora_rtc_engine/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - iris_event (from `Flutter/ephemeral/.symlinks/plugins/iris_event/macos`)
   - path_provider_macos (from `Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos`)
+  - speech_to_text_macos (from `Flutter/ephemeral/.symlinks/plugins/speech_to_text_macos/macos`)
 
 SPEC REPOS:
   trunk:
@@ -54,6 +57,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/iris_event/macos
   path_provider_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos
+  speech_to_text_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/speech_to_text_macos/macos
 
 SPEC CHECKSUMS:
   agora_rtc_engine: 66e8168cc1facc5fffd751021e80fee9031a7f33
@@ -63,6 +68,7 @@ SPEC CHECKSUMS:
   FlutterMacOS: ae6af50a8ea7d6103d888583d46bd8328a7e9811
   iris_event: f12d7c4b6ee729c4dbd394cd374d9ddb4db56ad4
   path_provider_macos: 3c0c3b4b0d4a76d2bf989a913c2de869c5641a19
+  speech_to_text_macos: ae04291713998dede24b85d3b50bd8fedcbfb565
 
 PODFILE CHECKSUM: 6eac6b3292e5142cfc23bdeb71848a40ec51c14c
 

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 import 'package:agora_uikit/agora_uikit.dart';
 import 'package:agora_uikit/controllers/rtc_buttons.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +10,9 @@ import 'package:logos/screens/psyc_profile/constant.dart';
 import 'package:logos/screens/psyc_profile/end_call.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import '../../models/all_psyc_model.dart';
+import 'package:http/http.dart' as http;
 
 class VideCall extends StatefulWidget {
   static const routeName = "/video-call";
@@ -21,11 +23,14 @@ class VideCall extends StatefulWidget {
 }
 
 class _VideCallState extends State<VideCall> {
+  String kelimeler = '';
+  String lastsent = "";
+  final SpeechToText speech = SpeechToText();
+  late Timer _timer;
   double _top = 0;
   double _left = 0;
   DateTime? startTime;
   String channelName = "wdj";
-
   final AgoraClient client = AgoraClient(
     agoraConnectionData: AgoraConnectionData(
       appId: AGORA_appId,
@@ -38,11 +43,80 @@ class _VideCallState extends State<VideCall> {
   @override
   void initState() {
     super.initState();
-    // Set up an instance of Agora engine
+
     setupVideoSDKEngine().then((value) {
       join();
     });
+    Timer(Duration(seconds: 3), () => initSpeechState());
+
     startTime = DateTime.now();
+  }
+
+  void startListening() {
+    log("başla");
+
+    speech.listen(
+      onResult: resultListener,
+      listenFor: Duration(seconds: 65),
+      partialResults: true,
+      localeId: 'tr-TR',
+      listenMode: ListenMode.confirmation,
+      onDevice: true,
+    );
+  }
+
+  Future<void> getResponse(String text) async {
+    String openaiUrl = 'https://api.openai.com/v1/chat/completions';
+    String openaiKey = OPENAI_KEY;
+
+    Map<String, dynamic> requestBody = {
+      'model': 'gpt-4',
+      "messages": [
+        {
+          "role": "user",
+          "content":
+              """Cümledeki kelimeler ve fillerin sadece köklerini   içerisinde string olarak ve "," işareti ile ayrılmış şekilde kök1,kök2 şeklinde yaz eğer kökü bulamadıysan "bulunamadı" mısın: $text """
+        }
+      ]
+    };
+    var response = await http.post(
+      Uri.parse(openaiUrl),
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'Bearer $openaiKey'
+      },
+      body: jsonEncode(requestBody),
+    );
+    var data = json.decode(utf8.decode(response.bodyBytes));
+    log(data['choices'][0]["message"]["content"]);
+  }
+
+  Future<void> initSpeechState() async {
+    var hasSpeech = await speech
+        .initialize()
+        .then((value) => startListening())
+        .then(
+          (value) => _timer = Timer.periodic(
+            Duration(seconds: 5),
+            (timer) {
+              String sentence1 = lastsent;
+              String sentence2 = speech.lastRecognizedWords;
+
+              if (lastsent.length < speech.lastRecognizedWords.length) {
+                String difference = sentence2.substring(sentence1.length);
+                log(difference);
+                // getResponse(difference);
+                lastsent = speech.lastRecognizedWords;
+              } else if (lastsent.length > speech.lastRecognizedWords.length) {
+                // getResponse(speech.lastRecognizedWords);
+                log(speech.lastRecognizedWords);
+                lastsent = speech.lastRecognizedWords;
+              } else if (lastsent.length == speech.lastRecognizedWords.length) {
+                log(speech.lastRecognizedWords);
+              }
+            },
+          ),
+        );
   }
 
   // Release the resources when you leave
@@ -50,6 +124,8 @@ class _VideCallState extends State<VideCall> {
   void dispose() async {
     await agoraEngine.leaveChannel();
     agoraEngine.release();
+    _timer.cancel();
+    speech.stop();
     super.dispose();
   }
 
@@ -271,8 +347,10 @@ class _VideCallState extends State<VideCall> {
     });
 
     await agoraEngine.leaveChannel();
-    agoraEngine.release();
-    agoraEngine.leaveChannel();
+
+    //agoraEngine.release();
+    //agoraEngine.leaveChannel();
+    //super.dispose();
   }
 
   void join() async {
@@ -361,5 +439,9 @@ class _VideCallState extends State<VideCall> {
         },
       ),
     );
+  }
+
+  void resultListener(SpeechRecognitionResult result) {
+    kelimeler = result.recognizedWords;
   }
 }
