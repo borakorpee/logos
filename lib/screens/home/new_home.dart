@@ -12,11 +12,13 @@ import 'package:logos/screens/chatbot/chatbot.dart';
 import 'package:logos/screens/forgot_pass/email_OTP.dart';
 import 'package:logos/screens/home/favorites_page.dart';
 import 'package:logos/screens/profile/profile_page.dart';
+import 'package:logos/screens/psyc_profile/all_pyscs.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:ripple_wave/ripple_wave.dart';
 import '../../models/online_psycs_model.dart';
 import '../psyc_profile/psycs_profileScreenView.dart';
+import '../reservation/calendar.dart';
 
 class NewHomePage extends StatelessWidget {
   static const routeName = "/new_home";
@@ -112,183 +114,194 @@ class NewHomePage extends StatelessWidget {
                             padding: const EdgeInsets.only(
                                     left: 36, right: 36, bottom: 15)
                                 .r,
-                            child: Container(
-                              width: 356.w,
-                              height: 175.h,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.15),
-                                      blurRadius: 15,
-                                    ),
-                                  ],
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Stack(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Container(
-                                          width: 175.w,
-                                          height: 145.h,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(10)),
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                  "$imgroot/uploads/${snapshot.data[index].image}"),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushNamed(
+                                    ReservationCalendar.routeName,
+                                    arguments: {
+                                      "id": snapshot.data[index].sId,
+                                    });
+                              },
+                              child: Container(
+                                width: 356.w,
+                                height: 175.h,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.15),
+                                        blurRadius: 15,
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                                top: 25, left: 15)
-                                            .r,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "${snapshot.data[index].unvan} ${snapshot.data[index].name} ${snapshot.data[index].surName}",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12.sp,
-                                                color: Colors.black
-                                                    .withOpacity(0.75),
+                                    ],
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Stack(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Container(
+                                            width: 175.w,
+                                            height: 145.h,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(10)),
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    "$imgroot/uploads/${snapshot.data[index].image}"),
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
-                                            Text(
-                                              snapshot.data[index].tag![0],
-                                              style: TextStyle(
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                                  top: 25, left: 15)
+                                              .r,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${snapshot.data[index].unvan} ${snapshot.data[index].name} ${snapshot.data[index].surName}",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12.sp,
                                                   color: Colors.black
-                                                      .withOpacity(0.35),
-                                                  fontSize: 7.sp),
-                                            ),
-                                            SizedBox(height: 5.h),
-                                            Row(
-                                              children: [
-                                                const StarIcon(),
-                                                Text(
-                                                  " ${snapshot.data[index].starAvg.length == 0 ? "0" : snapshot.data[index].starAvg[0]} (${snapshot.data[index].star!.length} Oylama)",
-                                                  style: TextStyle(
-                                                    color: Colors.black
-                                                        .withOpacity(0.5),
-                                                    fontSize: 8.sp,
-                                                  ),
+                                                      .withOpacity(0.75),
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.h),
-                                            Row(
-                                              children: [
-                                                SizedBox(
-                                                  width: 10.w,
-                                                  height: 10.h,
-                                                  child: SvgPicture.asset(
-                                                      "assets/psyc_profile/tecrube.svg"),
-                                                ),
-                                                Text(
-                                                  "  5+ Tecrübe",
-                                                  style: TextStyle(
+                                              ),
+                                              Text(
+                                                snapshot.data[index].tag![0],
+                                                style: TextStyle(
                                                     color: Colors.black
-                                                        .withOpacity(0.5),
-                                                    fontSize: 8.sp,
+                                                        .withOpacity(0.35),
+                                                    fontSize: 7.sp),
+                                              ),
+                                              SizedBox(height: 5.h),
+                                              Row(
+                                                children: [
+                                                  const StarIcon(),
+                                                  Text(
+                                                    " ${snapshot.data[index].starAvg.length == 0 ? "0" : snapshot.data[index].starAvg[0]} (${snapshot.data[index].star!.length} Oylama)",
+                                                    style: TextStyle(
+                                                      color: Colors.black
+                                                          .withOpacity(0.5),
+                                                      fontSize: 8.sp,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
+                                              SizedBox(height: 5.h),
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 10.w,
+                                                    height: 10.h,
+                                                    child: SvgPicture.asset(
+                                                        "assets/psyc_profile/tecrube.svg"),
+                                                  ),
+                                                  Text(
+                                                    "  5+ Tecrübe",
+                                                    style: TextStyle(
+                                                      color: Colors.black
+                                                          .withOpacity(0.5),
+                                                      fontSize: 8.sp,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 5.h),
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    "249.90 ₺",
+                                                    style: TextStyle(
+                                                      color: Colors.black
+                                                          .withOpacity(0.75),
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 5.w),
+                                                  Text(
+                                                    "Seans başı",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.black
+                                                          .withOpacity(0.5),
+                                                      fontSize: 7.sp,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Positioned(
+                                      left: 10.w,
+                                      bottom: 55.h,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: const Color(0xff53C797),
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: FittedBox(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 2, horizontal: 10),
+                                            child: Text(
+                                              "Müsait",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 7.sp,
+                                                  fontWeight: FontWeight.w500),
                                             ),
-                                            SizedBox(height: 5.h),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                  "249.90 ₺",
-                                                  style: TextStyle(
-                                                    color: Colors.black
-                                                        .withOpacity(0.75),
-                                                    fontSize: 14.sp,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                SizedBox(width: 5.w),
-                                                Text(
-                                                  "Seans başı",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.black
-                                                        .withOpacity(0.5),
-                                                    fontSize: 7.sp,
-                                                  ),
-                                                )
-                                              ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      left: 0,
+                                      bottom: 0,
+                                      child: Container(
+                                        height: 35.h,
+                                        decoration: const BoxDecoration(
+                                          color: Color(0xffA950C9),
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "RANDEVU AL",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w500),
                                             ),
+                                            SizedBox(width: 10.w),
+                                            SvgPicture.asset(
+                                                "assets/home/goto.svg"),
                                           ],
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                  Positioned(
-                                    left: 10.w,
-                                    bottom: 55.h,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xff53C797),
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      child: FittedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 2, horizontal: 10),
-                                          child: Text(
-                                            "Müsait",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 7.sp,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Positioned(
-                                    right: 0,
-                                    left: 0,
-                                    bottom: 0,
-                                    child: Container(
-                                      height: 35.h,
-                                      decoration: const BoxDecoration(
-                                        color: Color(0xffA950C9),
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(10),
-                                          bottomRight: Radius.circular(10),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "RANDEVU AL",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          SizedBox(width: 10.w),
-                                          SvgPicture.asset(
-                                              "assets/home/goto.svg"),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -724,7 +737,8 @@ class HorizontalList extends StatelessWidget {
                               SizedBox(height: 10.h),
                               GestureDetector(
                                 onTap: () {
-                                  print("Doktor ara ekranı");
+                                  Navigator.of(context)
+                                      .pushNamed(PsycSearchScreen.routeName);
                                 },
                                 child: Container(
                                   width: 125.w,

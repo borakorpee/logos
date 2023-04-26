@@ -96,26 +96,29 @@ class _VideCallState extends State<VideCall> {
       body: jsonEncode(requestBody),
     );
     var data = json.decode(utf8.decode(response.bodyBytes));
-    //   log("GPT: " + data['choices'][0]["message"]["content"]);
+    log("GPT: " + data['choices'][0]["message"]["content"]);
 
     String roots = data['choices'][0]["message"]["content"];
 
-    var talkk = await http
-        .put(Uri.parse("$root/talk/put?64468401978e155dc2498e1f"), headers: {
-      "x-access-token": token,
-    }, body: {
-      "Talk": text,
-      "word": roots,
-    });
+    var talkk = await http.put(
+        Uri.parse("$root/talk/put?reservation_id=64468401978e155dc2498e1f"),
+        headers: {
+          "x-access-token": token,
+        },
+        body: {
+          "Talk": text,
+          "word": roots,
+        });
     var dat = jsonDecode(talkk.body);
     log(dat.toString());
+    log("------------------------------------------------------------------------------------------------------------------------------------");
   }
 
   Future<void> initSpeechState(String cltoken) async {
     var hasSpeech =
         await speech.initialize().then((value) => startListening()).then(
               (value) => _timer = Timer.periodic(
-                Duration(seconds: 5),
+                Duration(seconds: 10),
                 (timer) {
                   String previousText = lastsent;
                   String currentText = speech.lastRecognizedWords;
@@ -134,7 +137,7 @@ class _VideCallState extends State<VideCall> {
                     }
 
                     String differentText = currentText.substring(index);
-                    //  log(differentText);
+                    log(differentText);
                     differentText.length < 3
                         ? log("gönderme")
                         : getResponse(differentText, cltoken);
