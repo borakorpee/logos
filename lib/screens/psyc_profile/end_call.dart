@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logos/models/all_psyc_model.dart';
 import 'package:logos/screens/forgot_pass/email_OTP.dart';
+import 'package:logos/screens/home/new_home.dart';
 import 'package:logos/screens/psyc_profile/after_call_comment.dart';
 
 class AfterCallScreen extends StatelessWidget {
@@ -90,7 +91,8 @@ class AfterCallScreen extends StatelessWidget {
                 SizedBox(height: 15.h),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(context)
+                        .popAndPushNamed(NewHomePage.routeName);
                   },
                   child: Container(
                     width: 350.w,

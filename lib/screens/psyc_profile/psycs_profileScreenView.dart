@@ -48,14 +48,6 @@ class _PsycsScreenViewState extends State<PsycsScreenView>
           SizedBox(height: 14.h),
           PsycBio(provider: provider),
           SizedBox(height: 14.h),
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SpeechSampleApp()),
-                );
-              },
-              icon: Icon(Icons.abc)),
           BioRow(
             psyc: provider,
           ),

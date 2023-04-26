@@ -169,7 +169,10 @@ class _LogBotScreenState extends State<LogBotScreen> {
                         color: const Color(0xffE8E6EA),
                       ),
                     ),
-                    child: const Icon(Icons.send_rounded),
+                    child: const Icon(
+                      Icons.send_rounded,
+                      color: Color(0xff8C10B8),
+                    ),
                   ),
                 ),
               )
@@ -306,9 +309,9 @@ class ChatMessageWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 80, right: 40).r,
                 child: Container(
                   width: 300.w,
-                  decoration: const BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                      color: const Color(0xffA950C9).withOpacity(0.25),
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(15),
                           topRight: Radius.circular(15),
                           bottomLeft: Radius.circular(15))),
@@ -318,7 +321,7 @@ class ChatMessageWidget extends StatelessWidget {
                     child: Text(
                       text,
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500),
                     ),
