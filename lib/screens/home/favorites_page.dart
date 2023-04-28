@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../providers/all_psyc_provider.dart';
 import '../../providers/client_provider.dart';
+import '../forgot_pass/email_OTP.dart';
 import '../psyc_profile/psycs_profileScreenView.dart';
 
 class FavoritesPage extends StatefulWidget {
@@ -101,10 +102,10 @@ class FavRow extends StatelessWidget {
               child: Container(
                 width: 70.w,
                 height: 70.h,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                      image: AssetImage("assets/home/dummypp.png"),
+                      image: NetworkImage("$imgroot/uploads/${psyc.image}"),
                       fit: BoxFit.contain),
                 ),
               ),

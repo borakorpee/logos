@@ -24,10 +24,15 @@ class _ConnectingToPsycState extends State<ConnectingToPsyc> {
       final args = ModalRoute.of(context)?.settings.arguments
           as Map<String, Psychologists>;
       ;
-      Navigator.pushReplacementNamed(context, VideCall.routeName, arguments: {
+      Navigator.popAndPushNamed(context, VideCall.routeName, arguments: {
         "provider": args["provider"],
       });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

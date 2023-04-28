@@ -58,6 +58,7 @@ class AuthService {
         filename: args["image"].path.split('/').last);
     formData.files.add(multipartFile);
     var response = await formData.send();
+    log(await response.stream.bytesToString());
   }
 
   static Future login(String mail, String pass, BuildContext context) async {

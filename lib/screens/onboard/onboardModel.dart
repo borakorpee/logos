@@ -17,7 +17,7 @@ const OnboardData = [
     title: "Özel Destek",
     image: "assets/onboard/image_1.png",
     description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec ligula eu ex interdum congue.",
+        "Uygulama veya web sitesi gibi bir dijital ortamla etkileşim kurmasını sağlayan bir tasarım özelliği.",
   ),
   OnboardModel(
     title: "Seçim Hakkı",

@@ -450,7 +450,7 @@ class TopPsycs extends StatelessWidget {
                                             children: [
                                               const StarIcon(),
                                               Text(
-                                                " ${snapshot.data[index].starAvg[0].toString()} (${snapshot.data[index].star!.length} Oylama)",
+                                                "  ${snapshot.data[index].starAvg.length == 0 ? "0" : snapshot.data[index].starAvg[0]} (${snapshot.data[index].star!.length} Oylama)",
                                                 style: TextStyle(
                                                   color: Colors.black
                                                       .withOpacity(0.5),

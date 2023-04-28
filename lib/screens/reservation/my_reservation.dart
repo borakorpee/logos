@@ -147,12 +147,12 @@ class _MyReservationsPageState extends State<MyReservationsPage>
                                                             width: 70.w,
                                                             height: 70.h,
                                                             decoration:
-                                                                const BoxDecoration(
+                                                                BoxDecoration(
                                                               shape: BoxShape
                                                                   .circle,
                                                               image: DecorationImage(
-                                                                  image: AssetImage(
-                                                                      "assets/home/dummypp.png"),
+                                                                  image: NetworkImage(
+                                                                      "$imgroot/uploads/${snapshot.data[index].psycId.image}"),
                                                                   fit: BoxFit
                                                                       .contain),
                                                             ),
@@ -582,10 +582,11 @@ class InactiveReservations extends StatelessWidget {
                       child: Container(
                         width: 70.w,
                         height: 70.h,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                              image: AssetImage("assets/home/dummypp.png"),
+                              image: NetworkImage(
+                                  "$imgroot/uploads/${snapshot.data[index].psycId.image}"),
                               fit: BoxFit.contain),
                         ),
                       ),

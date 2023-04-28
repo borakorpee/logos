@@ -21,7 +21,7 @@ import '../forgot_pass/email_OTP.dart';
 //const GPTprompt =
 //  """Cümledeki Bağlaçlar  ve edatlar (ve, ile, fakat, ya da, hem .. hem, de, gibi, üzere, için, kadar) hariç tüm kelimelerin köklerini bul ve bulduğun bu kökleri içerisinde string olarak ve "," işareti ile ayrılmış şekilde kök1,kök2 şeklinde yaz eğer kökü bulamadıysan "bulunamadı" olarak yaz : """;
 const GPTprompt =
-    """Sana verilen cümledeki edatlar ve bağlaçlar "hariç" tüm kelimelerin köklerini bul ve bulduğun kökleri kök1,kök2 şeklinde virgülle ayır """;
+    """Sana verilen cümledeki tüm kelimelerin köklerini bul ve bulduğun kökleri kök1,kök2 şeklinde virgülle ayır KESİNLİKLE BAŞKA BİLGİ VERME sadece kökleri kök1,kök2 şeklinde yaz """;
 
 class VideCall extends StatefulWidget {
   static const routeName = "/video-call";
@@ -70,7 +70,7 @@ class _VideCallState extends State<VideCall> {
 
     speech.listen(
       onResult: resultListener,
-      listenFor: Duration(seconds: 365),
+      listenFor: Duration(seconds: 250),
       partialResults: true,
       localeId: 'tr-TR',
       listenMode: ListenMode.confirmation,
@@ -84,7 +84,8 @@ class _VideCallState extends State<VideCall> {
     Map<String, dynamic> requestBody = {
       'model': 'gpt-4',
       "messages": [
-        {"role": "user", "content": """ $GPTprompt $text """}
+        {"role": "system", "content": """ $GPTprompt"""},
+        {"role": "user", "content": """$text """}
       ]
     };
     var response = await http.post(
@@ -100,8 +101,8 @@ class _VideCallState extends State<VideCall> {
 
     String roots = data['choices'][0]["message"]["content"];
 
-    var talkk = await http.put(
-        Uri.parse("$root/talk/put?reservation_id=64468401978e155dc2498e1f"),
+    var talkk = await http.post(
+        Uri.parse("$root/talk/put?reservation_id=644a2f9a16f7ec3a141a0b3f"),
         headers: {
           "x-access-token": token,
         },
@@ -110,7 +111,7 @@ class _VideCallState extends State<VideCall> {
           "word": roots,
         });
     var dat = jsonDecode(talkk.body);
-    log(dat.toString());
+//  log(dat.toString());
     log("------------------------------------------------------------------------------------------------------------------------------------");
   }
 
@@ -118,11 +119,12 @@ class _VideCallState extends State<VideCall> {
     var hasSpeech =
         await speech.initialize().then((value) => startListening()).then(
               (value) => _timer = Timer.periodic(
-                Duration(seconds: 10),
+                Duration(seconds: 5),
                 (timer) {
                   String previousText = lastsent;
                   String currentText = speech.lastRecognizedWords;
-
+                  log(speech.lastStatus);
+                  speech.lastStatus == "done" ? startListening() : null;
                   if (currentText == previousText) {
                     return;
                   } else {
@@ -242,6 +244,7 @@ class _VideCallState extends State<VideCall> {
                                       fit: BoxFit.scaleDown,
                                     )),
                         ),
+                        SizedBox(height: 10.h),
                         Text(
                           "Kamerayı Kapat",
                           style: TextStyle(
@@ -277,10 +280,11 @@ class _VideCallState extends State<VideCall> {
                                       fit: BoxFit.scaleDown,
                                     )
                                   : SvgPicture.asset(
-                                      "assets/videocall/unmute.svg",
+                                      "assets/videocall/openmic.svg",
                                       fit: BoxFit.scaleDown,
                                     )),
                         ),
+                        SizedBox(height: 10.h),
                         Text(
                           "Sesi Kapat",
                           style: TextStyle(
@@ -312,6 +316,7 @@ class _VideCallState extends State<VideCall> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 10.h),
                         Text(
                           "Kamerayı Çevir",
                           style: TextStyle(
@@ -342,8 +347,9 @@ class _VideCallState extends State<VideCall> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 10.h),
                         Text(
-                          "Kapat",
+                          "Görüşmeyi Bitir",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 11.sp,
@@ -369,18 +375,13 @@ class _VideCallState extends State<VideCall> {
     });
     DateTime endTime = DateTime.now();
 
+    await agoraEngine.leaveChannel();
     Navigator.of(context)
         .popAndPushNamed(AfterCallScreen.routeName, arguments: {
       "starttime": startTime,
       "endtime": endTime,
       "provider": psyc,
     });
-
-    await agoraEngine.leaveChannel();
-
-    //agoraEngine.release();
-    //agoraEngine.leaveChannel();
-    //super.dispose();
   }
 
   void join() async {

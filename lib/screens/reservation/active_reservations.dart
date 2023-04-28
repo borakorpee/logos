@@ -11,6 +11,7 @@ import 'package:logos/screens/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/all_psyc_provider.dart';
+import '../psyc_profile/connecting.dart';
 import '../psyc_profile/psycs_profileScreenView.dart';
 
 class ActiveReservations extends StatefulWidget {
@@ -102,24 +103,32 @@ class _ActiveReservationsState extends State<ActiveReservations> {
             SizedBox(height: 15.h),
             const BillContainer(),
             const Spacer(),
-            Container(
-              width: 355.w,
-              height: 57.h,
-              decoration: BoxDecoration(
-                color: const Color(0xffA950C9),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  isToday
-                      ? hours == 0
-                          ? "Görüşmeniz $minutes dakika sonra başlayacak"
-                          : "Görüşmeniz $hours saat $minutes dakika sonra başlayacak"
-                      : "Görüşme saatinde başlayacak",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14.sp,
-                    color: Colors.white,
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(ConnectingToPsyc.routeName, arguments: {
+                  "provider": psyc,
+                });
+              },
+              child: Container(
+                width: 355.w,
+                height: 57.h,
+                decoration: BoxDecoration(
+                  color: const Color(0xffA950C9),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    isToday
+                        ? hours == 0
+                            ? "Görüşmeniz $minutes dakika sonra başlayacak"
+                            : "Görüşmeniz $hours saat $minutes dakika sonra başlayacak"
+                        : "Görüşme saatinde başlayacak",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.sp,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -314,7 +323,7 @@ class clientBio extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  ": $client_years",
+                  client_years == 0 ? ": 25" : ": $client_years",
                   style: TextStyle(
                     fontSize: 13.sp,
                   ),
