@@ -19,9 +19,9 @@ import 'package:http/http.dart' as http;
 import '../forgot_pass/email_OTP.dart';
 
 //const GPTprompt =
-//  """Cümledeki Bağlaçlar  ve edatlar (ve, ile, fakat, ya da, hem .. hem, de, gibi, üzere, için, kadar) hariç tüm kelimelerin köklerini bul ve bulduğun bu kökleri içerisinde string olarak ve "," işareti ile ayrılmış şekilde kök1,kök2 şeklinde yaz eğer kökü bulamadıysan "bulunamadı" olarak yaz : """;
+//  """Sana verilen cümledeki tüm kelimelerin köklerini bul ve bulduğun kökleri kök1,kök2 şeklinde virgülle ayır KESİNLİKLE BAŞKA BİLGİ VERME sadece kökleri kök1,kök2 şeklinde yaz """;
 const GPTprompt =
-    """Sana verilen cümledeki tüm kelimelerin köklerini bul ve bulduğun kökleri kök1,kök2 şeklinde virgülle ayır KESİNLİKLE BAŞKA BİLGİ VERME sadece kökleri kök1,kök2 şeklinde yaz """;
+    "Köşeli parantez içerisinde virgülle ayrılmış kelimelerin köklerini bul ve bulduğun kökleri virgülle ayrılmış şekilde göster";
 
 class VideCall extends StatefulWidget {
   static const routeName = "/video-call";
@@ -58,7 +58,6 @@ class _VideCallState extends State<VideCall> {
     Timer(Duration(seconds: 3), () {
       var client =
           Provider.of<ClientProvider>(context, listen: false).get_client;
-      log(client.token.toString());
       initSpeechState(client.token.toString());
     });
 
@@ -78,14 +77,14 @@ class _VideCallState extends State<VideCall> {
     );
   }
 
-  Future<void> getResponse(String text, String token) async {
+  Future<void> getResponse(String text, String token, String gptText) async {
     String openaiUrl = 'https://api.openai.com/v1/chat/completions';
     String openaiKey = OPENAI_KEY;
     Map<String, dynamic> requestBody = {
       'model': 'gpt-4',
       "messages": [
         {"role": "system", "content": """ $GPTprompt"""},
-        {"role": "user", "content": """$text """}
+        {"role": "user", "content": """$gptText """}
       ]
     };
     var response = await http.post(
@@ -115,40 +114,54 @@ class _VideCallState extends State<VideCall> {
     log("------------------------------------------------------------------------------------------------------------------------------------");
   }
 
+  int say = 0;
   Future<void> initSpeechState(String cltoken) async {
-    var hasSpeech =
-        await speech.initialize().then((value) => startListening()).then(
-              (value) => _timer = Timer.periodic(
-                Duration(seconds: 5),
-                (timer) {
-                  String previousText = lastsent;
-                  String currentText = speech.lastRecognizedWords;
-                  log(speech.lastStatus);
-                  speech.lastStatus == "done" ? startListening() : null;
-                  if (currentText == previousText) {
-                    return;
-                  } else {
-                    int maxLength = currentText.length < previousText.length
-                        ? currentText.length
-                        : previousText.length;
+    var hasSpeech = await speech
+        .initialize()
+        .then((value) => startListening())
+        .then(
+          (value) => _timer = Timer.periodic(
+            Duration(seconds: 5),
+            (timer) {
+              String previousText = lastsent;
+              String currentText = speech.lastRecognizedWords;
+              log(speech.lastStatus);
+              say = say + 5;
+              say == 15 ? {say = 0, startListening()} : log("devam");
+              speech.lastStatus == "done" ? startListening() : null;
+              if (currentText == previousText) {
+                return;
+              } else {
+                int maxLength = currentText.length < previousText.length
+                    ? currentText.length
+                    : previousText.length;
 
-                    int index = 0;
-                    while (index < maxLength &&
-                        currentText[index] == previousText[index]) {
-                      index++;
-                    }
+                int index = 0;
+                while (index < maxLength &&
+                    currentText[index] == previousText[index]) {
+                  index++;
+                }
 
-                    String differentText = currentText.substring(index);
-                    log(differentText);
-                    differentText.length < 3
-                        ? log("gönderme")
-                        : getResponse(differentText, cltoken);
-                    previousText = currentText;
-                    lastsent = currentText;
-                  }
-                },
-              ),
-            );
+                String differentText = currentText.substring(index);
+
+                List<String> kelimeler = cumleyiAyir(differentText);
+                log(kelimeler.toString());
+
+                log(differentText);
+                differentText.length < 3
+                    ? log("gönderme")
+                    : getResponse(differentText, cltoken, kelimeler.toString());
+                previousText = currentText;
+                lastsent = currentText;
+              }
+            },
+          ),
+        );
+  }
+
+  List<String> cumleyiAyir(String cumle) {
+    List<String> kelimeler = cumle.split(" ");
+    return kelimeler.join(",").split(",");
   }
 
   // Release the resources when you leave

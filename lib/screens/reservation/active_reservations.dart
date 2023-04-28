@@ -11,6 +11,7 @@ import 'package:logos/screens/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/all_psyc_provider.dart';
+import '../forgot_pass/email_OTP.dart';
 import '../psyc_profile/connecting.dart';
 import '../psyc_profile/psycs_profileScreenView.dart';
 
@@ -441,11 +442,10 @@ class Header extends StatelessWidget {
               Container(
                 width: 90.w,
                 height: 90.h,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                        image: NetworkImage(
-                            "https://www.mecgale.com/wp-content/uploads/2017/08/dummy-profile.png"))),
+                        image: NetworkImage("$imgroot/uploads/${psyc.image}"))),
               ),
               SizedBox(width: 15.w),
               Column(
